@@ -1,0 +1,17 @@
+{
+  "name": "couponzysystem",
+  "version": "1.0.0",
+  "description": "Coupozy System Operating Scrip",
+  "main": "app.js",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client-dashboard": "npm start --prefix client-dashboard",
+    "dev": "concurrently \"npm run server\" \"npm run client-dashboard\"",
+    "start": "npm run server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.0.2"
+  }
+}

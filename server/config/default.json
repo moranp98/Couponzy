@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://admin_couponzy:couponzy123456@couponzydbwithgoogleclo.kqihj.mongodb.net/dbCouponzy?retryWrites=true&w=majority",
+    "secret": "mysecrettoken"
+}
