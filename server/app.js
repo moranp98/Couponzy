@@ -11,7 +11,7 @@ app.use(cors({ withCredentials: false }));
 
 app.use('/api', couponRoutes.routes);
 
-const server = http.createServer(app);
+const server = http.createServer(app); 
 
 const whitelist = ['http://localhost:4200'];
 
