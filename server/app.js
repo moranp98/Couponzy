@@ -34,7 +34,9 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
       count--;
       socket.broadcast.emit('count', count);
+
       console.log(count);
+      
     });
   }
   console.log('Client connected');
