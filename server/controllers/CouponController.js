@@ -4,7 +4,7 @@ const Coupon = require('../models/Coupon');
 const addCoupon = async (req, res, next) => {
     try {
         const data = req.body;
-        await firebase.collection('Coupons').doc().set(data);
+        await firebase.collection('Coupons').doc(data.couponCode).set(data);
         res.send('Coupon record saved successfuly');
     } catch (error) {
         res.status(400).send(error.message);
@@ -24,7 +24,7 @@ const getAllCoupons = async (req, res, next) => {
                     doc.id,
                     doc.data().name,
                     doc.data().description,
-                    doc.data().couponCode,
+                    doc.data().couponId,
                     doc.data().pictureName,
                     doc.data().oldPrice,
                     doc.data().newPrice,
@@ -32,10 +32,11 @@ const getAllCoupons = async (req, res, next) => {
                     doc.data().expireDate,
                     doc.data().lastUpdated,
                     doc.data().couponType,
-                    doc.data().shop
+                    doc.data().Shop
                 );
                 couponsArray.push(coupon);
             });
+            
             res.send(couponsArray);
         }
     } catch (error) {

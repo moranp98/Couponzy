@@ -3,6 +3,9 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const couponRoutes = require('./routes/Coupon-routes');
+const couponTypeRoutes = require('./routes/CouponType-routes');
+const ReviewRoutes = require('./routes/Review-routes');
+const StarRoutes = require('./routes/Star-routes');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -10,6 +13,9 @@ app.use(express.urlencoded( { extended: true } ))
 app.use(cors({ withCredentials: false }));
 
 app.use('/api', couponRoutes.routes);
+app.use('/api', couponTypeRoutes.routes);
+app.use('/api', ReviewRoutes.routes);
+app.use('/api', StarRoutes.routes);
 
 const server = http.createServer(app); 
 
@@ -36,7 +42,7 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('count', count);
 
       console.log(count);
-      
+
     });
   }
   console.log('Client connected');
