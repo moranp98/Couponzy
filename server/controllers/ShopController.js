@@ -1,5 +1,5 @@
 const firebase = require('../config/db_adminSdk');
-const Coupon = require('../models/Shop');
+const Shop = require('../models/Shop');
 
 const addShop = async (req, res, next) => {
   try {
@@ -20,24 +20,30 @@ const getAllShops = async (req, res, next) => {
       res.status(404).send('No shop record found');
     } else {
       data.forEach((doc) => {
-        const shop = new Shop(doc.id, doc.data().name, doc.data().coupons);
-        couponsArray.push(coupon);
+        const shop = new Shop(
+          doc.id,
+          doc.data().shopName,
+          doc.data().pictureName,
+          doc.data().coupons,
+          doc.data().branches,
+          doc.data().shopManagers
+        );
+        shopsArray.push(shop);
       });
-
-      res.send(couponsArray);
+      res.send(shopsArray);
     }
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
 
-const getCoupon = async (req, res, next) => {
+const getShop = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const coupon = await firebase.collection('Coupons').doc(id);
-    const data = await coupon.get();
+    const shop = await firebase.collection('Shops').doc(id);
+    const data = await shop.get();
     if (!data.exists) {
-      res.status(404).send('Coupon with the given ID not found');
+      res.status(404).send('Shop with the given ID not found');
     } else {
       res.send(data.data());
     }
@@ -46,32 +52,32 @@ const getCoupon = async (req, res, next) => {
   }
 };
 
-const updateCoupon = async (req, res, next) => {
+const updateShop = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const coupon = await firebase.collection('Coupons').doc(id);
-    await coupon.update(data);
-    res.send('Coupon record updated successfuly');
+    const shop = await firebase.collection('Shops').doc(id);
+    await shop.update(data);
+    res.send('Shop record updated successfuly');
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
 
-const deleteCoupon = async (req, res, next) => {
+const deleteShop = async (req, res, next) => {
   try {
     const id = req.params.id;
-    await firebase.collection('Coupons').doc(id).delete();
-    res.send('Coupon record deleted successfuly');
+    await firebase.collection('Shops').doc(id).delete();
+    res.send('Shop record deleted successfuly');
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
 
 module.exports = {
-  addCoupon,
-  getAllCoupons,
-  getCoupon,
-  updateCoupon,
-  deleteCoupon,
+  addShop,
+  getAllShops,
+  getShop,
+  updateShop,
+  deleteShop,
 };
