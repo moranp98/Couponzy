@@ -1,0 +1,22 @@
+<div class="col-lg">
+    <card title="200 החברות הרווחיות">
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>מיקום</th>
+              <th>שם החברה</th>
+              <th>שווי שוק</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let brand of brands">
+                <td>{{brand.place}}</td>
+                <td>{{brand.name}}</td>
+                <td>{{brand.marketCap}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </card>
+  </div>

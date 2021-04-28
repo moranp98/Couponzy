@@ -1,21 +1,29 @@
-'use strict';
 const express = require('express');
-//  <------------- With Mongo DB -------------> const connectToMongodbAtlas = require('./config/db');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
-const config = require('./config');
 const couponRoutes = require('./routes/Coupon-routes');
+const couponTypeRoutes = require('./routes/CouponType-routes');
+const ReviewRoutes = require('./routes/Review-routes');
+const StarRoutes = require('./routes/Star-routes');
+const UserRoutes = require('./routes/User-routes');
+const OrderRoutes = require('./routes/Order-routes');
+const BranchRoutes = require('./routes/Branch-routes');
 
-//  <------------- With Mongo DB -------------> connectToMongodbAtlas();
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded( { extended: true } ))
 app.use(cors({ withCredentials: false }));
 
 app.use('/api', couponRoutes.routes);
+app.use('/api', couponTypeRoutes.routes);
+app.use('/api', ReviewRoutes.routes);
+app.use('/api', StarRoutes.routes);
+app.use('/api', UserRoutes.routes);
+app.use('/api', OrderRoutes.routes);
+app.use('/api', BranchRoutes.routes);
 
-const server = http.createServer(app);
+const server = http.createServer(app); 
 
 const whitelist = ['http://localhost:4200'];
 
@@ -38,13 +46,14 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
       count--;
       socket.broadcast.emit('count', count);
+
       console.log(count);
+
     });
   }
   console.log('Client connected');
 });
 
-//  <------------- With Mongo DB -------------> const PORT = process.env.PORT || 8080;
-const PORT = config.port;
+const PORT = process.env.PORT || 8080
 
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

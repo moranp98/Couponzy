@@ -1,10 +1,10 @@
 class Coupon {
-  constructor(id, name, description, couponCode, pictureName, oldPrice, newPrice,
-    published, expireDate, lastUpdated, couponType, shop){
+  constructor(id, name, description, couponId, pictureName, oldPrice, newPrice,
+    published, expireDate, lastUpdated, couponType, Shop){
       this.id = id;
       this.name = name;
       this.description = description;
-      this.couponCode = couponCode;
+      this.couponId = couponId;
       this.pictureName = pictureName;
       this.oldPrice = oldPrice;
       this.newPrice = newPrice;
@@ -12,7 +12,7 @@ class Coupon {
       this.expireDate = expireDate;
       this.lastUpdated = lastUpdated;
       this.couponType = couponType;
-      this.shop = shop;
+      this.Shop = Shop;
     }
 }
 

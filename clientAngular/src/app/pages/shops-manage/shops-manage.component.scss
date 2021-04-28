@@ -1,0 +1,18 @@
+@import '../../../assets/sass/variable';
+
+
+.details {
+    border-top: 1px solid rgba(#000,.2);   
+}
+
+.avatar {
+    vertical-align: middle;
+    display: inline;
+    width: 130px;
+    height: 80px;
+    border-radius: 10%;
+  }
+
+  .branchesCard {
+    min-height: 600px;
+  }
