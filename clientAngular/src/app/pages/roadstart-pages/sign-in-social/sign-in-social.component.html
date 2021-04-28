@@ -1,0 +1,23 @@
+<card [title]="'היכנס עם חשבונך'" [align]="'center'">
+    <form (ngSubmit)="onSubmit(username.value, pass.value)">
+      <mat-form-field>
+        <input matInput #username placeholder="Username" value="" name="username">
+      </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput #pass placeholder="Password" value="" id="pass" type="password">
+      </mat-form-field>
+  
+  
+      <button mat-raised-button color="primary" type="submit" class="submit">כניסה</button>
+  
+      <!--<div class="social-divider">כניסה באמצעות</div>
+  
+      <div class="social-login">
+        <button mat-raised-button type="button" class="bg-facebook text-white"><i class="fa fa-facebook"></i> Facebook</button>
+        <button mat-raised-button type="button" class="bg-twitter text-white"><i class="fa fa-twitter"></i> Twitter</button>
+      </div>-->
+  
+    </form>
+  </card>
+  

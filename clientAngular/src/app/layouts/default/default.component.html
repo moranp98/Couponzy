@@ -1,0 +1,12 @@
+<div class="site-container" [ngClass]="getClasses()" [attr.dir]="rtl ? 'rtl' : null">
+    <navbar [title]="pageTitle" (sidebarState)="sidebarState()" [openedSidebar]="openedSidebar"></navbar>
+
+    <sidebar (sidebarState)="sidebarState()"></sidebar>
+
+    <main class="main-content">
+        <div class="main-content-wrap">
+            <router-outlet></router-outlet>
+        </div>
+        <footer></footer>
+    </main>
+</div>

@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "server": "cd server && npm start",
-    "client-dashboard": "npm start --prefix client-dashboard",
-    "dev": "concurrently \"npm run server\" \"npm run client-dashboard\"",
+    "clientAngular": "npm start --prefix clientAngular",
+    "dev": "concurrently \"npm run server\" \"npm run clientAngular\"",
     "start": "npm run server"
   },
   "author": "",

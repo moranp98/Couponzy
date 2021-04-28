@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col mb-lg" >
+      <card title="משתמשים רשומים" class="mb-lg" *ngIf="showUsers">
+        <div class="col-lg">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>שם מלא</th>
+              <th>סוג משתמש</th>
+              <th>שם חנות</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td><strong>{{user.firstName}} {{user.lastName}}</strong></td>
+                <td>{{checkP(user)}}</td>
+                <td>{{checkShop(user)}}</td>
+                <td><button mat-raised-button color="accent" (click)="onUpdate(true, user._id)">עריכה</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </card>
+    </div>
+</div>
+<div class="row mb-lg-4" *ngIf="updatePressed" >
+  <div class="col-lg-8">
+    <card [title]="name">
+      <form (ngSubmit)="onUpdateSubmit(position.value)">
+        <div class="row">  
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-select #position placeholder="בחר תפקיד" dir="rtl" [formControl]="posControl" required>
+              <mat-option *ngFor="let pos of posi" [value]=pos.value>
+                {{pos.viewValue}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="posControl.hasError('required')">אנא בחר תפקיד</mat-error>
+          </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button color="accent">שמור</button>
+            <span class="span"></span>
+            <button mat-raised-button color="accent" (click)="onUpdate(false, 0)">חזור</button>
+          </div>
+        </div>
+      </form>
+      <form (ngSubmit)="onShopSubmit(shop.value)" *ngIf="isSeller">
+        <div class="row">  
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-select #shop placeholder="בחר חנות" dir="rtl" [formControl]="shopControl" required>
+              <mat-option *ngFor="let shop of shops" [value]=shop._id>
+                {{shop.shopName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="shopControl.hasError('required')">אנא בחר חנות</mat-error>
+          </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button color="accent">שמור</button>
+            <span class="span"></span>
+            <button mat-raised-button color="accent" (click)="onUpdate(false, 0)">חזור</button>
+          </div>
+        </div>
+      </form>
+    </card>
+  </div>
+
