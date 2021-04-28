@@ -6,6 +6,9 @@ const couponRoutes = require('./routes/Coupon-routes');
 const couponTypeRoutes = require('./routes/CouponType-routes');
 const ReviewRoutes = require('./routes/Review-routes');
 const StarRoutes = require('./routes/Star-routes');
+const UserRoutes = require('./routes/User-routes');
+const OrderRoutes = require('./routes/Order-routes');
+const BranchRoutes = require('./routes/Branch-routes');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -16,6 +19,9 @@ app.use('/api', couponRoutes.routes);
 app.use('/api', couponTypeRoutes.routes);
 app.use('/api', ReviewRoutes.routes);
 app.use('/api', StarRoutes.routes);
+app.use('/api', UserRoutes.routes);
+app.use('/api', OrderRoutes.routes);
+app.use('/api', BranchRoutes.routes);
 
 const server = http.createServer(app); 
 
