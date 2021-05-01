@@ -5,7 +5,7 @@ const serviceAccount = require('./adminsdk-serviceAccountKey.json');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
-
+ 
 const uid = 'some-uid';
 
 admin

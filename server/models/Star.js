@@ -1,8 +1,8 @@
 class Star {
-    constructor(id, couponId, userId, value){
+    constructor(id, coupon, user, value){
         this.id = id;
-        this.couponId = couponId;
-        this.userId = userId;
+        this.coupon = coupon;
+        this.user = user;
         this.value = value;
       }
   }

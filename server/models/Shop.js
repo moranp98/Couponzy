@@ -1,8 +1,9 @@
 class Shop {
-  constructor(id, shopName, pictureName, coupons, branches, shopManagers) {
+  constructor(id, shopName, profile_Shop, lastUpdated, coupons=[], branches=[], shopManagers=[]) {
     this.id = id;
     this.shopName = shopName;
-    this.pictureName = pictureName;
+    this.profile_Shop = profile_Shop;
+    this.lastUpdated = lastUpdated;
     this.coupons = coupons;
     this.branches = branches;
     this.shopManagers = shopManagers;

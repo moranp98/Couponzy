@@ -1,12 +1,15 @@
 class Branch { 
-    constructor(id, name, address, phoneNumber, lat, long, isOpen, sellers){
+    constructor(id, branchName, profile_Branch, address, phoneNumber, lat, long, isOpen, lastUpdated, shop, sellers=[]){
         this.id = id;
-        this.name = name;
+        this.branchName = branchName;
+        this.profile_Branch = profile_Branch;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.lat = lat;
         this.long = long;
         this.isOpen = isOpen;
+        this.lastUpdated = lastUpdated;
+        this.shop = shop;
         this.sellers = sellers;
     }
 }

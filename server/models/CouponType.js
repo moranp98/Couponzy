@@ -1,7 +1,8 @@
 class CouponType {
-    constructor(id, name, lastUpdated){
+    constructor(id, couponTypeName, countOf_Coupons, lastUpdated){
         this.id = id;
-        this.name = name;
+        this.couponTypeName = couponTypeName;
+        this.countOf_Coupons = countOf_Coupons;
         this.lastUpdated = lastUpdated;
       }
   }

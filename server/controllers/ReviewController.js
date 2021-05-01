@@ -1,9 +1,11 @@
 const firebase = require('../config/db_adminSdk');
+const admin = require("firebase-admin");
 const Review = require('../models/Review');
 
 const addReview = async (req, res, next) => {
     try {
         const data = req.body;
+        data.published_date = admin.firestore.Timestamp.now();
         await firebase.collection('Reviews').doc().set(data);
         res.send('Review record saved successfuly');
     } catch (error) {
@@ -22,8 +24,8 @@ const getAllReviews = async (req, res, next) => {
             data.forEach(doc => {
                 const review = new Review(
                     doc.id,
-                    doc.data().couponId,
-                    doc.data().userId,
+                    doc.data().coupon,
+                    doc.data().user,
                     doc.data().review_text,
                     doc.data().published_date
                 );
@@ -55,6 +57,7 @@ const updateReview = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        data.published_date = admin.firestore.Timestamp.now();
         const review = await firebase.collection('Reviews').doc(id);
         await review.update(data);
         res.send('Review record updated successfuly');
