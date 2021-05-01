@@ -9,6 +9,7 @@ const StarRoutes = require('./routes/Star-routes');
 const UserRoutes = require('./routes/User-routes');
 const OrderRoutes = require('./routes/Order-routes');
 const BranchRoutes = require('./routes/Branch-routes');
+const ShopRoutes = require('./routes/Shop-routes');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -22,6 +23,7 @@ app.use('/api', StarRoutes.routes);
 app.use('/api', UserRoutes.routes);
 app.use('/api', OrderRoutes.routes);
 app.use('/api', BranchRoutes.routes);
+app.use('/api', ShopRoutes.routes);
 
 const server = http.createServer(app); 
 

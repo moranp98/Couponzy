@@ -1,6 +1,6 @@
 <div class="row mb-lg-4">
   <div class="col-lg-8 ">
-    <card [title]="'רשימת חנויות'">
+    <card [title]="'רשימת חנויות'" >
       <mat-list class="branchesCard">
         <mat-list-item *ngFor="let branch of branches; let i = index">
           <img mat-list-avatar src="{{ branch.shop.pictureName }}" class="avatar" alt="">
