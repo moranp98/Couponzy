@@ -6,6 +6,9 @@ const PORT = 8080;
 
 export const environment = {
   production: false,
+
+  serverUrl : `http://localhost:${PORT}/api`,
+  
   branchesUrl : `http://localhost:${PORT}/api/branches`,
   shopsUrl : `http://localhost:${PORT}/api/shops`,
   brandsUrl : `http://localhost:${PORT}/brands`,

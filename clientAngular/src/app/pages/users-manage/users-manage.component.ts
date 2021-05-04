@@ -64,7 +64,7 @@ export class PageUsersManageComponent implements OnInit {
 
   checkShop(user:Users){
     if(user.shop){
-     return this.shops.find(shop=>shop._id===user.shop).shopName;
+     return this.shops.find(shop=>shop.id===user.shop).shopName;
     }
     return "---";
   }
