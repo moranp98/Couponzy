@@ -1,21 +1,24 @@
 <div class="row mb-lg-4">
   <div class="col-lg-8 ">
-    <card [title]="'רשימת חנויות'" >
+    <card [title]="'רשימת חנויות'">
       <mat-list class="branchesCard">
         <mat-list-item *ngFor="let branch of branches; let i = index">
-          <img mat-list-avatar src="{{ branch.shop.pictureName }}" class="avatar" alt="">
+          <img mat-list-avatar src="{{ branch.profile_Branch }}" class="avatar" alt="">
+          <!--img mat-list-avatar src="../../../assets/content/avatar-3.jpg" class="avatar" alt=""-->
           <h2 mat-line class="h2">{{ branch.shop.shopName }}</h2>
           <p mat-line class="details">
-            <span class="span"><strong>שם חנות: </strong>{{ branch.name }}</span>
+            <span class="span"><strong>שם חנות: </strong>{{ branch.branchName }}</span>
             <span class="span"></span>
-            <span class="span"><strong>עיר: </strong>{{branch.city}}</span>
+            <span class="span"><strong>עיר: </strong>{{ branch.address.city }}</span>
             <span class="span"></span>
           </p>
-          <button mat-raised-button color="primary" (click)="OnDetails(branch._id)">פרטים</button>
+          <button mat-raised-button color="primary" (click)="OnDetails(branch.id)">פרטים</button>
           <span class="span"></span>
-          <button mat-raised-button color="accent" (click)="onUpdate(true, branch._id)">עריכה</button>
+          <button mat-raised-button color="accent" (click)="onUpdate(true, branch.id)">עריכה</button>
           <span class="span"></span>
-          <button mat-mini-fab color="warn" (click)="onDelete(true, branch._id)"><mat-icon>delete</mat-icon></button>
+          <button mat-mini-fab color="warn" (click)="onDelete(true, branch.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-list-item>
       </mat-list>
 
@@ -49,19 +52,20 @@
         <div class="col-lg-9" *ngIf="detailPressed">
           <mat-list>
             <mat-list-item>
-              <img mat-line src="{{ branchOnDetails.shop.pictureName }}" class="avatar" alt="">
+              <img mat-line src="{{ branchOnDetails.profile_Branch }}" class="avatar" alt="">
+              <!--img mat-line src="../../../assets/content/avatar-3.jpg" class="avatar" alt=""-->
               <p mat-line><i></i></p>
             </mat-list-item>
             <mat-list-item>
-              <h4 mat-line>{{ branchOnDetails.name }}</h4>
+              <h4 mat-line>{{ branchOnDetails.branchName }}</h4>
               <p mat-line><i></i></p>
             </mat-list-item>
             <mat-list-item>
-              <h4 mat-line>{{ branchOnDetails.city }}</h4>
+              <h4 mat-line>{{ branchOnDetails.address.city }}</h4>
               <p mat-line><i></i></p>
             </mat-list-item>
             <mat-list-item>
-              <h4 mat-line>{{ branchOnDetails.address }}</h4>
+              <h4 mat-line>{{ branchOnDetails.address.street }}</h4>
               <p mat-line><i></i></p>
             </mat-list-item>
             <mat-list-item>
@@ -87,45 +91,61 @@
         <div class="row">
           <div class="col-md-4">
             <mat-form-field>
-              <mat-select placeholder="בחר רשת חנויות" [formControl]="form.controls['shop']">
-                <mat-option *ngFor="let branch of branches; let i = index" [value]="branch.shop">
-                  {{branch.shop.shopName}}
+              <mat-select placeholder="בחר רשת חנויות" formControlName="shop" (selectionChange)="handleSelect($event)">
+                <mat-option *ngFor="let shop of shopClass; let i = index" [value]="shop">
+                  {{ shop.shopName }}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="form.controls['shop'].hasError('required') && form.controls['shop'].touched">
-                הינך נדרש לבחור רשת חנויות.
-              </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="שם הסניף" [formControl]="form.controls['name']" type="text">
-              <mat-error *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched">
+              <input matInput placeholder="שם הסניף" [formControl]="form.controls['branchName']" type="text">
+              <mat-error
+                *ngIf="form.controls['branchName'].hasError('required') && form.controls['branchName'].touched">
                 הינך נדרש לתת שם לסניף.
               </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="עיר" [formControl]="form.controls['city']" type="text">
-              <mat-error *ngIf="form.controls['city'].hasError('required') && form.controls['city'].touched">
-                הינך נדרש לתת שם העיר שבה נמצא הסניף.
+              <input matInput placeholder="תמונת פרופיל הסניף" [formControl]="form.controls['profile_Branch']"
+                type="text">
+              <mat-error
+                *ngIf="form.controls['profile_Branch'].hasError('required') && form.controls['profile_Branch'].touched">
+                הינך נדרש לתת שם לסניף.
               </mat-error>
             </mat-form-field>
           </div>
-
-          <div class="col-md-4">
-            <mat-form-field>
-              <input matInput placeholder="כתובת" [formControl]="form.controls['address']" type="text">
-              <mat-error *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched">
-                הינך נדרש לתת את כתובת הסניף.
-              </mat-error>
-            </mat-form-field>
+          <div class="row mb-lg" formGroupName="address">
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עיר" formControlName="city" type="text">
+                <mat-error
+                  *ngIf="form.controls.address.controls['city'].hasError('required') && form.controls.address.controls['city'].touched">
+                  הינך נדרש לתת שם לעיר.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="מיקום" formControlName="street" type="text">
+                <mat-error
+                  *ngIf="form.controls.address.controls['street'].hasError('required') && form.controls.address.controls['street'].touched">
+                  הינך נדרש לבחור מיקום.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="מדינה" formControlName="country" type="text">
+                <mat-error
+                  *ngIf="form.controls.address.controls['country'].hasError('required') && form.controls.address.controls['country'].touched">
+                  הינך נדרש לתת שם למדינה.
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-
-
           <div class="col-md-4">
             <mat-form-field>
               <input matInput placeholder="טלפון הסניף" [formControl]="form.controls['phoneNumber']" type="text">
@@ -135,7 +155,6 @@
               </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
               <input matInput placeholder="קו רוחב" [formControl]="form.controls['lat']" type="number">
@@ -144,7 +163,6 @@
               </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
               <input matInput placeholder="קו אורך" [formControl]="form.controls['long']" type="number">
@@ -153,14 +171,13 @@
               </mat-error>
             </mat-form-field>
           </div>
-          
         </div>
         <div class="row">
           <button mat-raised-button color="accent" [disabled]="!form.valid">יצירת חנות</button>
           <span class="span"></span>
-        <button mat-mini-fab color="primary" (click)="onAdd(false)">
-          <mat-icon>keyboard_return</mat-icon>
-        </button>
+          <button mat-mini-fab color="primary" (click)="onAdd(false)">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
         </div>
       </form>
     </card>
@@ -174,77 +191,93 @@
         <div class="row">
           <div class="col-md-4">
             <mat-form-field>
-              <mat-select placeholder="בחר רשת חנויות" [formControl]="updateForm.controls['shop']">
-                <mat-option [value]="updateBranch.shop">
-                  {{updateBranch.shop.shopName}}
+              <mat-select placeholder="בחר רשת חנויות" formControlName="shop" (selectionChange)="handleSelect($event)">
+                <mat-option *ngFor="let shop of shopClass; let i = index" [value]="shop">
+                  {{ shop.shopName }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="עדכון שם הסניף" [formControl]="updateForm.controls['name']" type="text">
-              <mat-error *ngIf="updateForm.controls['name'].hasError('required') && updateForm.controls['name'].touched">
+              <input matInput placeholder="שם הסניף" [formControl]="updateForm.controls['branchName']" type="text">
+              <mat-error
+                *ngIf="updateForm.controls['branchName'].hasError('required') && updateForm.controls['branchName'].touched">
                 הינך נדרש לתת שם לסניף.
               </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="עדכון שם העיר" [formControl]="updateForm.controls['city']" type="text">
-              <mat-error *ngIf="updateForm.controls['city'].hasError('required') && updateForm.controls['city'].touched">
-                הינך נדרש לתת שם העיר שבה נמצא הסניף.
+              <input matInput placeholder="תמונת פרופיל הסניף" [formControl]="updateForm.controls['profile_Branch']"
+                type="text">
+              <mat-error
+                *ngIf="updateForm.controls['profile_Branch'].hasError('required') && updateForm.controls['profile_Branch'].touched">
+                הינך נדרש להכניס תמונת פרופיל לסניף.
               </mat-error>
             </mat-form-field>
           </div>
-
-          <div class="col-md-4">
-            <mat-form-field>
-              <input matInput placeholder="עדכון הכתובת" [formControl]="updateForm.controls['address']" type="text">
-              <mat-error *ngIf="updateForm.controls['address'].hasError('required') && updateForm.controls['address'].touched">
-                הינך נדרש לתת את כתובת הסניף.
-              </mat-error>
-            </mat-form-field>
+          <div class="row mb-lg" formGroupName="address">
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עיר" formControlName="city" type="text">
+                <mat-error
+                  *ngIf="updateForm.controls.address.controls['city'].hasError('required') && updateForm.controls.address.controls['city'].touched">
+                  הינך נדרש לתת שם לעיר.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="מיקום" formControlName="street" type="text">
+                <mat-error
+                  *ngIf="updateForm.controls.address.controls['street'].hasError('required') && updateBranch.controls.address.controls['street'].touched">
+                  הינך נדרש לבחור מיקום.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="מדינה" formControlName="country" type="text">
+                <mat-error
+                  *ngIf="updateForm.controls.address.controls['country'].hasError('required') && updateForm.controls.address.controls['country'].touched">
+                  הינך נדרש לתת שם למדינה.
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
-
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="עדכון מספר טלפון הסניף" [formControl]="updateForm.controls['phoneNumber']" type="text">
+              <input matInput placeholder="טלפון הסניף" [formControl]="updateForm.controls['phoneNumber']" type="text">
               <mat-error
                 *ngIf="updateForm.controls['phoneNumber'].hasError('required') && updateForm.controls['phoneNumber'].touched">
                 הינך נדרש להכניס מספר טלפון של הסניף.
               </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="עדכון קו רוחב" [formControl]="updateForm.controls['lat']" type="number">
+              <input matInput placeholder="קו רוחב" [formControl]="updateForm.controls['lat']" type="number">
               <mat-error *ngIf="updateForm.controls['lat'].hasError('required') && updateForm.controls['lat'].touched">
                 הינך נדרש להכניס מיקום לסניף.
               </mat-error>
             </mat-form-field>
           </div>
-
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="עדכון קו אורך" [formControl]="updateForm.controls['long']" type="number">
+              <input matInput placeholder="קו אורך" [formControl]="updateForm.controls['long']" type="number">
               <mat-error *ngIf="updateForm.controls['long'].hasError('required') && updateForm.controls['long'].touched">
                 הינך נדרש להכניס מיקום לסניף.
               </mat-error>
             </mat-form-field>
           </div>
-          
         </div>
         <div class="row">
           <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי חנות</button>
           <span class="span"></span>
-        <button mat-mini-fab color="primary" (click)="onUpdate(false, 'Update stoped')">
-          <mat-icon>keyboard_return</mat-icon>
-        </button>
+          <button mat-mini-fab color="primary" (click)="onUpdate(false, 'Update stoped')">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
         </div>
       </form>
     </card>
