@@ -10,11 +10,13 @@ import { Branches } from '../models/branches';
 })
 export class ManageBranchesService {
   private branchesUrl = environment.branchesUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
   getBranches(): Observable<Branches[]> {
-    return this.http.get<Branches[]>(this.branchesUrl);
+    const url = `${this.serverUrl}/${"Branches"}`;
+    return this.http.get<Branches[]>(this.serverUrl);
   }
 
   createBranch(formBranch): Observable<any> {

@@ -68,14 +68,23 @@ export class PageShopsManageComponent implements OnInit {
     this.showBranches();
 
     this.form = this.fb.group({
-      shop: [null, Validators.compose([Validators.required])],
-      name: [null, Validators.compose([Validators.required])],
-      city: [null, Validators.compose([Validators.required])],
-      address: [null, Validators.compose([Validators.required])],
+      shop: this.fb.group({ // make a nested group
+        id: [null, Validators.compose([Validators.required])],
+        profile_Shop: [null, Validators.compose([Validators.required])],
+        shopName: [null, Validators.compose([Validators.required])]
+      }),
+      branchName: [null, Validators.compose([Validators.required])],
+      profile_Branch: [null, Validators.compose([Validators.required])],
+      address: this.fb.group({ // make a nested group
+        city: [null, Validators.compose([Validators.required])],
+        street: [null, Validators.compose([Validators.required])],
+        country: [null, Validators.compose([Validators.required])]
+      }),
       phoneNumber: [null, Validators.compose([Validators.required])],
       lat: [null, Validators.compose([Validators.required])],
       long: [null, Validators.compose([Validators.required])],
     });
+
   }
 
   showBranches() {
@@ -95,7 +104,7 @@ export class PageShopsManageComponent implements OnInit {
   OnDetails(id: string) {
     console.log(id);
     this.detailPressed = true;
-    this.branchOnDetails = this.branches.find(branch => branch._id === id);
+    this.branchOnDetails = this.branches.find(branch => branch.id === id);
     console.log(this.branchOnDetails);
   }
 
@@ -119,31 +128,31 @@ export class PageShopsManageComponent implements OnInit {
     this.form.reset();
   }
 
-  onUpdate(state: boolean, id: string){
-    if(state){
-      console.log(id);
-      this.updatePressed = true;
-      this.updateBranch = this.branches.find(branch => branch._id === id);
-      this.updateForm = this.fb.group({
-        shop: [this.updateBranch.shop, Validators.compose([Validators.required])],
-        name: [this.updateBranch.name, Validators.compose([Validators.required])],
-        city: [this.updateBranch.city, Validators.compose([Validators.required])],
-        address: [this.updateBranch.address, Validators.compose([Validators.required])],
-        phoneNumber: [this.updateBranch.phoneNumber, Validators.compose([Validators.required])],
-        lat: [this.updateBranch.lat, Validators.compose([Validators.required])],
-        long: [this.updateBranch.long, Validators.compose([Validators.required])],
-      });
-      console.log(this.updateForm.value);
-    }
-    if(!state){
-      this.updatePressed = false;
-      this.updateForm.reset();
-    }
+  // onUpdate(state: boolean, id: string){
+  //   if(state){
+  //     console.log(id);
+  //     this.updatePressed = true;
+  //     this.updateBranch = this.branches.find(branch => branch.id === id);
+  //     // this.updateForm = this.fb.group({
+  //     //   shop: [this.updateBranch.shop, Validators.compose([Validators.required])],
+  //     //   name: [this.updateBranch.name, Validators.compose([Validators.required])],
+  //     //   city: [this.updateBranch.city, Validators.compose([Validators.required])],
+  //     //   address: [this.updateBranch.address, Validators.compose([Validators.required])],
+  //     //   phoneNumber: [this.updateBranch.phoneNumber, Validators.compose([Validators.required])],
+  //     //   lat: [this.updateBranch.lat, Validators.compose([Validators.required])],
+  //     //   long: [this.updateBranch.long, Validators.compose([Validators.required])],
+  //     // });
+  //     console.log(this.updateForm.value);
+  //   }
+  //   if(!state){
+  //     this.updatePressed = false;
+  //     this.updateForm.reset();
+  //   }
     
-  }
+  // }
 
   onUpdateSubmit(){
-    this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch._id).subscribe(
+    this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); }
     );
@@ -153,7 +162,7 @@ export class PageShopsManageComponent implements OnInit {
 
   onDelete(state: boolean, id: string){
     
-    this.deleteBranch = this.branches.find(branch => branch._id === id);
+    this.deleteBranch = this.branches.find(branch => branch.id === id);
     if(state){
       this.deletePressed = true;
     }
@@ -165,7 +174,7 @@ export class PageShopsManageComponent implements OnInit {
   onDeleteSubmit(){
     this.deletePressed = false;
     console.log(this.deleteBranch);
-    this.ShowBranchesService.deleteBranch(this.deleteBranch._id).subscribe(
+    this.ShowBranchesService.deleteBranch(this.deleteBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); }
     );

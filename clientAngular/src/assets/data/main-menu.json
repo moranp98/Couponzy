@@ -44,6 +44,17 @@
     "budgeColor": ""
   },
   {
+    "title": "ניהול קופונים",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/coupons-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "מפת חנויות",
     "icon": "fa fa-map-marker",
     "active": false,

@@ -1,0 +1,216 @@
+<div class="row mb-lg-4">
+    <div class="col-lg-8 ">
+      <card [title]="'רשימת קופונים'" >
+        <mat-list class="couponsCard">
+          <mat-list-item *ngFor="let coupon of coupons; let i = index">
+            <!-- <img mat-list-avatar src="{{ coupon.shop.pictureName }}" class="avatar" alt=""> -->
+            <h2 mat-line class="h2">{{ coupon.shop.shopName }}</h2>
+            <p mat-line class="details">
+              <span class="span"><strong>שם קופון: </strong>{{ coupon.couponName }}</span>
+              <!-- <span class="span"></span> -->
+              <!-- <span class="span"><strong>עיר: </strong>{{branch.city}}</span>
+              <span class="span"></span> -->
+            </p>
+            <button mat-raised-button color="primary" (click)="OnDetails(coupon.id)">פרטים</button>
+            <span class="span"></span>
+            <button mat-raised-button color="accent" (click)="onUpdate(true, coupon.id)">עריכה</button>
+            <span class="span"></span>
+            <button mat-mini-fab color="warn" (click)="onDelete(true, coupon.id)"><mat-icon>delete</mat-icon></button>
+          </mat-list-item>
+        </mat-list>
+  
+        <alert *ngIf="deletePressed" [color]="'danger'" [outline]="true">
+          <mat-icon>error_outline</mat-icon>
+          <strong>האם אתה בטוח שאתה מעוניין למחוק את הקופון?</strong>
+          <span class="span"></span>
+          <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
+          <span class="span"></span>
+          <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
+        </alert>
+        <button mat-fab color="primary" (click)="onAdd(true)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </card>
+    </div>
+    <div class="col-lg-4">
+      <card [title]="'הצג קפון'">
+        <div class="row couponsCard">
+          <div class="col-lg-3">
+            <mat-list>
+              <mat-list-item *ngFor="let detail of details; let i = index">
+                <mat-icon mat-list-avatar>{{detail.icon}}<badge *ngIf="detail.badge" [color]="'danger'"
+                    [position]="'top-right'">{{detail.badge}}</badge>
+                </mat-icon>
+                <h4 mat-line></h4>
+                <p mat-line><i></i></p>
+              </mat-list-item>
+            </mat-list>
+          </div>
+          <div class="col-lg-9" *ngIf="detailPressed">
+            <mat-list>
+              <mat-list-item>
+                <img mat-line src="{{ couponOnDetails.shop.pictureName }}" class="avatar" alt="">
+                <p mat-line><i></i></p>
+              </mat-list-item>
+              <mat-list-item>
+                <h4 mat-line>{{ couponOnDetails.couponName }}</h4>
+                <p mat-line><i></i></p>
+              </mat-list-item>
+              <mat-list-item>
+                <h4 mat-line>{{ couponOnDetails.description }}</h4>
+                <p mat-line><i></i></p>
+              </mat-list-item>
+              <mat-list-item>
+                <h4 mat-line>{{ couponOnDetails.oldPrice }}</h4>
+                <p mat-line><i></i></p>
+              </mat-list-item>
+              <mat-list-item>
+                <h4 mat-line>{{ couponOnDetails.newPrice }}</h4>
+                <p mat-line><i></i></p>
+              </mat-list-item>
+              <mat-list-item>
+                <h4 mat-line>{{ couponOnDetails.expireDate }}</h4>
+                <p mat-line><i></i></p>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </card>
+  
+    </div>
+  </div>
+  
+  <div class="row mb-lg-4" *ngIf="addPressed">
+    <div class="col-lg-12">
+      <card title="יצירת קופון חדש">
+        <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- <div class="col-md-4"> -->
+              <!-- <mat-form-field>
+                <mat-select placeholder="בחר רשת חנויות" [formControl]="form.controls['shop']">
+                  <mat-option *ngFor="let branch of branches; let i = index" [value]="branch.shop">
+                    {{branch.shop.shopName}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['shop'].hasError('required') && form.controls['shop'].touched">
+                  הינך נדרש לבחור רשת חנויות.
+                </mat-error>
+              </mat-form-field>
+            </div> -->
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="שם הקופן" [formControl]="form.controls['couponName']" type="text">
+                <!-- <mat-error *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched">
+                  הינך נדרש לתת שם לקופון.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="פירוט" [formControl]="form.controls['description']" type="text">
+                <!-- <mat-error *ngIf="form.controls['description'].hasError('required') && form.controls['description'].touched">
+                  הינך נדרש להכניס את פירוט הקופון.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="מחיר קודם" [formControl]="form.controls['oldPrice']" type="text">
+                <!-- <mat-error *ngIf="form.controls['oldPrice'].hasError('required') && form.controls['oldPrice'].touched">
+                  הינך נדרש להכניס את המחיר הקודם.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="מחיר חדש" [formControl]="form.controls['newPrice']" type="text">
+                <!-- <mat-error
+                  *ngIf="form.controls['newPrice'].hasError('required') && form.controls['newPrice'].touched">
+                  הינך נדרש להכניס את המחיר החדש.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+            
+          </div>
+          <div class="row">
+            <button mat-raised-button color="accent" >יצירת קופון'</button>
+            <span class="span"></span>
+          <button mat-mini-fab color="primary" (click)="onAdd(false)">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
+          </div>
+        </form>
+      </card>
+    </div>
+  </div>
+  
+  <div class="row mb-lg-4" *ngIf="updatePressed">
+    <div class="col-lg-12">
+      <card title="עריכת נתוני קופון'">
+        <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
+          <div class="row">
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <mat-select placeholder="בחר רשת חנויות" [formControl]="updateForm.controls['shop']">
+                  <mat-option [value]="updateBranch.shop">
+                    {{updateBranch.shop.shopName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון שם הקופון" [formControl]="updateForm.controls['couponName']" type="text">
+                <!-- <mat-error *ngIf="updateForm.controls['couponName'].hasError('required') && updateForm.controls['couponName'].touched">
+                  הינך נדרש לתת שם לקופון.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון פירוט" [formControl]="updateForm.controls['description']" type="text">
+                <!-- <mat-error *ngIf="updateForm.controls['description'].hasError('required') && updateForm.controls['description'].touched">
+                  הינך נדרש להכניס את פירוט הקופון.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון המחיר קודם" [formControl]="updateForm.controls['oldPrice']" type="text">
+                <!-- <mat-error *ngIf="updateForm.controls['oldPrice'].hasError('required') && updateForm.controls['oldPrice'].touched">
+                  הינך נדרש להכניס את המחיר הקודם.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+  
+  
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון המחיר החדש" [formControl]="updateForm.controls['newPrice']" type="text">
+                <!-- <mat-error
+                  *ngIf="updateForm.controls['newPrice'].hasError('required') && updateForm.controls['newPrice'].touched">
+                  הינך נדרש להכניס את המחיר החדש.
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+            
+          </div>
+          <div class="row">
+            <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי הקופון</button>
+            <span class="span"></span>
+          <button mat-mini-fab color="primary" (click)="onUpdate(false, 'Update stoped')">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
+          </div>
+        </form>
+      </card>
+    </div>
+  </div>

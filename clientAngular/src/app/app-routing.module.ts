@@ -10,12 +10,14 @@ import { PageShopsManageComponent }             from './pages/shops-manage/shops
 import { PageShopsMapComponent }                from './pages/shops-map/shops-map.component';
 import { PageSignInSocialComponent }            from './pages/roadstart-pages/sign-in-social/sign-in-social.component';
 import { PageSignUpComponent }                  from './pages/roadstart-pages/sign-up/sign-up.component';
+import { PageCouponsManageComponent}            from './pages/coupons-manage/coupons-manage.component';
 
 const defaultRoutes: Routes = [
   { path: 'dashboard', component: PageDashboardComponent },
   { path: 'users-manage', component: PageUsersManageComponent },
   { path: 'shops-manage', component: PageShopsManageComponent },
   { path: 'shops-map', component: PageShopsMapComponent },
+  { path: 'coupons-manage', component: PageCouponsManageComponent}
 ];
 
 const roadstartRoutes: Routes = [
