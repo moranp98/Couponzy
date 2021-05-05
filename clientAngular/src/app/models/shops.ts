@@ -1,9 +1,9 @@
 export interface Shops {
-    _id: string,
+    id: string,
     shopName: string,
-    pictureName: string,
-    coupons: string,
-    phoneNumber: string,
-    branches: string,
-    users: string  
+    profile_Shop: string,
+    lastUpdated: string,
+    coupons: Array<any>,
+    branches: Array<any>,
+    shopManagers: Array<any>  
 }

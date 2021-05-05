@@ -15,22 +15,23 @@ export class ManageBranchesService {
   constructor(private http: HttpClient) { }
 
   getBranches(): Observable<Branches[]> {
-    const url = `${this.serverUrl}/${"Branches"}`;
-    return this.http.get<Branches[]>(this.serverUrl);
+    const url = `${this.serverUrl}/${'Branches'}`;
+    return this.http.get<Branches[]>(this.branchesUrl);
   }
 
   createBranch(formBranch): Observable<any> {
-    const url = `${this.branchesUrl}/${"create"}`;
+    const url = `${this.serverUrl}/${'Branch'}`;
     return this.http.post<any>(url, formBranch);
   }
-
-  updateBranch(formBranch, ip: string): Observable<Branches[]> {
-    const url = `${this.branchesUrl}/${ip}`;
-    return this.http.post<Branches[]>(url, formBranch);
+  
+  updateBranch(formBranch, id: string): Observable<Branches[]> {
+    console.log(id);
+    const url = `${this.serverUrl}/${'Branch'}/${id}`;
+    return this.http.put<Branches[]>(url, formBranch);
   }
 
-  deleteBranch(ip: string): Observable<Branches> {
-    const url = `${this.branchesUrl}/${ip}`;
+  deleteBranch(id: string): Observable<Branches> {
+    const url = `${this.serverUrl}/${'Branch'}/${id}`;
     return this.http.delete<Branches>(url);
   }
 

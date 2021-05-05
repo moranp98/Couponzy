@@ -15,8 +15,8 @@ export interface Branches {
     lastUpdated: Date, 
     shop:{
         id: string,
-        profile_Shop: string,
-        shopName: string
+        shopName: string,
+        profile_Shop: string
     },
     sellers: Array<any>
 }
