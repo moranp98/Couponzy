@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
 
       console.log(count);
 
-    });
+    }); 
   }
   console.log('Client connected');
 });
