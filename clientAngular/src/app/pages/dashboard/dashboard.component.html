@@ -49,16 +49,16 @@
 </div>
 
 <!-- Row 3 --- Line Chart -->
-<div class="row mb-lg-4">
+<!--div class="row mb-lg-4"-->
   <!-- Bar Chart -->
-  <div class="col-md">
+  <!--div class="col-md">
     <card  class="mb-lg">
         <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels"
             [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
         </canvas>
     </card>
   </div>
-</div>
+</div-->
   
 <!-- Row 4 --- 2 Table -->
 <div class="row">
@@ -77,14 +77,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let coupon of Lastcoupons; let i = index;">
+            <!--tr *ngFor="let coupon of Lastcoupons; let i = index;">
               <th scope="row">{{i+1}}</th>
               <td><img mat-list-avatar src="{{ coupon.pictureName }}" class="avatar" alt="" style="width: 54px;height: 54px;"></td>
               <td>{{coupon.shop.shopName}}</td>
               <td>{{coupon.name}}</td>
               <td>{{coupon.couponCode}}</td>
               <td>{{LastDateCoupons[i] | date}}</td>
-            </tr>
+            </tr-->
           </tbody>
         </table>
       </div>
@@ -121,4 +121,4 @@
 
 </div>
 <!-- Row 5 --- Scraping -->
-<app-list #list></app-list>
+<!--app-list #list></app-list-->

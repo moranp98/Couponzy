@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Operator } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -16,7 +16,7 @@ export class ManageBranchesService {
 
   getBranches(): Observable<Branches[]> {
     const url = `${this.serverUrl}/${'Branches'}`;
-    return this.http.get<Branches[]>(this.branchesUrl);
+    return this.http.get<Branches[]>(url);
   }
 
   createBranch(formBranch): Observable<any> {

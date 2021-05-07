@@ -51,21 +51,21 @@ export class PageDashboardComponent implements OnInit {
     this._realtime.listen('count').subscribe((res: any) => {
       this.counter = res
     });
-    this._manageusers.getCountUsers().subscribe(countOfUsers => this.countOfUsers = countOfUsers);
+    /*this._manageusers.getCountUsers().subscribe(countOfUsers => this.countOfUsers = countOfUsers);
     this._managebranches.getCountBranches().subscribe(countOfBranches => this.countOfBranches = countOfBranches);
     this._managebranches.getCountIsOpenBranches().subscribe(countIsOpenBranches => this.countIsOpenBranches = countIsOpenBranches);
     this._managebranches.getCountCoupons().subscribe(countCoupons => this.countCoupons = countCoupons);
-    this._managebranches.getCountValidCoupons().subscribe(countValidCoupons => this.countValidCoupons = countValidCoupons);
+    this._managebranches.getCountValidCoupons().subscribe(countValidCoupons => this.countValidCoupons = countValidCoupons);*/
 
   }
 
   ngOnInit() {
-    this.showUsers();
+    /*this.showUsers();
     this.showOrders();
-    this.showShops();
+    this.showShops();*/
   }
 
-  showUsers() {
+  /*showUsers() {
     this._manageusers.getLastUsers().subscribe((users) => {
       this.users = users;
     })
@@ -130,6 +130,6 @@ export class PageDashboardComponent implements OnInit {
       borderWidth: this.borderW,
       pointRadius: 1
     }
-  ];
+  ];*/
 
 }

@@ -33,12 +33,34 @@
     "budgeColor": ""
   },
   {
+    "title": "ניהול רשתות חנויות",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-chain-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול חנויות",
     "icon": "fa fa-shopping-basket",
     "active": false,
     "groupTitle" : false,
     "sub": "",
     "routing": "/default-layout/shops-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "ניהול קטיגוריות קופונים",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/coupon-type-manage",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""
