@@ -215,10 +215,61 @@ const deleteUser = async (req, res, next) => {
     }
 }
 
+// <--   Another functions    -->
+
+const getCountUsers = async (req, res, next) => {
+    try {
+        var size = 0
+        const countOfUsers = await firebase
+        .collection('Users')
+        .get()
+        .then(function(querySnapshot) {      
+            size = querySnapshot.size;
+        });
+        
+        res.status(200).send(size.toString());
+        
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const getLastUsers = async (req, res, next) => {
+    try {
+        const users = await firebase
+        .collection('Users')
+        .orderBy("created_at", "desc")
+        .limit(10)
+        const data = await users.get();
+        const usersArray = [];
+        if (data.empty) {
+            res.status(404).send('No user record found');
+        } else {
+            data.forEach(doc => {
+                const user = new User(
+                    doc.id,
+                    doc.data().userName,
+                    doc.data().email,
+                    doc.data().phoneNumber,
+                    doc.data().profile_User,
+                    doc.data().address,
+                    doc.data().role,
+                );
+                usersArray.push(user);
+            });
+            res.send(usersArray);
+        }
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 module.exports = {
     addUser,
     getAllUsers,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getCountUsers,
+    getLastUsers
 }

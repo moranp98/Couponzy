@@ -7,13 +7,17 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ManageCouponsService {
-
-  private couponsUrl = environment.couponsUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
   getCountCoupons(): Observable<number> {
-    const url = `${this.couponsUrl}/${"getCountCoupons"}`;
+    const url = `${this.serverUrl}/${"getCountCoupons"}`;
+    return this.http.get<number>(url);
+  }
+
+  getCountValidCoupons(): Observable<number> {
+    const url = `${this.serverUrl}/${"getCountValidCoupons"}`;
     return this.http.get<number>(url);
   }
 }

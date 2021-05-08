@@ -25,5 +25,20 @@ class User {
         this.lastUpdated = lastUpdated;
       }
   }
+
+  class lastUser {
+    
+    constructor(id, userName, email, phoneNumber, profile_User, address, role){
+
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.profile_User = profile_User;
+        this.address = address;
+        this.role = role;
+      }
+  }
   
   module.exports = User;
+  module.exports = lastUser;

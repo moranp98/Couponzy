@@ -49,16 +49,16 @@
 </div>
 
 <!-- Row 3 --- Line Chart -->
-<!--div class="row mb-lg-4"-->
+<div class="row mb-lg-4">
   <!-- Bar Chart -->
-  <!--div class="col-md">
+  <div class="col-md">
     <card  class="mb-lg">
         <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels"
             [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
         </canvas>
     </card>
   </div>
-</div-->
+</div>
   
 <!-- Row 4 --- 2 Table -->
 <div class="row">
@@ -98,18 +98,24 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>שם פרטי</th>
-              <th>שם משפחה</th>
-              <th>מייל</th>
+              <th>פרופיל משתמש</th>
+              <!--th>שם פרטי</th>
+              <th>שם משפחה</th-->
+              <th>שם משתמש</th>
+              <!--th>עיר</th-->
+              <th>תפקיד</th>
               <th>טלפון</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of users; let i = index">
+            <tr *ngFor="let user of showLastUsers; let i = index">
               <th scope="row">{{i+1}}</th>
-              <td>{{user.firstName}}</td>
-              <td>{{user.lastName}}</td>
+              <td>{{user.profile_User}}</td>
+              <!--td>{{user.userName.firstName}}</td>
+              <td>{{user.userName.lastName}}</td-->
               <td>{{user.email}}</td>
+              <!--td>{{user.address.city}}</td-->
+              <td>{{user.role}}</td>
               <td>{{user.phoneNumber}}</td>
             </tr>
           </tbody>
@@ -120,5 +126,3 @@
 
 
 </div>
-<!-- Row 5 --- Scraping -->
-<!--app-list #list></app-list-->
