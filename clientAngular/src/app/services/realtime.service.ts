@@ -13,8 +13,7 @@ export class RealtimeService {
   listen(EventName: string){
     return new Observable((Subscriber) => {
       this.socket.on(EventName, (data) => {
-        Subscriber.next(data);
-        
+        Subscriber.next(data);  
       })
     })
   }

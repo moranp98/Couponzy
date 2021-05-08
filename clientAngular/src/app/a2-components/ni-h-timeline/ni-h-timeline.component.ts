@@ -24,6 +24,8 @@ export class NiHTimelineComponent implements OnInit {
   @HostBinding('class.align-right') alignRight: boolean = false;
   @HostBinding('class.align-between') alignBetween: boolean = false;
 
+  coupons_mat_icon = { icon: 'attach_money' };
+  
   constructor() { }
 
   ngOnInit() {

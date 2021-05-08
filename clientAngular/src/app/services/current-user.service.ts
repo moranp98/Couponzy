@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User } from '../models/users';
+import { Users } from '../models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class CurrentUserService {
 
   constructor() { }
 
-  changeCurrentBrand(user: User) {
+  changeCurrentBrand(user: Users) {
     this.source.next(user);
   }
 }

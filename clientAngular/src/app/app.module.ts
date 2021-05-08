@@ -43,6 +43,9 @@ import { ManageBranchesService } from './services/manage-branches.service';
 import { AlertComponent } from './a2-components/alert/alert.component';
 import { ListComponent } from './a2-components/list/list.component';
 import { DesignchartDirective } from './directives/designchart.directive';
+import { PageShopsChainManageComponent } from './pages/shops-chain-manage/shops-chain-manage.component';
+import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon-type-manage.component';
+import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timeline-couponzy.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +69,9 @@ import { DesignchartDirective } from './directives/designchart.directive';
     AlertComponent,
     ListComponent,
     DesignchartDirective,
+    PageShopsChainManageComponent,
+    PageCouponTypeManageComponent,
+    PageTimelineCouponzyComponent,
     ],
   imports: [
     BrowserModule,
@@ -81,7 +87,6 @@ import { DesignchartDirective } from './directives/designchart.directive';
     }),
     LeafletModule,
     SocketIoModule.forRoot(config),
-    
   ],
   providers: [ManageBranchesService],
   bootstrap: [AppComponent]

@@ -20,9 +20,9 @@ export class ListComponent {
   }
 
   load(){
-    this.brandsService.getBrands().subscribe(data => {
+    /**this.brandsService.getBrands().subscribe(data => {
       this.brands = data;
-    });
+    });*/
   }
   
 }

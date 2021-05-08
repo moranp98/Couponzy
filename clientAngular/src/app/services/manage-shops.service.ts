@@ -11,10 +11,28 @@ import { Shops } from '../models/shops';
 export class ManageShopsService {
 
   private shopsUrl = environment.shopsUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
   getAllShops(): Observable<Shops[]> {
+    const url = `${this.serverUrl}/${'Shops'}`;
     return this.http.get<Shops[]>(this.shopsUrl);
+  }
+
+  createShop(formBranch): Observable<any> {
+    const url = `${this.serverUrl}/${'Shop'}`;
+    return this.http.post<any>(url, formBranch);
+  }
+
+  updateShop(formBranch, id: string): Observable<Shops> {
+    console.log(id);
+    const url = `${this.serverUrl}/${'Shop'}/${id}`;
+    return this.http.put<Shops>(url, formBranch);
+  }
+
+  deleteShop(id: string): Observable<Shops> {
+    const url = `${this.serverUrl}/${'Shop'}/${id}`;
+    return this.http.delete<Shops>(url);
   }
 }

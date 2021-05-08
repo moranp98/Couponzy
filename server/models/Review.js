@@ -1,8 +1,8 @@
 class Review {
-    constructor(id, couponId, userId, review_text, published_date){
+    constructor(id, coupon, user, review_text, published_date){
         this.id = id;
-        this.couponId = couponId;
-        this.userId = userId;
+        this.coupon = coupon;
+        this.user = user;
         this.review_text = review_text;
         this.published_date = published_date;
       }

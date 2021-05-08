@@ -1,9 +1,12 @@
 const firebase = require('../config/db_adminSdk');
+const admin = require("firebase-admin");
 const CouponType = require('../models/CouponType');
 
 const addCouponType = async (req, res, next) => {
     try {
         const data = req.body;
+        data.countOf_Coupons = 0;
+        data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('CouponTypes').doc().set(data);
         res.send('CouponType record saved successfuly');
     } catch (error) {
@@ -22,7 +25,8 @@ const getAllCouponTypes = async (req, res, next) => {
             data.forEach(doc => {
                 const couponType = new CouponType(
                     doc.id,
-                    doc.data().name,
+                    doc.data().couponTypeName,
+                    doc.data().countOf_Coupons,
                     doc.data().lastUpdated
                 );
                 couponTypesArray.push(couponType);
@@ -53,16 +57,16 @@ const updateCouponType = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        data.lastUpdated = admin.firestore.Timestamp.now();
         const couponType = await firebase.collection('CouponTypes').doc(id);
         await couponType.update(data);
 
-        const couponRef = await firebase.collection('Coupons').where('couponType.id', '==', id);
-
-        couponRef.get().then((query) => {
+        const couponsRef = await firebase.collection('Coupons').where('couponType.id', '==', id);
+        couponsRef.get().then((query) => {
             query.docChanges().forEach(change => {
                 const coupon = change.doc;
-                const newNameVal = data.name;
-                coupon.ref.update({'couponType.name': newNameVal});
+                const newCouponTypeInsidCoupon = data.couponTypeName;
+                coupon.ref.update({'couponType.couponName': newCouponTypeInsidCoupon});
             });
         });
 
