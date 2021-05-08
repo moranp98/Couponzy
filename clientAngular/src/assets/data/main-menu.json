@@ -22,6 +22,17 @@
     "budgeColor": ""
   },
   {
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-tachometer",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול משתמשים",
     "icon": "fa fa-users",
     "active": false,

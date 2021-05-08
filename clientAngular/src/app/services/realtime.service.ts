@@ -14,8 +14,7 @@ export class RealtimeService {
     return new Observable((Subscriber) => {
       this.socket.on(EventName, (data) => {
         console.log('data =>' + data)
-        Subscriber.next(data);
-        
+        Subscriber.next(data);  
       })
     })
   }

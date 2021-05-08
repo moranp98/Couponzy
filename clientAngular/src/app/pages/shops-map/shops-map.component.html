@@ -7,9 +7,9 @@
                     [longitude]="branch.long" (dragEnd)="markerDragEnd(m, $event)">
                     <agm-info-window>
                         חנות: {{branch.shop.shopName}}<br />
-                        שם: {{branch.name}}<br />
-                        עיר: {{branch.city}}<br />
-                        כתובת: {{branch.address}}<br />
+                        שם: {{branch.branchName}}<br />
+                        עיר: {{branch.address.city}}<br />
+                        כתובת: {{branch.address.street}}<br />
                         טלפון: {{branch.phoneNumber}}<br />
                         סטאטוס: {{branch.stateOpen}}
                     </agm-info-window>
@@ -22,8 +22,8 @@
             <mat-form-field>
                 <mat-select placeholder="בחר רשת חנויות" [(ngModel)]="selectedShop">
                     <mat-option [value]="0">None</mat-option>
-                    <mat-option *ngFor="let branch of branches; let i = index" [value]="branch.shop.shopName">
-                        {{branch.shop.shopName}}
+                    <mat-option *ngFor="let shop of shops; let i = index" [value]="shop.shopName">
+                        {{ shop.shopName }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -31,8 +31,8 @@
             <mat-form-field>
                 <mat-select placeholder="בחר עיר" [(ngModel)]="selectedCity">
                     <mat-option [value]="0">None</mat-option>
-                    <mat-option *ngFor="let branch of branches; let i = index" [value]="branch.city">
-                        {{branch.city}}
+                    <mat-option *ngFor="let branch of branches; let i = index" [value]="branch.address.city">
+                        {{branch.address.city}}
                     </mat-option>
                 </mat-select>
                
@@ -54,7 +54,7 @@
                         <tr class="table-warning">
                             <th>#</th>
                             <th>שם החנות</th>
-                            <th>שם הסניף</th>
+                            <th>פרופיל הסניף</th>
                             <th>שם הסניף</th>
                             <th>עיר</th>
                             <th>כתובת</th>
@@ -66,10 +66,10 @@
                         <tr *ngFor="let currentBranch of currentSearchBranches; let i = index;">
                             <th scope="row">{{i+1}}</th>
                             <td>{{currentBranch.shop.shopName}}</td>
-                            <td><img [src]="currentBranch.shop.pictureName" class="dimensionSrc"/></td>
-                            <td>{{currentBranch.name}}</td>
-                            <td>{{currentBranch.city}}</td>
-                            <td>{{currentBranch.address}}</td>
+                            <td><img [src]="currentBranch.profile_Branch" class="dimensionSrc"/></td>
+                            <td>{{currentBranch.branchName}}</td>
+                            <td>{{currentBranch.address.city}}</td>
+                            <td>{{currentBranch.address.street}}</td>
                             <td>{{currentBranch.phoneNumber}}</td>
                             <td>{{currentBranch.stateOpen}}</td>
                         </tr>
@@ -90,7 +90,7 @@
                         <tr class="table-warning">
                             <th>#</th>
                             <th>שם החנות</th>
-                            <th>סמל החנות</th>
+                            <th>פרופיל הסניף</th>
                             <th>שם הסניף</th>
                             <th>עיר</th>
                             <th>כתובת</th>
@@ -102,10 +102,10 @@
                         <tr *ngFor="let branch of branches; let i = index;">
                             <th scope="row">{{i+1}}</th>
                             <td>{{branch.shop.shopName}}</td>
-                            <td><img [src]="branch.shop.pictureName" class="dimensionSrc"/></td>
-                            <td>{{branch.name}}</td>
-                            <td>{{branch.city}}</td>
-                            <td>{{branch.address}}</td>
+                            <td><img [src]="branch.profile_Branch" class="dimensionSrc"/></td>
+                            <td>{{branch.branchName}}</td>
+                            <td>{{branch.address.city}}</td>
+                            <td>{{branch.address.street}}</td>
                             <td>{{branch.phoneNumber}}</td>
                             <td>{{branch.stateOpen}}</td>
                         </tr>
