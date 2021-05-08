@@ -9,9 +9,20 @@
     <div class="item" *ngFor="let item of box.timeline">
       <div class="item-point" [ngStyle]="{ 'border-color': item.pointColor }"></div>
       <div class="item-date" *ngIf="showDate && item.date"><span>{{ item.date }}</span></div>
+      <span class="span"></span>
       <div class="item-content">
-        <h2 class="h6 item-title" *ngIf="item.title">{{ item.title }}</h2>
-        <div class="item-desc">{{ item.content }}</div>
+        <mat-card class="example-card">
+          <mat-card-header>
+            <div mat-card-avatar><img src="assets/content/avatar-1.jpg" width="40" height="40"></div>
+            <mat-card-title><strong>{{ item.userName }}</strong></mat-card-title>
+            <mat-card-subtitle>
+              {{ item.couponName }}@ "{{ item.couponId }}"
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="item-desc">{{ item.content }}</div>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
   </div>

@@ -49,6 +49,7 @@ export class PageDashboardComponent implements OnInit {
     this.countOfBranches = 0;
     this._sharedService.emitChange(this.pageTitle);
     this._realtime.listen('count').subscribe((res: any) => {
+      console.log(res)
       this.counter = res
     });
     /*this._manageusers.getCountUsers().subscribe(countOfUsers => this.countOfUsers = countOfUsers);

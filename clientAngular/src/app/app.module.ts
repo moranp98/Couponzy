@@ -45,6 +45,7 @@ import { ListComponent } from './a2-components/list/list.component';
 import { DesignchartDirective } from './directives/designchart.directive';
 import { PageShopsChainManageComponent } from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon-type-manage.component';
+import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timeline-couponzy.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon
     DesignchartDirective,
     PageShopsChainManageComponent,
     PageCouponTypeManageComponent,
+    PageTimelineCouponzyComponent,
     ],
   imports: [
     BrowserModule,
