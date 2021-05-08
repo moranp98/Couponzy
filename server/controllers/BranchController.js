@@ -120,10 +120,52 @@ const deleteBranch = async (req, res, next) => {
     }
 }
 
+// <--   Another functions    -->
+
+const getCountBranches = async (req, res, next) => {
+    try {
+        var size = 0
+        const countOfBranches = await firebase
+        .collection('Branches')
+        .get()
+        .then(function(querySnapshot) {      
+            size = querySnapshot.size;
+        });
+        
+        res.status(200).send(size.toString());
+        
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const getCountIsOpenBranches = async (req, res, next) => {
+    try {
+        var size = 0
+        const countOfIsOpenBranches = await firebase
+        .collection('Branches')
+        .get()
+        .then(function(querySnapshot) { 
+            querySnapshot.docChanges().forEach(query => {
+                const branch = query.doc;
+                if (branch.data().isOpen){
+                    size ++;
+                }
+            })     
+        });
+        res.status(200).send(size.toString());
+        
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 module.exports = {
     addBranch,
     getAllBranches,
     getBranch,
     updateBranch,
-    deleteBranch
+    deleteBranch,
+    getCountBranches,
+    getCountIsOpenBranches
 }

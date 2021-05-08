@@ -4,25 +4,25 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 import { Users } from '../models/users';
+import { lastUsers } from '../models/lastUsers';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ManageUsersService {
-
-  private usersUrl = environment.usersUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
   
   getCountUsers(): Observable<number> {
-    const url = `${this.usersUrl}/${"getCountUsers"}`;
+    const url = `${this.serverUrl}/${"getCountUsers"}`;
     return this.http.get<number>(url);
   }
 
-  getLastUsers(): Observable<Users[]> {
-    const url = `${this.usersUrl}/${"getLastUsers"}`;
-    return this.http.get<Users[]>(url);
+  getLastUsers(): Observable<lastUsers[]> {
+    const url = `${this.serverUrl}/${"getLastUsers"}`;
+    return this.http.get<lastUsers[]>(url);
   }
 
   /*getCountLasvtUsers(): Observable<number> {
