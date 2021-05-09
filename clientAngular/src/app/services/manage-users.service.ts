@@ -24,9 +24,4 @@ export class ManageUsersService {
     const url = `${this.serverUrl}/${"getLastUsers"}`;
     return this.http.get<lastUsers[]>(url);
   }
-
-  /*getCountLasvtUsers(): Observable<number> {
-    const url = `${this.usersUrl}/${"getCountLasvtUsers"}`;
-    return this.http.get<number>(url);
-  }*/
 }

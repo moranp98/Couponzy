@@ -5,6 +5,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule }	from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common'
 
 import { ChartsModule }	from 'ng2-charts';
 import { AgmCoreModule }	from '@agm/core';
@@ -82,6 +83,7 @@ import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timelin
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    CommonModule,
     AppRoutingModule,
     ChartsModule,
     MaterialModule,

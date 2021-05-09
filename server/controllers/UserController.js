@@ -16,9 +16,9 @@ const addUser = async (req, res, next) => {
         data.long = 0.0; 
         console.log("Acceced in ADDUSER")
         await firebase.collection('Users').doc(data.email).set(data);
-        res.send('User record saved successfuly');
+        res.json('User record saved successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -28,7 +28,7 @@ const getAllUsers = async (req, res, next) => {
         const data = await users.get();
         const usersArray = [];
         if (data.empty) {
-            res.status(404).send('No user record found');
+            res.status(404).json('No user record found');
         } else {
             data.forEach(doc => {
                 const user = new User(
@@ -54,10 +54,10 @@ const getAllUsers = async (req, res, next) => {
                 );
                 usersArray.push(user);
             });
-            res.send(usersArray);
+            res.json(usersArray);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -67,12 +67,12 @@ const getUser = async (req, res, next) => {
         const user = await firebase.collection('Users').doc(id);
         const data = await user.get();
         if (!data.exists) {
-            res.status(404).send('User with the given ID not found');
+            res.status(404).json('User with the given ID not found');
         } else {
-            res.send(data.data());
+            res.json(data.data());
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -110,13 +110,13 @@ const updateUser = async (req, res, next) => {
                                     data.lastUpdated = admin.firestore.Timestamp.now();
                                     user.update(data);
                                 } else {
-                                    res.status(404).send('No branch record found');
+                                    res.status(404).json('No branch record found');
                                 }
                             }).catch((error) => {
                                 console.log("Error getting document:", error);
                             });
                         } else {
-                            res.send('The user is already associated with a particular branch');
+                            res.json('The user is already associated with a particular branch');
                         }
                         break;
                     
@@ -142,13 +142,13 @@ const updateUser = async (req, res, next) => {
                                     data.lastUpdated = admin.firestore.Timestamp.now();
                                     user.update(data);
                                 } else {
-                                    res.status(404).send('No branch record found');
+                                    res.status(404).json('No branch record found');
                                 }
                             }).catch((error) => {
                                 console.log("Error getting document:", error);
                             });
                         } else {
-                            res.send('The user is already associated with a particular branch');
+                            res.json('The user is already associated with a particular branch');
                         }
                         break;
                     default:
@@ -202,9 +202,9 @@ const updateUser = async (req, res, next) => {
             });
         });
 
-        res.send('User record updated successfuly');
+        res.json('User record updated successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -212,9 +212,9 @@ const deleteUser = async (req, res, next) => {
     try {
         const id = req.params.id;
         await firebase.collection('Users').doc(id).delete();
-        res.send('User record deleted successfuly');
+        res.json('User record deleted successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -230,10 +230,10 @@ const getCountUsers = async (req, res, next) => {
             size = querySnapshot.size;
         });
         
-        res.status(200).send(size.toString());
+        res.status(200).json(size.toString());
         
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -246,7 +246,7 @@ const getLastUsers = async (req, res, next) => {
         const data = await users.get();
         const usersArray = [];
         if (data.empty) {
-            res.status(404).send('No user record found');
+            res.status(404).json('No user record found');
         } else {
             data.forEach(doc => {
                 const user = new User(
@@ -260,10 +260,10 @@ const getLastUsers = async (req, res, next) => {
                 );
                 usersArray.push(user);
             });
-            res.send(usersArray);
+            res.json(usersArray);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 

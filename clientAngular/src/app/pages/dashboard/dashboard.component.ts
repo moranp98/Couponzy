@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { RealtimeService } from '../../services/realtime.service';
 import { FirebaseService } from '../../services/firebase.service';
-import { BrandsService } from 'src/app/services/brands.service';
-import { CurrentBrandService } from 'src/app/services/current-brand.service';
 
 import { ManageUsersService } from '../../services/manage-users.service';
 import { ManageCouponsService } from 'src/app/services/manage-coupons.service';
@@ -24,7 +22,8 @@ import { Router } from '@angular/router';
 export class PageDashboardComponent implements OnInit {
   pageTitle: string = 'עמוד ראשי';
 
-  @Input() borderW: number = 1;  
+  @Input() borderW: number = 1;
+  
   // Amount of users connected
   counter: Number;
   countOfUsers: Number;

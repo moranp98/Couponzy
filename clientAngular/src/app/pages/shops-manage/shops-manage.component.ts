@@ -156,7 +156,8 @@ export class PageShopsManageComponent implements OnInit {
     console.log(this.form.value);
     this.ShowBranchesService.createBranch(this.form.value).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showBranches() }
     );
     this.addPressed = false; // To hide the Add branch Card
     this.form.reset();
@@ -198,7 +199,8 @@ export class PageShopsManageComponent implements OnInit {
   onUpdateSubmit() {
     this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showBranches() }
     );
     this.updatePressed = false;
     this.updateForm.reset();
@@ -220,7 +222,8 @@ export class PageShopsManageComponent implements OnInit {
     console.log(this.deleteBranch);
     this.ShowBranchesService.deleteBranch(this.deleteBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showBranches() }
     );
   }
 }

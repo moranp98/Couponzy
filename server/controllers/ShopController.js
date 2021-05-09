@@ -7,9 +7,9 @@ const addShop = async (req, res, next) => {
     const data = req.body;
     data.lastUpdated = admin.firestore.Timestamp.now();
     await firebase.collection('Shops').doc().set(data);
-    res.send('Shop record saved successfuly');
+    res.json('Shop record saved successfuly');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -19,7 +19,7 @@ const getAllShops = async (req, res, next) => {
     const data = await shops.get();
     const shopsArray = [];
     if (data.empty) {
-      res.status(404).send('No shop record found');
+      res.status(404).json('No shop record found');
     } else {
       data.forEach((doc) => {
         const shop = new Shop(
@@ -33,10 +33,10 @@ const getAllShops = async (req, res, next) => {
         );
         shopsArray.push(shop);
       });
-      res.send(shopsArray);
+      res.json(shopsArray);
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -46,12 +46,12 @@ const getShop = async (req, res, next) => {
     const shop = await firebase.collection('Shops').doc(id);
     const data = await shop.get();
     if (!data.exists) {
-      res.status(404).send('Shop with the given ID not found');
+      res.status(404).json('Shop with the given ID not found');
     } else {
-      res.send(data.data());
+      res.json(data.data());
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -94,9 +94,9 @@ const updateShop = async (req, res, next) => {
       });
     });
 
-    res.send('Shop record updated successfuly');
+    res.json('Shop record updated successfuly');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -104,9 +104,9 @@ const deleteShop = async (req, res, next) => {
   try {
     const id = req.params.id;
     await firebase.collection('Shops').doc(id).delete();
-    res.send('Shop record deleted successfuly');
+    res.json('Shop record deleted successfuly');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 

@@ -9,15 +9,13 @@ import { Shops } from '../models/shops';
   providedIn: 'root'
 })
 export class ManageShopsService {
-
-  private shopsUrl = environment.shopsUrl;
   private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
   getAllShops(): Observable<Shops[]> {
     const url = `${this.serverUrl}/${'Shops'}`;
-    return this.http.get<Shops[]>(this.shopsUrl);
+    return this.http.get<Shops[]>(url);
   }
 
   createShop(formBranch): Observable<any> {

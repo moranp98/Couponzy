@@ -9,13 +9,9 @@ export const environment = {
 
   serverUrl : `http://localhost:${PORT}/api`,
   
-  branchesUrl : `http://localhost:${PORT}/api/branches`,
-  shopsUrl : `http://localhost:${PORT}/api/shops`,
   brandsUrl : `http://localhost:${PORT}/brands`,
   usersUrl : `http://localhost:${PORT}/api/user`,
-  couponsUrl : `http://localhost:${PORT}/api/coupons`,
   ordersUrl : `http://localhost:${PORT}/api/orders`,
-  adminsUrl : `http://localhost:${PORT}/admins`,
   shopssUrl : `http://localhost:${PORT}/shops`,
 };
 
