@@ -43,9 +43,12 @@ import { ManageBranchesService } from './services/manage-branches.service';
 import { AlertComponent } from './a2-components/alert/alert.component';
 import { ListComponent } from './a2-components/list/list.component';
 import { DesignchartDirective } from './directives/designchart.directive';
+import {AngularFireModule} from '@angular/fire'
+import { FirebaseService } from './services/firebase.service';
 import { PageShopsChainManageComponent } from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon-type-manage.component';
 import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timeline-couponzy.component';
+
 
 @NgModule({
   declarations: [
@@ -87,8 +90,18 @@ import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timelin
     }),
     LeafletModule,
     SocketIoModule.forRoot(config),
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyDRbkyIQMpVvVGRqbei5nSimRi-03x84_I",
+      authDomain: "couponzysystem.firebaseapp.com",
+      projectId: "couponzysystem",
+      storageBucket: "couponzysystem.appspot.com",
+      messagingSenderId: "704246937854",
+      appId: "1:704246937854:web:5dd6ffad1b013c2456cdaf",
+      measurementId: "G-78BG04KRCB"
+    })
+    
   ],
-  providers: [ManageBranchesService],
+  providers: [ManageBranchesService,FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

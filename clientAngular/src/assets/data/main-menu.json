@@ -86,27 +86,5 @@
     "externalLink": "",
     "budge": "",
     "budgeColor": ""
-  },
-  {
-    "title": "כניסה",
-    "icon": "fa fa-sign-in",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/roadstart-layout/sign-in-social",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
-    "title": "רישום",
-    "icon": "fa fa-registered",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/roadstart-layout/sign-up",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
   }
 ]

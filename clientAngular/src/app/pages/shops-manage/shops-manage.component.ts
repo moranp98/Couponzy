@@ -7,6 +7,7 @@ import { Shops } from '../../models/shops';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { Router } from '@angular/router';
 
 const details: any[] = [
   {
@@ -78,12 +79,15 @@ export class PageShopsManageComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
     private _manageshops: ManageShopsService,
-    private ShowBranchesService: ManageBranchesService) {
+    private ShowBranchesService: ManageBranchesService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
-
+    if(localStorage.getItem('user')== null){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+      }
     this.showShops();
     this.showBranches();
 

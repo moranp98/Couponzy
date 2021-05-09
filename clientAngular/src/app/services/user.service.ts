@@ -9,13 +9,21 @@ import { environment } from '../../environments/environment';
 
 
 export class UserService {
-  private UsersUrl = environment.adminsUrl;
-  
+  private UsersUrl = environment.usersUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
-  getUser(email:string,password:string): Observable<Users> {
-    const url=`${this.UsersUrl}/${email}&${password}`
+  addUser(formUser):Observable<any> {
+    const url = `${this.serverUrl}/${'User'}`;
+    console.log(url + " this is for user")
+    console.log(formUser.email + " this is for user")
+    return this.http.post<any>(url, formUser);
+  }
+
+  getUser(email:string): Observable<Users> {
+    const url=`${this.UsersUrl}/${email}`
+    console.log("link of get User " + url);
     return this.http.get<Users>(url);
   }
 

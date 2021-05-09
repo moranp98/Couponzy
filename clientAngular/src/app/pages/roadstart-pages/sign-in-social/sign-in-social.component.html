@@ -1,16 +1,15 @@
-<card [title]="'היכנס עם חשבונך'" [align]="'center'">
-    <form (ngSubmit)="onSubmit(username.value, pass.value)">
+<card [title]="'היכנס עם חשבונך'" [align]="'center'" *ngIf="!isSignedIn" >
+    <form (ngSubmit)="onSignin(email.value,pass.value)">
       <mat-form-field>
-        <input matInput #username placeholder="Username" value="" name="username">
+        <input matInput #email placeholder="Email" value="" name="email">
       </mat-form-field>
   
       <mat-form-field>
         <input matInput #pass placeholder="Password" value="" id="pass" type="password">
       </mat-form-field>
   
-  
       <button mat-raised-button color="primary" type="submit" class="submit">כניסה</button>
-  
+      <a href="#/roadstart-layout/sign-up"><i class="fa fa-bookmark-o"></i> הרשמה</a>
       <!--<div class="social-divider">כניסה באמצעות</div>
   
       <div class="social-login">
@@ -20,4 +19,12 @@
   
     </form>
   </card>
-  
+  <!-- <div class = "form-group" [class.has-error]="password.touched && password.invalid">
+    <label for="password" class="control-label">Password</label>
+    <input name="password" required type="text" class="form-control"
+        [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel">
+        <span class="help-block" *ngIf="password.touched && password.errors?.required ">
+          Password is Required
+        </span>
+  </div> -->
+ <app-home *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-home> 

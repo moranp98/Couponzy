@@ -1,5 +1,22 @@
 @import '../../../../assets/sass/variable';
+label {
+  display: block;
+  font: 1rem 'Fira Sans', sans-serif;
+}
 
+input,
+label {
+  margin: .4rem 0;
+}
+.Row {
+  display: table;
+  width: 100%; /*Optional*/
+  table-layout: fixed; /*Optional*/
+  border-spacing: 10px; /*Optional*/
+}
+.Column {
+  display: table-cell;
+}
 :host {
   background: url(../../../../assets/content/signup-bg.jpg) 50% 50% no-repeat;
   background-size: cover;

@@ -1,0 +1,46 @@
+[
+  {
+    "title": "ראשי",
+    "icon": "",
+    "active": true,
+    "groupTitle" : true,
+    "sub": "",
+    "routing": "",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "לוח מחוונים",
+    "icon": "fa fa-tachometer",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/dashboard",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "ניהול חנויות",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מפת חנויות",
+    "icon": "fa fa-map-marker",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-map",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  }
+]

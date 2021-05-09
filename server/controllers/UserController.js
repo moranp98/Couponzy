@@ -5,13 +5,16 @@ const User = require('../models/User');
 const addUser = async (req, res, next) => {
     try {
         const data = req.body;
-
+        console.log(data);
         data.active = true;
         data.role = 'customer';
         data.employerId = 'Not employed';
         data.created_at = admin.firestore.Timestamp.now();
         data.lastUpdated = admin.firestore.Timestamp.now();
-
+        data.age = //birthday
+        data.lat = 0.0;
+        data.long = 0.0; 
+        console.log("Acceced in ADDUSER")
         await firebase.collection('Users').doc(data.email).set(data);
         res.send('User record saved successfuly');
     } catch (error) {
