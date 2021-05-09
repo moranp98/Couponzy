@@ -29,6 +29,7 @@
     "@swimlane/ngx-datatable": "14.0.0",
     "angular-calendar": "0.25.2",
     "chart.js": "^2.9.4",
+    "common-js": "^0.3.8",
     "core-js": "^2.5.7",
     "d3": "^6.5.0",
     "dynamic-import-polyfill": "^0.1.1",

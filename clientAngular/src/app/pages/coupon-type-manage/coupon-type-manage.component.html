@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-lg-6">
+        <card [title]="'הוספת קטיגוריית קופון חדשה'" [align]="'center'" class="mb-xl-0">
+            <button mat-fab color="primary" (click)="onAdd(true)">
+                <mat-icon>add</mat-icon>
+            </button>
+            <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <input matInput placeholder="שם הקטיגוריה" [formControl]="form.controls['couponTypeName']"
+                                type="text">
+                            <mat-error
+                                *ngIf="form.controls['couponTypeName'].hasError('required') && form.controls['couponTypeName'].touched">
+                                הינך נדרש לתת שם לקטיגוריית הקופון
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <button mat-raised-button color="accent" [disabled]="!form.valid">יצירת קטיגוריה</button>
+                    <span class="span"></span>
+                    <button mat-mini-fab color="primary" (click)="onAdd(false)">
+                        <mat-icon>keyboard_return</mat-icon>
+                    </button>
+                </div>
+            </form>
+        </card>
+    </div>
+    <div class="col-lg-6">
+        <card [title]="'עדכון קטיגוריית קופון'" [align]="'center'" class="mb-xl-0">
+            <mat-icon mat-list-avatar>update</mat-icon>
+            <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
+                <div class="row">
+                    <div class="col-md-4">
+                        <mat-form-field>
+                            <input matInput placeholder="שם הקטיגוריה"
+                                [formControl]="updateForm.controls['couponTypeName']" type="text">
+                            <mat-error
+                                *ngIf="updateForm.controls['couponTypeName'].hasError('required') && updateForm.controls['couponTypeName'].touched">
+                                הינך נדרש לתת שם לקטיגוריית הקופון
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי קטיגוריה</button>
+                    <span class="span"></span>
+                    <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
+                        <mat-icon>keyboard_return</mat-icon>
+                    </button>
+                </div>
+            </form>
+            <alert *ngIf="deletePressed" [color]="'danger'" [outline]="true">
+                <mat-icon>error_outline</mat-icon>
+                <strong>האם אתה בטוח שאתה מעוניין למחוק את הקטיגוריה?</strong>
+                <span class="span"></span>
+                <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
+                <span class="span"></span>
+                <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
+            </alert>
+        </card>
+    </div>
+</div>
+<span class="span"></span>
+<div class="row">
+    <div class="col-md-6 col-xl-3 " *ngFor="let couponType of couponTypes; let i = index">
+        <card [align]="'center'" class="mb-xl-0">
+            <img mat-list-avatar class="mat-profile" src="../../../assets/content/couponzy.png" width="150" alt="">
+            <h5>{{ couponType.couponTypeName }}</h5>
+            <mat-accordion [hideToggle]="formIsValid ? true : false">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <md-icon class="mat-icon mat-list-icon material-icons">{{ couponTypes_mat_icon.icon }}</md-icon>
+                            <p>כמות קופונים</p>
+                            <span class="span"></span>
+                            <badge [color]="'info'" class="badge">{{ couponType.countOf_Coupons }}</badge>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <h4 mat-line></h4>
+            <p mat-line></p>
+            <span class="span"></span>
+            <button mat-raised-button color="accent" (click)="onUpdate(true, couponType.id)">עריכה</button>
+            <span class="span"></span>
+            <button mat-mini-fab color="warn" (click)="onDelete(true, couponType.id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </card>
+    </div>
+</div>

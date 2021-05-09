@@ -22,6 +22,17 @@
     "budgeColor": ""
   },
   {
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-tachometer",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול משתמשים",
     "icon": "fa fa-users",
     "active": false,
@@ -33,12 +44,34 @@
     "budgeColor": ""
   },
   {
+    "title": "ניהול רשתות חנויות",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-chain-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול חנויות",
     "icon": "fa fa-shopping-basket",
     "active": false,
     "groupTitle" : false,
     "sub": "",
     "routing": "/default-layout/shops-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "ניהול קטיגוריות קופונים",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/coupon-type-manage",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

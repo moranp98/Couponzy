@@ -60,6 +60,7 @@ export class PageShopsManageComponent implements OnInit {
 
   shops: Shops[] = [];
   shopClass: shop[] = [];
+  shopUpdateNow: shop;
   branches: Branches[] = [];
   createBranch: Branches[] = [];
   branchOnDetails: Branches;
@@ -75,7 +76,7 @@ export class PageShopsManageComponent implements OnInit {
   public updateForm: FormGroup;
 
   // Constractor
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
     private _manageshops: ManageShopsService,
     private ShowBranchesService: ManageBranchesService,
@@ -116,10 +117,10 @@ export class PageShopsManageComponent implements OnInit {
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
       this.shops = shops;
-    this.shops.forEach(shopObj => {
-      this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+      this.shops.forEach(shopObj => {
+        this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+      });
     });
-  });
   }
 
   showBranches() {
@@ -135,17 +136,17 @@ export class PageShopsManageComponent implements OnInit {
     })
   }
 
-  
+
   OnDetails(id: string) {
     this.detailPressed = true;
     this.branchOnDetails = this.branches.find(branch => branch.id === id);
   }
 
   onAdd(stateAddPressed: boolean) {
-    if(stateAddPressed){ // When press the Add icon ( + ), and open the add branch card
+    if (stateAddPressed) { // When press the Add icon ( + ), and open the add branch card
       this.addPressed = true;
     }
-    if(!stateAddPressed){ // When press back icon and hide the Add branch Card
+    if (!stateAddPressed) { // When press back icon and hide the Add branch Card
       this.addPressed = false;
       this.form.reset();
     }
@@ -161,11 +162,16 @@ export class PageShopsManageComponent implements OnInit {
     this.form.reset();
   }
 
-  onUpdate(stateUpdatePressed: boolean, id: string){
-    if(stateUpdatePressed){
+  onUpdate(stateUpdatePressed: boolean, id: string) {
+    if (stateUpdatePressed) {
       console.log(id);
       this.updatePressed = true; // When press the [Update-עריכה] button, and open the add branch card
       this.updateBranch = this.branches.find(branch => branch.id === id);
+      this.shopUpdateNow = new shop(
+        this.updateBranch.shop.id,
+        this.updateBranch.shop.shopName,
+        this.updateBranch.shop.profile_Shop
+      );
       console.log(this.updateBranch);
       this.updateForm = this.fb.group({
         shop: [this.updateBranch.shop, Validators.compose([Validators.required])],
@@ -182,14 +188,14 @@ export class PageShopsManageComponent implements OnInit {
       });
       console.log(this.updateForm.value);
     }
-    if(!stateUpdatePressed){
+    if (!stateUpdatePressed) {
       this.updatePressed = false;
       this.updateForm.reset();
     }
-    
+
   }
 
-  onUpdateSubmit(){
+  onUpdateSubmit() {
     this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); }
@@ -198,18 +204,18 @@ export class PageShopsManageComponent implements OnInit {
     this.updateForm.reset();
   }
 
-  onDelete(stateDeletePressed: boolean, id: string){
-    
+  onDelete(stateDeletePressed: boolean, id: string) {
+
     this.deleteBranch = this.branches.find(branch => branch.id === id);
-    if(stateDeletePressed){
+    if (stateDeletePressed) {
       this.deletePressed = true;
     }
-    if(!stateDeletePressed){
+    if (!stateDeletePressed) {
       this.deletePressed = false;
     }
   }
 
-  onDeleteSubmit(){
+  onDeleteSubmit() {
     this.deletePressed = false;
     console.log(this.deleteBranch);
     this.ShowBranchesService.deleteBranch(this.deleteBranch.id).subscribe(

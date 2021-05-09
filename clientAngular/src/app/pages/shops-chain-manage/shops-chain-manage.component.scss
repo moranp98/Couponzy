@@ -1,0 +1,30 @@
+@import '../../../assets/sass/variable';
+
+
+.details {
+    border-top: 1px solid rgba(#000,.2);   
+}
+
+.avatar {
+    vertical-align: middle;
+    display: inline;
+    width: 130px;
+    height: 80px;
+    border-radius: 10%;
+  }
+
+  .badge {
+    margin-top: 3px;
+  }
+
+  .img-height {
+    margin-top: 150px;
+  }
+
+  .mat-profile {
+    width: 150px;
+    height: 120px;
+  }
+  .heightCard {
+    min-height: 100px;
+  }
