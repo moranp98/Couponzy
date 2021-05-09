@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { Brand } from '../../models/brands';
 import { RealtimeService } from '../../services/realtime.service';
-
+import { FirebaseService } from '../../services/firebase.service';
 import { BrandsService } from 'src/app/services/brands.service';
 import { CurrentBrandService } from 'src/app/services/current-brand.service';
 import { ManageUsersService } from '../../services/manage-users.service';
@@ -14,6 +14,7 @@ import { ManageShopsService } from 'src/app/services/manage-shops.service';
 import { Orders } from '../../models/orders';
 import { Users } from '../../models/users';
 import { Shops } from 'src/app/models/shops';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-dashboard',
@@ -36,7 +37,7 @@ export class PageDashboardComponent implements OnInit {
   shops: Shops[] = [];
   chartBar: any[] = [];
   shopK: any[];
-
+  @Output() isLogout = new EventEmitter<void>()
 
   // Constractor
   constructor(private _sharedService: SharedService,
@@ -45,7 +46,9 @@ export class PageDashboardComponent implements OnInit {
     private _managebranches: ManageBranchesService,
     private _managecoupons: ManageCouponsService,
     private _manageorders: ManageOrdersService,
-    private _manageshops: ManageShopsService) {
+    private _manageshops: ManageShopsService,
+    public firebaseService: FirebaseService,
+    private router: Router) {
     this.countOfBranches = 0;
     this._sharedService.emitChange(this.pageTitle);
     this._realtime.listen('count').subscribe((res: any) => {
@@ -63,12 +66,20 @@ export class PageDashboardComponent implements OnInit {
     this.showUsers();
     this.showOrders();
     this.showShops();
+    if(localStorage.getItem('user')== null){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+      }
   }
 
   showUsers() {
     this._manageusers.getLastUsers().subscribe((users) => {
       this.users = users;
     })
+  }
+
+  logout(){
+    this.firebaseService.logout()
+    this.isLogout.emit()
   }
 
   showShops() {

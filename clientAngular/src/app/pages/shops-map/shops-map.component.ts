@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageBranchesService } from '../../services/manage-branches.service';
 import { Branches } from '../../models/branches';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-shops-map',
@@ -23,12 +23,16 @@ export class PageShopsMapComponent implements OnInit {
 
   // Constractor
   constructor(  private _sharedService: SharedService,
-                private ShowBranchesService: ManageBranchesService,) {
+                private ShowBranchesService: ManageBranchesService,
+                private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
     this.showBranches();
+    if(localStorage.getItem('user')== null){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+      }
   }
 
   showBranches() {
