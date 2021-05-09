@@ -9,7 +9,6 @@ import { Branches } from '../models/branches';
   providedIn: 'root'
 })
 export class ManageBranchesService {
-  private branchesUrl = environment.branchesUrl;
   private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }

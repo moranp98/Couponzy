@@ -15,25 +15,25 @@ export class PageSignInSocialComponent implements OnInit {
   isSignedIn = false
   //user: String = 'admin@admin.com';
   //password: String = '123456';
-  constructor(private router: Router,public firebaseService : FirebaseService ) {}
+  constructor(private router: Router, public firebaseService: FirebaseService) { }
 
-  ngOnInit(){
-    if(localStorage.getItem('user')!== null){
-      this.isSignedIn= true
+  ngOnInit() {
+    if (localStorage.getItem('user') !== null) {
+      this.isSignedIn = true
       this.router.navigate(['/default-layout/dashboard']);
-      }
+    }
     else
-    this.isSignedIn = false
+      this.isSignedIn = false
   }
 
 
-  async onSignin(email:string,password:string){
-    await this.firebaseService.signin(email,password)
-    
-    if(this.firebaseService.isLoggedIn){
-    console.log("LOGGGEED INNN")
-    this.isSignedIn = true
-    this.router.navigate(['/default-layout/dashboard']);
+  async onSignin(email: string, password: string) {
+    await this.firebaseService.signin(email, password)
+
+    if (this.firebaseService.isLoggedIn) {
+      console.log("LOGGGEED INNN")
+      this.isSignedIn = true
+      this.router.navigate(['/default-layout/dashboard']);
     }
   }
 }

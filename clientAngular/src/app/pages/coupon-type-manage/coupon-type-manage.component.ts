@@ -61,7 +61,8 @@ export class PageCouponTypeManageComponent implements OnInit {
     console.log(this.form.value);
     this._manageCouponTypse.createCouponType(this.form.value).subscribe(
       (shops) => { console.log('Success', shops); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showCouponTypes() }
     );
     this.addPressed = false; // To hide the Add branch Card
     this.form.reset();
@@ -88,7 +89,8 @@ export class PageCouponTypeManageComponent implements OnInit {
   onUpdateSubmit() {
     this._manageCouponTypse.updateCouponType(this.updateForm.value, this.updateCouponType.id).subscribe(
       (shops) => { console.log('Success', shops); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showCouponTypes() }
     );
     this.updatePressed = false;
     this.updateForm.reset();
@@ -110,7 +112,8 @@ export class PageCouponTypeManageComponent implements OnInit {
     console.log(this.deleteCouponType);
     this._manageCouponTypse.deleteCouponType(this.deleteCouponType.id).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showCouponTypes() }
     );
   }
 

@@ -27,7 +27,7 @@ export class MainMenuComponent  {
       this.mainMenuService.getDataSeller().subscribe(OBSERVER);
     }
 
-    if(role==="shopmanager"){
+    if(role==="shopManager"){
       console.log("Entered ShopManager's MainMenu")
       this.mainMenuService.getDataShopManager().subscribe(OBSERVER);
     }

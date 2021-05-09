@@ -14,7 +14,7 @@ const addBranch = async (req, res, next) => {
 
         var branchId = "";
         if (dataNewBranch.empty) {
-            res.status(404).send('No branch record found for update into Shop');
+            res.status(404).json('No branch record found for update into Shop');
         } else {
             dataNewBranch.forEach(doc => {
                 if (doc.data().branchName === data.branchName){
@@ -29,9 +29,9 @@ const addBranch = async (req, res, next) => {
             branches: admin.firestore.FieldValue.arrayUnion({'id': branchId})
         });
 
-        res.send('Branch record saved successfuly');
+        res.json('Branch record saved successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -41,7 +41,7 @@ const getAllBranches = async (req, res, next) => {
         const data = await branches.get();
         const branchesArray = [];
         if (data.empty) {
-            res.status(404).send('No branch record found');
+            res.status(404).json('No branch record found');
         } else {
             data.forEach(doc => {
                 const branch = new Branch(
@@ -59,10 +59,10 @@ const getAllBranches = async (req, res, next) => {
                 );
                 branchesArray.push(branch);
             });
-            res.send(branchesArray);
+            res.json(branchesArray);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -72,12 +72,12 @@ const getBranch = async (req, res, next) => {
         const branch = await firebase.collection('Branches').doc(id);
         const data = await branch.get();
         if (!data.exists) {
-            res.status(404).send('Branch with the given ID not found');
+            res.status(404).json('Branch with the given ID not found');
         } else {
-            res.send(data.data());
+            res.json(data.data());
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -104,9 +104,9 @@ const updateBranch = async (req, res, next) => {
             });
         });
 
-        res.send('Branch record updated successfuly');
+        res.json('Branch record updated successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -114,9 +114,9 @@ const deleteBranch = async (req, res, next) => {
     try {
         const id = req.params.id;
         await firebase.collection('Branches').doc(id).delete();
-        res.send('Branch record deleted successfuly');
+        res.json('Branch record deleted successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -132,10 +132,10 @@ const getCountBranches = async (req, res, next) => {
             size = querySnapshot.size;
         });
         
-        res.status(200).send(size.toString());
+        res.status(200).json(size.toString());
         
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -153,10 +153,10 @@ const getCountIsOpenBranches = async (req, res, next) => {
                 }
             })     
         });
-        res.status(200).send(size.toString());
+        res.status(200).json(size.toString());
         
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
