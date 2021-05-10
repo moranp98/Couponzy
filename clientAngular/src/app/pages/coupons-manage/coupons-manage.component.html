@@ -97,48 +97,100 @@
                 </mat-error>
               </mat-form-field>
             </div> -->
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-select placeholder="בחר רשת חנויות" formControlName="Shop" (selectionChange)="handleSelect($event)">
+                  <mat-option *ngFor="let shop of shopClass; let i = index" [value]="shop">
+                    {{ shop.shopName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <mat-select placeholder="בחר סוג קופון" formControlName="couponType" (selectionChange)="handleSelect2($event)">
+                  <mat-option *ngFor="let couponType of couponTypeClass; let i = index" [value]="couponType">
+                    {{ couponType.couponTypeName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
   
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="שם הקופן" [formControl]="form.controls['couponName']" type="text">
-                <!-- <mat-error *ngIf="form.controls['name'].hasError('required') && form.controls['name'].touched">
+                <mat-error *ngIf="form.controls['couponName'].hasError('required') && form.controls['couponName'].touched">
                   הינך נדרש לתת שם לקופון.
-                </mat-error> -->
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="קוד קופון" [formControl]="form.controls['couponId']" type="text">
+                <mat-error *ngIf="form.controls['couponId'].hasError('required') && form.controls['couponId'].touched">
+                  הינך נדרש להכניס את קוד הקופון.
+                </mat-error>
               </mat-form-field>
             </div>
   
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="פירוט" [formControl]="form.controls['description']" type="text">
-                <!-- <mat-error *ngIf="form.controls['description'].hasError('required') && form.controls['description'].touched">
+                <mat-error *ngIf="form.controls['description'].hasError('required') && form.controls['description'].touched">
                   הינך נדרש להכניס את פירוט הקופון.
-                </mat-error> -->
+                </mat-error>
               </mat-form-field>
             </div>
   
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="מחיר קודם" [formControl]="form.controls['oldPrice']" type="text">
-                <!-- <mat-error *ngIf="form.controls['oldPrice'].hasError('required') && form.controls['oldPrice'].touched">
+                <mat-error *ngIf="form.controls['oldPrice'].hasError('required') && form.controls['oldPrice'].touched">
                   הינך נדרש להכניס את המחיר הקודם.
-                </mat-error> -->
+                </mat-error>
               </mat-form-field>
             </div>
-  
   
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="מחיר חדש" [formControl]="form.controls['newPrice']" type="text">
-                <!-- <mat-error
+                <mat-error
                   *ngIf="form.controls['newPrice'].hasError('required') && form.controls['newPrice'].touched">
                   הינך נדרש להכניס את המחיר החדש.
-                </mat-error> -->
+                </mat-error>
               </mat-form-field>
             </div>
             
+            <div class="col-md-4">
+              <mat-form-field appearance="fill">
+                <mat-label>אנא בחר תאריך תפוגה</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expireDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error
+                *ngIf="form.controls['expireDate'].hasError('required') && form.controls['expireDate'].touched">
+                הינך נדרש להכניס את תאריך תפוגת הקופון.
+              </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="תמונת הקופון" [formControl]="form.controls['profile_Coupon']"
+                  type="text">
+                <mat-error
+                  *ngIf="form.controls['profile_Coupon'].hasError('required') && form.controls['profile_Coupon'].touched">
+                  הינך נדרש לצרף את תמונת הקופון.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
           </div>
           <div class="row">
-            <button mat-raised-button color="accent" >יצירת קופון'</button>
+            <button mat-raised-button color="accent"[disabled]="!form.valid" >יצירת קופון'</button>
             <span class="span"></span>
           <button mat-mini-fab color="primary" (click)="onAdd(false)">
             <mat-icon>keyboard_return</mat-icon>
@@ -167,38 +219,80 @@
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="עדכון שם הקופון" [formControl]="updateForm.controls['couponName']" type="text">
-                <!-- <mat-error *ngIf="updateForm.controls['couponName'].hasError('required') && updateForm.controls['couponName'].touched">
+                <mat-error *ngIf="updateForm.controls['couponName'].hasError('required') && updateForm.controls['couponName'].touched">
                   הינך נדרש לתת שם לקופון.
-                </mat-error> -->
+                </mat-error>
               </mat-form-field>
             </div>
   
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="עדכון פירוט" [formControl]="updateForm.controls['description']" type="text">
-                <!-- <mat-error *ngIf="updateForm.controls['description'].hasError('required') && updateForm.controls['description'].touched">
+                <mat-error *ngIf="updateForm.controls['description'].hasError('required') && updateForm.controls['description'].touched">
                   הינך נדרש להכניס את פירוט הקופון.
-                </mat-error> -->
+                </mat-error>
               </mat-form-field>
             </div>
+
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון קוד הקופון" [formControl]="updateForm.controls['couponId']" type="text">
+                <mat-error *ngIf="updateForm.controls['couponId'].hasError('required') && updateForm.controls['couponId'].touched">
+                  הינך נדרש להכניס את קוד הקופון.
+                </mat-error>
+              </mat-form-field>
+            </div> -->
   
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="עדכון המחיר קודם" [formControl]="updateForm.controls['oldPrice']" type="text">
-                <!-- <mat-error *ngIf="updateForm.controls['oldPrice'].hasError('required') && updateForm.controls['oldPrice'].touched">
+                <mat-error *ngIf="updateForm.controls['oldPrice'].hasError('required') && updateForm.controls['oldPrice'].touched">
                   הינך נדרש להכניס את המחיר הקודם.
-                </mat-error> -->
+                </mat-error>
               </mat-form-field>
             </div>
-  
-  
+
             <div class="col-md-4">
               <mat-form-field>
                 <input matInput placeholder="עדכון המחיר החדש" [formControl]="updateForm.controls['newPrice']" type="text">
-                <!-- <mat-error
+                <mat-error
                   *ngIf="updateForm.controls['newPrice'].hasError('required') && updateForm.controls['newPrice'].touched">
                   הינך נדרש להכניס את המחיר החדש.
-                </mat-error> -->
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+
+            <div class="col-md-4">
+              <mat-form-field appearance="fill">
+                <mat-label> אנא בחר תאריך תפוגה חדש</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expireDate" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error
+                *ngIf="updateForm.controls['expireDate'].hasError('required') && updateForm.controls['expireDate'].touched">
+                הינך נדרש להכניס את תפוגת הקופון.
+              </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון תאריך תפוגה" [formControl]="updateForm.controls['expireDate']" type="text">
+                <mat-error
+                  *ngIf="updateForm.controls['expireDate'].hasError('required') && updateForm.controls['expireDate'].touched">
+                  הינך נדרש להכניס את תפוגת הקופון.
+                </mat-error>
+              </mat-form-field>
+            </div> -->
+
+            <div class="col-md-4">
+              <mat-form-field>
+                <input matInput placeholder="עדכון תמונת הקופון" [formControl]="updateForm.controls['profile_Coupon']" type="text">
+                <mat-error
+                  *ngIf="updateForm.controls['profile_Coupon'].hasError('required') && updateForm.controls['profile_Coupon'].touched">
+                  הינך נדרש להכניס את תמונת הקופון.
+                </mat-error>
               </mat-form-field>
             </div>
             
@@ -206,7 +300,7 @@
           <div class="row">
             <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי הקופון</button>
             <span class="span"></span>
-          <button mat-mini-fab color="primary" (click)="onUpdate(false, 'Update stoped')">
+          <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
             <mat-icon>keyboard_return</mat-icon>
           </button>
           </div>

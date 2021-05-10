@@ -13,27 +13,32 @@ import { Coupons } from '../models/coupons';
 export class ManageCouponsService {
 
   private couponsUrl = environment.couponsUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
   getCoupons(): Observable<Coupons[]> {
-    const url = `${this.couponsUrl}/${"Coupons"}`;
+    const url = `${this.serverUrl}/${"Coupons"}`;
     return this.http.get<Coupons[]>(url);
   }
 
   createCoupon(formCoupon): Observable<any> {
-    const url = `${this.couponsUrl}${"Coupon"}`;
+    const url = `${this.serverUrl}/${"Coupon"}`;
     console.log(formCoupon);
     return this.http.post<any>(url, formCoupon);
   }
 
-  updateCoupon(formCoupon, ip: string): Observable<Coupons[]> {
-    const url = `${this.couponsUrl}/${ip}`;
-    return this.http.post<Coupons[]>(url, formCoupon);
+  updateCoupon(formCoupon, id: string): Observable<Coupons[]> {
+    console.log(id);
+    const url = `${this.serverUrl}/${'Coupon'}/${id}`;
+    console.log(formCoupon);
+    console.log(url);
+
+    return this.http.put<Coupons[]>(url, formCoupon);
   }
 
-  deleteCoupon(ip: string): Observable<Coupons> {
-    const url = `${this.couponsUrl}/${ip}`;
+  deleteCoupon(id: string): Observable<Coupons> {
+    const url = `${this.serverUrl}/${'Coupon'}/${id}`;
     return this.http.delete<Coupons>(url);
   }
 

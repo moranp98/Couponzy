@@ -6,6 +6,10 @@ import { Coupons } from '../../models/coupons';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { CalendarTodayDirective } from 'angular-calendar/modules/common/calendar-today.directive';
+import { ManageShopsService } from 'src/app/services/manage-shops.service';
+import { Shops } from 'src/app/models/shops';
+import { CouponTypes } from 'src/app/models/couponTypes';
+import { ManageCouponTypesService } from 'src/app/services/manage-couponTypes.service';
 
 const details: any[] = [
   {
@@ -34,6 +38,28 @@ const details: any[] = [
   }
 ];
 
+export class shop {
+  id: string;
+  shopName: string;
+  profile_Shop: string;
+
+  constructor(id: string, shopName: string, profile_Shop: string) {
+    this.id = id;
+    this.shopName = shopName;
+    this.profile_Shop = profile_Shop;
+  }
+}
+
+export class couponType {
+  id: string;
+  couponTypeName: string;
+
+  constructor(id: string, couponTypeName: string) {
+    this.id = id;
+    this.couponTypeName = couponTypeName;
+  }
+}
+
 @Component({
   selector: 'page-coupons-manage',
   templateUrl: './coupons-manage.component.html',
@@ -44,6 +70,10 @@ export class PageCouponsManageComponent implements OnInit {
   pageTitle: string = 'ניהול קופונים';
   details = details;
 
+  couponTypes: CouponTypes[] = [];
+  couponTypeClass: couponType[] = [];
+  shops: Shops[] = [];
+  shopClass: shop[] = [];
   coupons: Coupons[] = [];
   createCoupon: Coupons[] = [];
   couponOnDetails: Coupons;
@@ -59,7 +89,10 @@ export class PageCouponsManageComponent implements OnInit {
   public updateForm: FormGroup;
 
   // Constractor
-  constructor(private fb: FormBuilder, private _sharedService: SharedService,
+  constructor(private fb: FormBuilder,
+    private _sharedService: SharedService,
+    private _manageshops: ManageShopsService,
+    private _managecouponTypes: ManageCouponTypesService,
     private ShowCouponsService: ManageCouponsService,) {
     this._sharedService.emitChange(this.pageTitle);
   }
@@ -67,27 +100,59 @@ export class PageCouponsManageComponent implements OnInit {
   ngOnInit(): void {
 
     this.showCoupons();
+    this.showShops();
+    this.showCouponTypes();
 
     this.form = this.fb.group({
+      couponId: [null, Validators.compose([Validators.required])],
       couponName: [null, Validators.compose([Validators.required])],
       description: [null, Validators.compose([Validators.required])],
       expireDate: [null, Validators.compose([Validators.required])],
       newPrice: [null, Validators.compose([Validators.required])],
       oldPrice: [null, Validators.compose([Validators.required])],
-      ratingAvg: [null, Validators.compose([Validators.required])],
-      numof_Rating: [null, Validators.compose([Validators.required])],
+      ratingAvg: [null, Validators.compose([])],
+      numOf_rating: [null, Validators.compose([])],
+      Shop: [null, Validators.compose([Validators.required])],
+      profile_Coupon: [null, Validators.compose([Validators.required])],
+      couponType: [null, Validators.compose([Validators.required])],
 
     });
+  }
+
+  handleSelect(shop: any) { // This function is not used
+    // Here is the actual selected object
+    console.log(shop.value);
+  }
+
+  handleSelect2(couponType: any) { // This function is not used
+    // Here is the actual selected object
+    console.log(couponType.value);
+  }
+
+  showCouponTypes() {
+    this._managecouponTypes.getAllCouponTypes().subscribe((couponTypes) => {
+      this.couponTypes = couponTypes;
+    this.couponTypes.forEach(couponTypeObj => {
+      this.couponTypeClass.push(new couponType(couponTypeObj.id, couponTypeObj.couponTypeName))
+    });
+  });
+  }
+
+  showShops() {
+    this._manageshops.getAllShops().subscribe((shops) => {
+      this.shops = shops;
+    this.shops.forEach(shopObj => {
+      this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+    });
+  });
   }
 
   showCoupons() {
     this.ShowCouponsService.getCoupons().subscribe((coupons) => {
       this.coupons = coupons;
-      //this.branchOnDetails = this.branches.find(branch => branch._id != null);
     })
   }
 
-  
   OnDetails(id: string) {
     console.log(id);
     this.detailPressed = true;
@@ -95,18 +160,17 @@ export class PageCouponsManageComponent implements OnInit {
     console.log(this.couponOnDetails);
   }
 
-  onAdd(state: boolean) {
-    if(state){
+  onAdd(stateAddPressed: boolean) {
+    if(stateAddPressed){
       this.addPressed = true;
     }
-    if(!state){
+    if(!stateAddPressed){
       this.addPressed = false;
       this.form.reset();
     }
   }
 
   onSubmit(value: boolean) {
-    
     this.ShowCouponsService.createCoupon(this.form.value).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); }
@@ -115,22 +179,28 @@ export class PageCouponsManageComponent implements OnInit {
     this.form.reset();
   }
 
-  onUpdate(state: boolean, id: string){
-    if(state){
+  onUpdate(stateUpdatePressed: boolean, id: string){
+    if(stateUpdatePressed){
       console.log(id);
       this.updatePressed = true;
       this.updateCoupon = this.coupons.find(coupon => coupon.id === id);
       this.updateForm = this.fb.group({
+        couponId: [this.updateCoupon.id, Validators.compose([Validators.required])],
         couponName: [this.updateCoupon.couponName, Validators.compose([Validators.required])],
         description: [this.updateCoupon.description, Validators.compose([Validators.required])],
         expireDate: [this.updateCoupon.expireDate, Validators.compose([Validators.required])],
         newPrice: [this.updateCoupon.newPrice, Validators.compose([Validators.required])],
         oldPrice: [this.updateCoupon.oldPrice, Validators.compose([Validators.required])],
-        ratingAvg: [this.updateCoupon.ratingAvg, Validators.compose([Validators.required])],
+        ratingAvg: [this.updateCoupon.ratingAvg, Validators.compose([])],
+        numOf_rating: [this.updateCoupon.numOf_rating, Validators.compose([])],
+        Shop: [this.updateCoupon.shop, Validators.compose([])],
+        profile_Coupon: [this.updateCoupon.profile_Coupon, Validators.compose([Validators.required])],
+        couponType: [this.updateCoupon.couponType, Validators.compose([])],
+  
       });
       console.log(this.updateForm.value);
     }
-    if(!state){
+    if(!stateUpdatePressed){
       this.updatePressed = false;
       this.updateForm.reset();
     }
@@ -146,13 +216,13 @@ export class PageCouponsManageComponent implements OnInit {
     this.updateForm.reset();
   }
 
-  onDelete(state: boolean, id: string){
+  onDelete(stateDeletePressed: boolean, id: string){
     
     this.deleteCoupon = this.coupons.find(coupon => coupon.id === id);
-    if(state){
+    if(stateDeletePressed){
       this.deletePressed = true;
     }
-    if(!state){
+    if(!stateDeletePressed){
       this.deletePressed = false;
     }
   }

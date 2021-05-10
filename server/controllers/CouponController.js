@@ -4,12 +4,16 @@ const Coupon = require('../models/Coupon');
 
 const addCoupon = async (req, res, next) => {
   try {
+    console.log(req.body);
     const data = req.body;
     data.ratingAvg = 0;
     data.numOf_rating = 0;
     data.lastUpdated = admin.firestore.Timestamp.now();
-    await firebase.collection('Coupons').doc(data.couponId).set(data);
+    data.published = admin.firestore.Timestamp.now();
+    console.log(data);
+    console.log(data.Shop.id);
 
+    await firebase.collection('Coupons').doc(data.couponId).set(data);
     const docId = data.Shop.id;
     const shopsRef = await firebase.collection('Shops').doc(docId);
     shopsRef.update({
@@ -82,6 +86,7 @@ const getCoupon = async (req, res, next) => {
 
 const updateCoupon = async (req, res, next) => {
   try {
+    console.log(req.body);
     const id = req.params.id;
     const data = req.body;
     const coupon = await firebase.collection('Coupons').doc(id);

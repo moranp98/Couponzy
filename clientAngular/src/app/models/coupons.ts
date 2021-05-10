@@ -11,6 +11,13 @@ export interface Coupons {
     ratingAvg: Number,
     numOf_rating: Number,    
     lastUpdated: Number,
-    couponType: string,
-    shop: string
+    couponType:{
+        id: string,
+        couponTypeName: string
+    }
+    shop:{
+        id: string,
+        shopName: string,
+        profile_Shop: string
+    }
 }
