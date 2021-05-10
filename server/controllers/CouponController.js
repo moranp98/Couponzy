@@ -28,9 +28,9 @@ const addCoupon = async (req, res, next) => {
       countOf_Coupons: admin.firestore.FieldValue.increment(1),
     });
 
-    res.send('Coupon record saved successfuly');
+    res.json('Coupon record saved successfuly');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -40,7 +40,7 @@ const getAllCoupons = async (req, res, next) => {
     const data = await coupons.get();
     const couponsArray = [];
     if (data.empty) {
-      res.status(404).send('No coupon record found');
+      res.status(404).json('No coupon record found');
     } else {
       data.forEach((doc) => {
         const coupon = new Coupon(
@@ -62,10 +62,10 @@ const getAllCoupons = async (req, res, next) => {
         couponsArray.push(coupon);
       });
 
-      res.send(couponsArray);
+      res.json(couponsArray);
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -75,12 +75,12 @@ const getCoupon = async (req, res, next) => {
     const coupon = await firebase.collection('Coupons').doc(id);
     const data = await coupon.get();
     if (!data.exists) {
-      res.status(404).send('Coupon with the given ID not found');
+      res.status(404).json('Coupon with the given ID not found');
     } else {
-      res.send(data.data());
+      res.json(data.data());
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
