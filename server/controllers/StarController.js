@@ -22,9 +22,9 @@ const addStar = async (req, res, next) => {
             numOf_rating: admin.firestore.FieldValue.increment(1)
         });
 
-        res.send('Star record saved successfuly');
+        res.json('Star record saved successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -34,7 +34,7 @@ const getAllStars = async (req, res, next) => {
         const data = await stars.get();
         const starsArray = [];
         if(data.empty){
-            res.status(404).send('No Star record found');
+            res.status(404).json('No Star record found');
         } else {
             data.forEach(doc => {
                 const star = new Star(
@@ -45,10 +45,10 @@ const getAllStars = async (req, res, next) => {
                 );
                 starsArray.push(star);
             });
-            res.send(starsArray);
+            res.json(starsArray);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -58,12 +58,12 @@ const getStar = async (req, res, next) => {
         const star = await firebase.collection('Stars').doc(id);
         const data = await star.get();
         if(!data.exists){
-            res.status(404).send('Star with the given ID not found');
+            res.status(404).json('Star with the given ID not found');
         } else {
-            res.send(data.data());
+            res.json(data.data());
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -87,9 +87,9 @@ const updateStar = async (req, res, next) => {
 
         console.log('Star record updated successfuly')
         await star.update(data);
-        res.send('Star record updated successfuly');
+        res.json('Star record updated successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -115,9 +115,9 @@ const deleteStar = async (req, res, next) => {
         });
 
         await firebase.collection('Stars').doc(id).delete();
-        res.send('Star record deleted successfuly');
+        res.json('Star record deleted successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 

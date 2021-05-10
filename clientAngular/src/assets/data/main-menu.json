@@ -22,6 +22,17 @@
     "budgeColor": ""
   },
   {
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-tachometer",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול משתמשים",
     "icon": "fa fa-users",
     "active": false,
@@ -33,12 +44,12 @@
     "budgeColor": ""
   },
   {
-    "title": "ניהול חנויות",
+    "title": "ניהול רשתות חנויות",
     "icon": "fa fa-shopping-basket",
     "active": false,
     "groupTitle" : false,
     "sub": "",
-    "routing": "/default-layout/shops-manage",
+    "routing": "/default-layout/shops-chain-manage",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""
@@ -55,34 +66,34 @@
     "budgeColor": ""
   },
   {
+    "title": "ניהול חנויות",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "ניהול קטיגוריות קופונים",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/coupon-type-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "מפת חנויות",
     "icon": "fa fa-map-marker",
     "active": false,
     "groupTitle" : false,
     "sub": "",
     "routing": "/default-layout/shops-map",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
-    "title": "כניסה",
-    "icon": "fa fa-sign-in",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/roadstart-layout/sign-in-social",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
-    "title": "רישום",
-    "icon": "fa fa-registered",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/roadstart-layout/sign-up",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

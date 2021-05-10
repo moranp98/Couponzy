@@ -11,13 +11,19 @@ import { PageShopsMapComponent }                from './pages/shops-map/shops-ma
 import { PageSignInSocialComponent }            from './pages/roadstart-pages/sign-in-social/sign-in-social.component';
 import { PageSignUpComponent }                  from './pages/roadstart-pages/sign-up/sign-up.component';
 import { PageCouponsManageComponent}            from './pages/coupons-manage/coupons-manage.component';
+import { PageShopsChainManageComponent }        from './pages/shops-chain-manage/shops-chain-manage.component';
+import { PageCouponTypeManageComponent }        from './pages/coupon-type-manage/coupon-type-manage.component';
+import { PageTimelineCouponzyComponent }        from './pages/timeline-couponzy/timeline-couponzy.component';
 
 const defaultRoutes: Routes = [
   { path: 'dashboard', component: PageDashboardComponent },
   { path: 'users-manage', component: PageUsersManageComponent },
   { path: 'shops-manage', component: PageShopsManageComponent },
   { path: 'shops-map', component: PageShopsMapComponent },
-  { path: 'coupons-manage', component: PageCouponsManageComponent}
+  { path: 'coupons-manage', component: PageCouponsManageComponent},
+  { path: 'shops-chain-manage', component: PageShopsChainManageComponent },
+  { path: 'coupon-type-manage', component: PageCouponTypeManageComponent },
+  { path: 'timeline-couponzy', component: PageTimelineCouponzyComponent },
 ];
 
 const roadstartRoutes: Routes = [

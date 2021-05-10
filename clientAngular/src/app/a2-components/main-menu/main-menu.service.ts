@@ -13,7 +13,14 @@ export class MainMenuService {
 		const URL: string = 'assets/data/main-menu.json';
 		return this.http.get(URL);
 	}
-
+	public getDataSeller() {
+		const URL: string = 'assets/data/main-menu-seller.json';
+		return this.http.get(URL);
+	}
+  public getDataShopManager() {
+		const URL: string = 'assets/data/main-menu-shopmanager.json';
+		return this.http.get(URL);
+	}
   public handleError(error: any) {
     return observableThrowError(error.error || 'Server Error');
   }

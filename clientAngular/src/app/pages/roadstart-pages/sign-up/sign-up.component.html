@@ -1,29 +1,127 @@
-<card [title]="'צור חשבון עבורך'" [align]="'center'">
-    <form (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <input matInput placeholder="Email address" value="">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <input matInput placeholder="Password" value="">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <input matInput placeholder="Confirm Password" value="">
-      </mat-form-field>
-  
-      <div class="text-left mb-module">
-        <mat-checkbox>
-          אני מצהיר, קראתי ואני מסכים עם תנאי השירות.
-        </mat-checkbox>
+<card [title]="'צור חשבון עבורך'" [align]="'center'" *ngIf="!isSignedIn">
+  <form (ngSubmit)="onSignup(emailSignup.value,passwordSignup.value,passwordValSignup.value)">
+
+    <!-- <div class="Row">
+      <div class="Column">
+        <mat-form-field>
+          <input matInput placeholder="שם פרטי" value="" [formControl]="form.controls['firstname']">
+          <mat-error *ngIf="form.controls['firstname'].hasError('required') && form.controls['firstname'].touched">
+            הינך נדרש להכניס שם פרטי.
+          </mat-error>
+        </mat-form-field>
       </div>
-  
-      <button mat-raised-button color="primary" type="submit" color="accent">רישום</button>
-  
-      <div class="additional-info">
-        הינך רשום כבר?
-        <a href="#/roadstart-layout/sign-in-social">כניסה</a>
+      <div class="Column">
+        <mat-form-field>
+          <input matInput placeholder="שם משפחה" value="" [formControl]="form.controls['lastname']">
+          <mat-error *ngIf="form.controls['lastname'].hasError('required') && form.controls['lastname'].touched">
+            הינך נדרש להכניס שם משפחה.
+          </mat-error>
+          </mat-form-field>
       </div>
-    </form>
-  </card>
-  
+    </div> -->
+
+
+    <mat-form-field>
+      <input matInput placeholder="Email address" value="" #emailSignup [formControl]="form.controls['email']">
+      <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
+        הינך נדרש להכניס מייל .
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Password" value="" #passwordSignup [formControl]="form.controls['pass']">
+      <!-- <mat-error *ngIf="form.controls['pass'].hasError('required') && form.controls['pass'].touched">
+        הינך נדרש להכניס סיסמה .
+      </mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Confirm Password" value="" #passwordValSignup
+        [formControl]="form.controls['passconfig']">
+      <!-- <mat-error *ngIf="form.controls['passconfig'].hasError('required') && form.controls['passconfig'].touched">
+        הינך נדרש להכניס סיסמה .
+      </mat-error> -->
+    </mat-form-field>
+
+    <!-- <div class="row mb-lg" formGroupName="address">
+      <div class="col-md-4">
+        <mat-form-field>
+          <input matInput placeholder="עיר" formControlName="city" type="text">
+          <mat-error
+            *ngIf="updateForm.controls.address.controls['city'].hasError('required') && updateForm.controls.address.controls['city'].touched">
+            הינך נדרש לתת שם לעיר.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input matInput placeholder="מיקום" formControlName="street" type="text">
+          <mat-error
+            *ngIf="updateForm.controls.address.controls['street'].hasError('required') && updateBranch.controls.address.controls['street'].touched">
+            הינך נדרש לבחור מיקום.
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <input matInput placeholder="מדינה" formControlName="country" type="text">
+          <mat-error
+            *ngIf="updateForm.controls.address.controls['country'].hasError('required') && updateForm.controls.address.controls['country'].touched">
+            הינך נדרש לתת שם למדינה.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row mb-lg">
+      <label for="start">תאריך לידה : </label>
+      <input type="date" class="form-control" id="dob" max="{{date | date:'yyyy-MM-dd'}}">
+    </div>
+    <div class="Row">
+      <div class="Column">
+        <label for="cars">מין:</label>
+        <select name="cars" id="cars">
+          <option value="volvo">זכר</option>
+          <option value="saab">נקבה</option>
+          <option value="mercedes">אחר</option>
+        </select>
+      </div>
+      <div class="Column">
+        <label for="cars">מצב משפחתי:</label>
+        <select name="cars" id="cars">
+          <option value="single">רווק</option>
+          <option value="married">נשוי</option>
+          <option value="widower">אלמן</option>
+          <option value="divorced">גרוש</option>
+          <option value="other">אחר</option>
+        </select>
+      </div>
+    </div>
+
+    <mat-form-field>
+      <input matInput placeholder="תעודת זהות" value="" #emailSignup [formControl]="form.controls['userid']">
+      <mat-error *ngIf="form.controls['userid'].hasError('required') && form.controls['userid'].touched">
+        הינך נדרש להכניס ת"ז .
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="מספר נייד" value="" #emailSignup [formControl]="form.controls['phonenumber']">
+      <mat-error *ngIf="form.controls['phonenumber'].hasError('required') && form.controls['phonenumber'].touched">
+        הינך נדרש להכניס ת"ז .
+      </mat-error>
+    </mat-form-field> -->
+
+    <div class="text-left mb-module">
+      <mat-checkbox>
+        אני מצהיר, קראתי ואני מסכים עם תנאי השירות.
+      </mat-checkbox>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" color="accent">רישום</button>
+
+    <div class="additional-info">
+      הינך רשום כבר?
+      <a href="#/roadstart-layout/sign-in-social">כניסה</a>
+    </div>
+  </form>
+</card>
+<app-home *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-home>

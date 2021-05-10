@@ -77,14 +77,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let coupon of Lastcoupons; let i = index;">
+            <!--tr *ngFor="let coupon of Lastcoupons; let i = index;">
               <th scope="row">{{i+1}}</th>
               <td><img mat-list-avatar src="{{ coupon.pictureName }}" class="avatar" alt="" style="width: 54px;height: 54px;"></td>
               <td>{{coupon.shop.shopName}}</td>
               <td>{{coupon.name}}</td>
               <td>{{coupon.couponCode}}</td>
               <td>{{LastDateCoupons[i] | date}}</td>
-            </tr>
+            </tr-->
           </tbody>
         </table>
       </div>
@@ -98,18 +98,24 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>שם פרטי</th>
-              <th>שם משפחה</th>
-              <th>מייל</th>
+              <th>פרופיל משתמש</th>
+              <!--th>שם פרטי</th>
+              <th>שם משפחה</th-->
+              <th>שם משתמש</th>
+              <!--th>עיר</th-->
+              <th>תפקיד</th>
               <th>טלפון</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of users; let i = index">
+            <tr *ngFor="let user of showLastUsers; let i = index">
               <th scope="row">{{i+1}}</th>
-              <td>{{user.firstName}}</td>
-              <td>{{user.lastName}}</td>
+              <td>{{user.profile_User}}</td>
+              <!--td>{{user.userName.firstName}}</td>
+              <td>{{user.userName.lastName}}</td-->
               <td>{{user.email}}</td>
+              <!--td>{{user.address.city}}</td-->
+              <td>{{user.role}}</td>
               <td>{{user.phoneNumber}}</td>
             </tr>
           </tbody>
@@ -120,5 +126,3 @@
 
 
 </div>
-<!-- Row 5 --- Scraping -->
-<app-list #list></app-list>

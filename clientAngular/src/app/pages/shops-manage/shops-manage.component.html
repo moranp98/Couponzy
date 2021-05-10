@@ -175,7 +175,7 @@
         <div class="row">
           <button mat-raised-button color="accent" [disabled]="!form.valid">יצירת חנות</button>
           <span class="span"></span>
-          <button mat-mini-fab color="primary" (click)="onAdd(false)">
+          <button mat-mini-fab type="button" color="primary" (click)="onAdd(false)">
             <mat-icon>keyboard_return</mat-icon>
           </button>
         </div>
@@ -189,15 +189,6 @@
     <card title="עריכת נתוני חנות">
       <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
         <div class="row">
-          <div class="col-md-4">
-            <mat-form-field>
-              <mat-select placeholder="בחר רשת חנויות" formControlName="shop" (selectionChange)="handleSelect($event)">
-                <mat-option *ngFor="let shop of shopClass; let i = index" [value]="shop">
-                  {{ shop.shopName }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
           <div class="col-md-4">
             <mat-form-field>
               <input matInput placeholder="שם הסניף" [formControl]="updateForm.controls['branchName']" type="text">
@@ -275,7 +266,7 @@
         <div class="row">
           <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי חנות</button>
           <span class="span"></span>
-          <button mat-mini-fab color="primary" (click)="onUpdate(false, 'Update stoped')">
+          <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
             <mat-icon>keyboard_return</mat-icon>
           </button>
         </div>

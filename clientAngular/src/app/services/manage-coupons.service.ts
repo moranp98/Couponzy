@@ -43,7 +43,12 @@ export class ManageCouponsService {
   }
 
   getCountCoupons(): Observable<number> {
-    const url = `${this.couponsUrl}/${"getCountCoupons"}`;
+    const url = `${this.serverUrl}/${"getCountCoupons"}`;
+    return this.http.get<number>(url);
+  }
+
+  getCountValidCoupons(): Observable<number> {
+    const url = `${this.serverUrl}/${"getCountValidCoupons"}`;
     return this.http.get<number>(url);
   }
 }

@@ -1,10 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
-import { Brand } from '../../models/brands';
 import { RealtimeService } from '../../services/realtime.service';
+import { FirebaseService } from '../../services/firebase.service';
 
-import { BrandsService } from 'src/app/services/brands.service';
-import { CurrentBrandService } from 'src/app/services/current-brand.service';
 import { ManageUsersService } from '../../services/manage-users.service';
 import { ManageCouponsService } from 'src/app/services/manage-coupons.service';
 import { ManageBranchesService } from 'src/app/services/manage-branches.service';
@@ -12,8 +10,9 @@ import { ManageOrdersService } from 'src/app/services/manage-orders.service';
 import { ManageShopsService } from 'src/app/services/manage-shops.service';
 
 import { Orders } from '../../models/orders';
-import { Users } from '../../models/users';
+import { lastUsers } from '../../models/lastUsers';
 import { Shops } from 'src/app/models/shops';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-dashboard',
@@ -23,7 +22,8 @@ import { Shops } from 'src/app/models/shops';
 export class PageDashboardComponent implements OnInit {
   pageTitle: string = 'עמוד ראשי';
 
-  @Input() borderW: number = 1;  
+  @Input() borderW: number = 1;
+  
   // Amount of users connected
   counter: Number;
   countOfUsers: Number;
@@ -31,12 +31,15 @@ export class PageDashboardComponent implements OnInit {
   countIsOpenBranches: Number;
   countCoupons: Number;
   countValidCoupons: Number;
-  users: Users[] = [];
+
+  lastUsers: lastUsers[] = [];
+  showLastUsers: any[] = [];
+
   orders: Orders[] = [];
   shops: Shops[] = [];
   chartBar: any[] = [];
   shopK: any[];
-
+  @Output() isLogout = new EventEmitter<void>()
 
   // Constractor
   constructor(private _sharedService: SharedService,
@@ -45,7 +48,9 @@ export class PageDashboardComponent implements OnInit {
     private _managebranches: ManageBranchesService,
     private _managecoupons: ManageCouponsService,
     private _manageorders: ManageOrdersService,
-    private _manageshops: ManageShopsService) {
+    private _manageshops: ManageShopsService,
+    public firebaseService: FirebaseService,
+    private router: Router) {
     this.countOfBranches = 0;
     this._sharedService.emitChange(this.pageTitle);
     this._realtime.listen('count').subscribe((res: any) => {
@@ -54,21 +59,41 @@ export class PageDashboardComponent implements OnInit {
     this._manageusers.getCountUsers().subscribe(countOfUsers => this.countOfUsers = countOfUsers);
     this._managebranches.getCountBranches().subscribe(countOfBranches => this.countOfBranches = countOfBranches);
     this._managebranches.getCountIsOpenBranches().subscribe(countIsOpenBranches => this.countIsOpenBranches = countIsOpenBranches);
-    this._managebranches.getCountCoupons().subscribe(countCoupons => this.countCoupons = countCoupons);
-    this._managebranches.getCountValidCoupons().subscribe(countValidCoupons => this.countValidCoupons = countValidCoupons);
-
+    this._managecoupons.getCountCoupons().subscribe(countCoupons => this.countCoupons = countCoupons);
+    this._managecoupons.getCountValidCoupons().subscribe(countValidCoupons => this.countValidCoupons = countValidCoupons);
   }
 
   ngOnInit() {
     this.showUsers();
     this.showOrders();
     this.showShops();
+    if(localStorage.getItem('user')== null){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+      }
   }
 
   showUsers() {
-    this._manageusers.getLastUsers().subscribe((users) => {
-      this.users = users;
+    this._manageusers.getLastUsers().subscribe((lastUsers) => {
+      this.lastUsers = lastUsers;
+      console.log(this.lastUsers)
+      this.showLastUsers = this.lastUsers.map(user => {
+        return {
+          profile_User: user.profile_User,
+          /*firstName: user.userName.firstName,
+          lastName: user.userName.lastName,*/
+          email: user.email,
+          //city: user.address.city,
+          role: user.role,
+          phoneNumber: user.phoneNumber
+        }
+      });
+      console.log(this.lastUsers)
     })
+  }
+
+  logout(){
+    this.firebaseService.logout()
+    this.isLogout.emit()
   }
 
   showShops() {
@@ -81,7 +106,7 @@ export class PageDashboardComponent implements OnInit {
   arr: number[] = [];
   Lastcoupons: any[] = [];
   LastDateCoupons: any[] = [];
-
+ 
   showOrders() {
     this._manageorders.getAllOrders().subscribe((orders) => {
       this.orders = orders.filter(order => {

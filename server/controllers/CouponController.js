@@ -86,7 +86,6 @@ const getCoupon = async (req, res, next) => {
 
 const updateCoupon = async (req, res, next) => {
   try {
-    console.log(req.body);
     const id = req.params.id;
     const data = req.body;
     const coupon = await firebase.collection('Coupons').doc(id);
@@ -140,9 +139,9 @@ const updateCoupon = async (req, res, next) => {
       });
     });
 
-    res.send('Coupon record updated successfuly');
+    res.json('Coupon record updated successfuly');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
   }
 };
 
@@ -160,9 +159,48 @@ const deleteCoupon = async (req, res, next) => {
     });
 
     await firebase.collection('Coupons').doc(id).delete();
-    res.send('Coupon record deleted successfuly');
+    res.json('Coupon record deleted successfuly');
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).json(error.message);
+  }
+};
+
+// <--   Another functions    -->
+
+const getCountCoupons = async (req, res, next) => {
+  try {
+    var size = 0;
+    const countOfCoupons = await firebase
+      .collection('Coupons')
+      .get()
+      .then(function (querySnapshot) {
+        size = querySnapshot.size;
+      });
+
+    res.status(200).json(size.toString());
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
+const getCountValidCoupons = async (req, res, next) => {
+  try {
+    var size = 0;
+    const countOfValidCoupons = await firebase
+      .collection('Coupons')
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.docChanges().forEach((query) => {
+          const coupon = query.doc;
+          const dateNow = admin.firestore.Timestamp.now();
+          if (coupon.data().expireDate >= dateNow) {
+            size++;
+          }
+        });
+      });
+    res.status(200).json(size.toString());
+  } catch (error) {
+    res.status(400).json(error.message);
   }
 };
 
@@ -172,4 +210,6 @@ module.exports = {
   getCoupon,
   updateCoupon,
   deleteCoupon,
+  getCountCoupons,
+  getCountValidCoupons,
 };

@@ -7,10 +7,8 @@ import { Shops } from '../models/shops';
   providedIn: 'root',
 })
 
-
 export class ShopService {
   private ShopsUrl = environment.shopssUrl;
-  
 
   constructor(private http: HttpClient) { }
 

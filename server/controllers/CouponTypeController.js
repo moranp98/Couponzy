@@ -8,9 +8,9 @@ const addCouponType = async (req, res, next) => {
         data.countOf_Coupons = 0;
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('CouponTypes').doc().set(data);
-        res.send('CouponType record saved successfuly');
+        res.json('CouponType record saved successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -20,7 +20,7 @@ const getAllCouponTypes = async (req, res, next) => {
         const data = await couponTypes.get();
         const couponTypesArray = [];
         if (data.empty) {
-            res.status(404).send('No couponType record found');
+            res.status(404).json('No couponType record found');
         } else {
             data.forEach(doc => {
                 const couponType = new CouponType(
@@ -31,10 +31,10 @@ const getAllCouponTypes = async (req, res, next) => {
                 );
                 couponTypesArray.push(couponType);
             });
-            res.send(couponTypesArray);
+            res.json(couponTypesArray);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -44,12 +44,12 @@ const getCouponType = async (req, res, next) => {
         const couponType = await firebase.collection('CouponTypes').doc(id);
         const data = await couponType.get();
         if (!data.exists) {
-            res.status(404).send('CouponType with the given ID not found');
+            res.status(404).json('CouponType with the given ID not found');
         } else {
-            res.send(data.data());
+            res.json(data.data());
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -70,9 +70,9 @@ const updateCouponType = async (req, res, next) => {
             });
         });
 
-        res.send('CouponType record updated successfuly');
+        res.json('CouponType record updated successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -80,9 +80,9 @@ const deleteCouponType = async (req, res, next) => {
     try {
         const id = req.params.id;
         await firebase.collection('CouponTypes').doc(id).delete();
-        res.send('CouponType record deleted successfuly');
+        res.json('CouponType record deleted successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
