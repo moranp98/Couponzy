@@ -43,7 +43,7 @@ export class PageShopsMapComponent implements OnInit {
 
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
-      this.shops = shops;
+      this.shops = shops.filter(shop => shop.isExists !== false);;
     });
   }
 
@@ -55,7 +55,7 @@ export class PageShopsMapComponent implements OnInit {
         else
           branch.stateOpen = "סגור";
       });
-      this.branches = branches;
+      this.branches = branches.filter(branch => branch.isExists !== false);
     })
   }
 

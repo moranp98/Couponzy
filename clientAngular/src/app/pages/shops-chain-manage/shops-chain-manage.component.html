@@ -71,7 +71,7 @@
                     </button>
                 </div>
             </form>
-            <alert *ngIf="deletePressed" [color]="'danger'" [outline]="true">
+            <alert *ngIf="deletePressed && canDeleteFlag" [color]="'danger'" [outline]="true">
                 <mat-icon>error_outline</mat-icon>
                 <strong>האם אתה בטוח שאתה מעוניין למחוק את החנות?</strong>
                 <span class="span"></span>
@@ -79,6 +79,12 @@
                 <span class="span"></span>
                 <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
             </alert>
+            <alert *ngIf="deletePressed && !canDeleteFlag" [color]="'danger'" [outline]="true">
+                <mat-icon>error_outline</mat-icon>
+                <strong>אינך מורשה למחוק רשת חנויות שמכילה סניפים או קופונים או מנהלים אקטיביים !</strong>
+                <span class="span"></span>
+                <button mat-mini-fab color="warn" (click)="onDelete(false, 'Delete stoped')">ביטול</button>
+              </alert>
         </card>
     </div>
 </div>
@@ -152,5 +158,6 @@
                 <mat-icon>delete</mat-icon>
             </button>
         </card>
+        <span class="span"></span>
     </div>
 </div>

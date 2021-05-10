@@ -6,6 +6,7 @@ const addCouponType = async (req, res, next) => {
     try {
         const data = req.body;
         data.countOf_Coupons = 0;
+        data.isExists = true;
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('CouponTypes').doc().set(data);
         res.json('CouponType record saved successfuly');
@@ -27,6 +28,7 @@ const getAllCouponTypes = async (req, res, next) => {
                     doc.id,
                     doc.data().couponTypeName,
                     doc.data().countOf_Coupons,
+                    doc.data().isExists,
                     doc.data().lastUpdated
                 );
                 couponTypesArray.push(couponType);
@@ -76,6 +78,7 @@ const updateCouponType = async (req, res, next) => {
     }
 }
 
+/*<--- deleteCouponType Not in used --->*/
 const deleteCouponType = async (req, res, next) => {
     try {
         const id = req.params.id;
@@ -86,10 +89,23 @@ const deleteCouponType = async (req, res, next) => {
     }
 }
 
+const lockoutCouponType = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const couponType = await firebase.collection('CouponTypes').doc(id);
+        await couponType.update({'isExists': false, lastUpdated: admin.firestore.Timestamp.now()});
+
+        res.json(' The couponType has been successfully locked');
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+}
+
 module.exports = {
     addCouponType,
     getAllCouponTypes,
     getCouponType,
     updateCouponType,
-    deleteCouponType
+    deleteCouponType,
+    lockoutCouponType
 }

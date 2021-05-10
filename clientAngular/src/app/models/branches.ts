@@ -11,7 +11,8 @@ export interface Branches {
     lat: Number,
     long: Number,
     isOpen: Boolean,
-    stateOpen: string, 
+    stateOpen: string,
+    isExists: boolean, 
     lastUpdated: Date, 
     shop:{
         id: string,

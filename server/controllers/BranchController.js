@@ -6,6 +6,7 @@ const addBranch = async (req, res, next) => {
     try {
         const data = req.body;
         data.isOpen = true;
+        data.isExists = true;
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('Branches').doc().set(data);
         
@@ -17,7 +18,7 @@ const addBranch = async (req, res, next) => {
             res.status(404).json('No branch record found for update into Shop');
         } else {
             dataNewBranch.forEach(doc => {
-                if (doc.data().branchName === data.branchName){
+                if ((doc.data().branchName === data.branchName) && doc.data().isExists){
                     branchId = doc.id
                 }
             });
@@ -53,6 +54,7 @@ const getAllBranches = async (req, res, next) => {
                     doc.data().lat,
                     doc.data().long,
                     doc.data().isOpen,
+                    doc.data().isExists,
                     doc.data().lastUpdated,
                     doc.data().shop,
                     doc.data().sellers
@@ -110,11 +112,31 @@ const updateBranch = async (req, res, next) => {
     }
 }
 
+/*<--- deleteBranch Not in used --->*/
 const deleteBranch = async (req, res, next) => {
     try {
         const id = req.params.id;
         await firebase.collection('Branches').doc(id).delete();
         res.json('Branch record deleted successfuly');
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+}
+
+const lockoutBranch = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const branch = await firebase.collection('Branches').doc(id);
+        await branch.update({'isExists': false, lastUpdated: admin.firestore.Timestamp.now()});
+
+        const docId = (await branch.get()).data().shop.id;
+        console.log('data().shop.id = ' + docId)
+        const shopsRef = await firebase.collection('Shops').doc(docId);
+        shopsRef.update({
+            branches: admin.firestore.FieldValue.arrayRemove({'id': id})
+        });
+
+        res.json('The branch has been successfully locked');
     } catch (error) {
         res.status(400).json(error.message);
     }
@@ -128,8 +150,13 @@ const getCountBranches = async (req, res, next) => {
         const countOfBranches = await firebase
         .collection('Branches')
         .get()
-        .then(function(querySnapshot) {      
-            size = querySnapshot.size;
+        .then(function(querySnapshot) {   
+            querySnapshot.docChanges().forEach(query => {
+                const branch = query.doc;
+                if (branch.data().isExists){
+                    size ++;
+                }
+            })        
         });
         
         res.status(200).json(size.toString());
@@ -148,7 +175,7 @@ const getCountIsOpenBranches = async (req, res, next) => {
         .then(function(querySnapshot) { 
             querySnapshot.docChanges().forEach(query => {
                 const branch = query.doc;
-                if (branch.data().isOpen){
+                if (branch.data().isOpen && branch.data().isExists){
                     size ++;
                 }
             })     
@@ -166,6 +193,7 @@ module.exports = {
     getBranch,
     updateBranch,
     deleteBranch,
+    lockoutBranch,
     getCountBranches,
     getCountIsOpenBranches
 }

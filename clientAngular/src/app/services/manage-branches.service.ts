@@ -34,6 +34,11 @@ export class ManageBranchesService {
     return this.http.delete<Branches>(url);
   }
 
+  lockoutBranch(id: string): Observable<Branches> {
+    const url = `${this.serverUrl}/${'Branch/lockout'}/${id}`;
+    return this.http.put<Branches>(url, '');
+  }
+
   getCountBranches(): Observable<number> {
     const url = `${this.serverUrl}/${"getCountBranches"}`;
     return this.http.get<number>(url);
