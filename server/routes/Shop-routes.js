@@ -6,6 +6,7 @@ const {
   getShop,
   updateShop,
   deleteShop,
+  lockoutShop
 } = require('../controllers/ShopController');
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.get('/Shops', getAllShops);
 router.get('/Shop/:id', getShop);
 router.put('/Shop/:id', updateShop);
 router.delete('/Shop/:id', deleteShop);
+router.put('/Shop/lockout/:id', lockoutShop);
 
 module.exports = {
   routes: router,

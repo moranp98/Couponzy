@@ -98,7 +98,7 @@ export class PageDashboardComponent implements OnInit {
 
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
-      this.shops = shops;
+      this.shops = shops.filter(shop => shop.isExists !== false);
       this.barChartLabels = this.shops.map((shop) => shop.shopName);
     })
   }

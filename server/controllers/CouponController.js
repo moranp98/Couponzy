@@ -159,8 +159,14 @@ const getCountCoupons = async (req, res, next) => {
         const countOfCoupons = await firebase
         .collection('Coupons')
         .get()
-        .then(function(querySnapshot) {      
-            size = querySnapshot.size;
+        .then(function(querySnapshot) {    
+            querySnapshot.docChanges().forEach(query => {
+                const coupon = query.doc;
+                const dateNow = admin.firestore.Timestamp.now();
+                if (coupon.data().expireDate >= dateNow){
+                    size ++;
+                }
+            })      
         });
         
         res.status(200).json(size.toString());
@@ -180,7 +186,7 @@ const getCountValidCoupons = async (req, res, next) => {
             querySnapshot.docChanges().forEach(query => {
                 const coupon = query.doc;
                 const dateNow = admin.firestore.Timestamp.now();
-                if (coupon.data().expireDate >= dateNow){
+                if (coupon.data().expireDate <= dateNow){
                     size ++;
                 }
             })     

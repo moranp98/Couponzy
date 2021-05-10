@@ -5,6 +5,7 @@ const Shop = require('../models/Shop');
 const addShop = async (req, res, next) => {
   try {
     const data = req.body;
+    data.isExists = true;
     data.lastUpdated = admin.firestore.Timestamp.now();
     await firebase.collection('Shops').doc().set(data);
     res.json('Shop record saved successfuly');
@@ -26,6 +27,7 @@ const getAllShops = async (req, res, next) => {
           doc.id,
           doc.data().shopName,
           doc.data().profile_Shop,
+          doc.data().isExists,
           doc.data().lastUpdated,
           doc.data().coupons,
           doc.data().branches,
@@ -100,11 +102,24 @@ const updateShop = async (req, res, next) => {
   }
 };
 
+/*<--- deleteShop Not in used --->*/
 const deleteShop = async (req, res, next) => {
   try {
     const id = req.params.id;
     await firebase.collection('Shops').doc(id).delete();
     res.json('Shop record deleted successfuly');
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
+const lockoutShop = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const shop = await firebase.collection('Shops').doc(id);
+    await shop.update({'isExists': false, lastUpdated: admin.firestore.Timestamp.now()});
+
+    res.json('The shop has been successfully locked');
   } catch (error) {
     res.status(400).json(error.message);
   }
@@ -116,4 +131,5 @@ module.exports = {
   getShop,
   updateShop,
   deleteShop,
+  lockoutShop
 };

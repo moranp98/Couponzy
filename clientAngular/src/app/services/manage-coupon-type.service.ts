@@ -33,4 +33,9 @@ export class ManageCouponTypeService {
     const url = `${this.serverUrl}/${'CouponType'}/${id}`;
     return this.http.delete<CouponTypes>(url);
   }
+
+  lockoutCouponType(id: string): Observable<CouponTypes> {
+    const url = `${this.serverUrl}/${'CouponType/lockout'}/${id}`;
+    return this.http.put<CouponTypes>(url, '');
+  }
 }

@@ -1,15 +1,30 @@
 <div class="row mb-lg-4">
   <div class="col-lg-8 ">
-    <card [title]="'רשימת חנויות'">
+    <card [title]="'רשימת סניפים'">
+      <alert *ngIf="deletePressed && canDeleteFlag" [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>האם אתה בטוח שאתה מעוניין למחוק את הסניף?</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
+      </alert>
+      <alert *ngIf="deletePressed && !canDeleteFlag" [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>אינך מורשה למחוק סניף שכולל מוכרים אקטיביים !</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="onDelete(false, 'Delete stoped')">ביטול</button>
+      </alert>
       <mat-list class="branchesCard">
         <mat-list-item *ngFor="let branch of branches; let i = index">
           <img mat-list-avatar src="{{ branch.profile_Branch }}" class="avatar" alt="">
-          <!--img mat-list-avatar src="../../../assets/content/avatar-3.jpg" class="avatar" alt=""-->
           <h2 mat-line class="h2">{{ branch.shop.shopName }}</h2>
           <p mat-line class="details">
-            <span class="span"><strong>שם חנות: </strong>{{ branch.branchName }}</span>
+            <span class="span"><strong>שם סניף: </strong>{{ branch.branchName }}</span>
             <span class="span"></span>
             <span class="span"><strong>עיר: </strong>{{ branch.address.city }}</span>
+            <span class="span"></span>
+            <span class="span"><strong>כמות מוכרים אקטיביים: </strong>{{ branch.sellers.length }}</span>
             <span class="span"></span>
           </p>
           <button mat-raised-button color="primary" (click)="OnDetails(branch.id)">פרטים</button>
@@ -22,21 +37,13 @@
         </mat-list-item>
       </mat-list>
 
-      <alert *ngIf="deletePressed" [color]="'danger'" [outline]="true">
-        <mat-icon>error_outline</mat-icon>
-        <strong>האם אתה בטוח שאתה מעוניין למחוק את החנות?</strong>
-        <span class="span"></span>
-        <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
-        <span class="span"></span>
-        <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
-      </alert>
       <button mat-fab color="primary" (click)="onAdd(true)">
         <mat-icon>add</mat-icon>
       </button>
     </card>
   </div>
   <div class="col-lg-4">
-    <card [title]="'הצג חנות'">
+    <card [title]="'הצג סניף'">
       <div class="row branchesCard">
         <div class="col-lg-3">
           <mat-list>
@@ -53,7 +60,6 @@
           <mat-list>
             <mat-list-item>
               <img mat-line src="{{ branchOnDetails.profile_Branch }}" class="avatar" alt="">
-              <!--img mat-line src="../../../assets/content/avatar-3.jpg" class="avatar" alt=""-->
               <p mat-line><i></i></p>
             </mat-list-item>
             <mat-list-item>
@@ -86,12 +92,12 @@
 
 <div class="row mb-lg-4" *ngIf="addPressed">
   <div class="col-lg-12">
-    <card title="יצירת חנות חדשה">
+    <card title="יצירת סניף חדש">
       <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
         <div class="row">
           <div class="col-md-4">
             <mat-form-field>
-              <mat-select placeholder="בחר רשת חנויות" formControlName="shop" (selectionChange)="handleSelect($event)">
+              <mat-select placeholder="בחר רשת סניפים" formControlName="shop" (selectionChange)="handleSelect($event)">
                 <mat-option *ngFor="let shop of shopClass; let i = index" [value]="shop">
                   {{ shop.shopName }}
                 </mat-option>
@@ -173,7 +179,7 @@
           </div>
         </div>
         <div class="row">
-          <button mat-raised-button color="accent" [disabled]="!form.valid">יצירת חנות</button>
+          <button mat-raised-button color="accent" [disabled]="!form.valid">יצירת סניף</button>
           <span class="span"></span>
           <button mat-mini-fab type="button" color="primary" (click)="onAdd(false)">
             <mat-icon>keyboard_return</mat-icon>
@@ -186,7 +192,7 @@
 
 <div class="row mb-lg-4" *ngIf="updatePressed">
   <div class="col-lg-12">
-    <card title="עריכת נתוני חנות">
+    <card title="עריכת נתוני סניף">
       <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
         <div class="row">
           <div class="col-md-4">
@@ -257,14 +263,25 @@
           <div class="col-md-4">
             <mat-form-field>
               <input matInput placeholder="קו אורך" [formControl]="updateForm.controls['long']" type="number">
-              <mat-error *ngIf="updateForm.controls['long'].hasError('required') && updateForm.controls['long'].touched">
+              <mat-error
+                *ngIf="updateForm.controls['long'].hasError('required') && updateForm.controls['long'].touched">
                 הינך נדרש להכניס מיקום לסניף.
               </mat-error>
             </mat-form-field>
           </div>
+          <div class="col-md-4">
+            <label>סניף פתוחה?</label>
+            <mat-radio-group [formControl]="updateForm.controls['isOpen']">
+              <mat-radio-button [value]="true">כן</mat-radio-button>
+              <mat-radio-button [value]="false">לא</mat-radio-button>
+            </mat-radio-group>
+            <mat-error *ngIf="!updateForm.controls['isOpen'].valid && updateForm.controls['isOpen'].touched">
+              אתה נדרש לבחור אם הסניף פתוח או לא.
+            </mat-error>
+          </div>
         </div>
         <div class="row">
-          <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי חנות</button>
+          <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי סניף</button>
           <span class="span"></span>
           <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
             <mat-icon>keyboard_return</mat-icon>
