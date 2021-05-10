@@ -36,6 +36,7 @@ import { PageDashboardComponent } from './pages/dashboard/dashboard.component';
 import { PageUsersManageComponent } from './pages/users-manage/users-manage.component';
 import { PageShopsManageComponent } from './pages/shops-manage/shops-manage.component';
 import { PageShopsMapComponent } from './pages/shops-map/shops-map.component';
+import { PageCouponsManageComponent } from './pages/coupons-manage/coupons-manage.component';
 
 //Roadstart pages
 import { PageSignInSocialComponent } from './pages/roadstart-pages/sign-in-social/sign-in-social.component';
@@ -67,6 +68,7 @@ import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timelin
     PageUsersManageComponent,
     PageShopsManageComponent,
     PageShopsMapComponent,
+    PageCouponsManageComponent,
     RoadstartLayoutComponent,
     PageSignInSocialComponent,
     PageSignUpComponent,

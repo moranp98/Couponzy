@@ -9,8 +9,12 @@ export const environment = {
 
   serverUrl : `http://localhost:${PORT}/api`,
   
+  branchesUrl : `http://localhost:${PORT}/api/branches`,
+  shopsUrl : `http://localhost:${PORT}/api/shops`,
+  couponTypesUrl : `http://localhost:${PORT}/api/couponTypes`,
   brandsUrl : `http://localhost:${PORT}/brands`,
   usersUrl : `http://localhost:${PORT}/api/user`,
+  couponsUrl : `http://localhost:${PORT}/api`,
   ordersUrl : `http://localhost:${PORT}/api/orders`,
   shopssUrl : `http://localhost:${PORT}/shops`,
 };
