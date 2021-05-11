@@ -17,6 +17,10 @@ const details: any[] = [
     badge: false,
   },
   {
+    icon: 'code',
+    badge: false,
+  },
+  {
     icon: 'sell',
     badge: false,
   },
@@ -84,6 +88,7 @@ export class PageCouponsManageComponent implements OnInit {
   detailPressed: boolean = false;
   updatePressed: boolean = false;
   deletePressed: boolean = false;
+  canDeleteFlag: boolean = false;
 
   public form: FormGroup;
   public updateForm: FormGroup;
@@ -99,24 +104,53 @@ export class PageCouponsManageComponent implements OnInit {
 
   ngOnInit(): void {
 
+    var role = localStorage.getItem('role');
+    console.log('getItem(role) = ' + localStorage.getItem('role'))
+
+    var employerId = localStorage.getItem('employerId');
+    console.log('getItem(employerId) = ' + localStorage.getItem('employerId'))
+
+    if (role === 'shopManager') {
+      
+    }
     this.showCoupons();
     this.showShops();
     this.showCouponTypes();
 
     this.form = this.fb.group({
-      couponId: [null, Validators.compose([Validators.required])],
-      couponName: [null, Validators.compose([Validators.required])],
-      description: [null, Validators.compose([Validators.required])],
+      couponId: [null, Validators.compose(
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(6),
+          Validators.pattern("^[0-9]*$"),
+          this._uniqueIdValidator.bind(this)
+        ])
+      ],
+      couponName: [null, Validators.compose([Validators.required, Validators.maxLength(16)])],
+      description: [null, Validators.compose([Validators.required, Validators.maxLength(140)])],
       expireDate: [null, Validators.compose([Validators.required])],
       newPrice: [null, Validators.compose([Validators.required])],
       oldPrice: [null, Validators.compose([Validators.required])],
-      ratingAvg: [null, Validators.compose([])],
-      numOf_rating: [null, Validators.compose([])],
+      ratingAvg: [0, Validators.compose([Validators.required])],
+      numOf_rating: [0, Validators.compose([Validators.required])],
+      isExists: [true, Validators.compose([Validators.required])],
+      lastUpdated: [Date.now(), Validators.compose([])],
       Shop: [null, Validators.compose([Validators.required])],
       profile_Coupon: [null, Validators.compose([Validators.required])],
       couponType: [null, Validators.compose([Validators.required])],
 
     });
+  }
+
+  private _uniqueIdValidator(control: FormControl) {
+    if (this.coupons.find(coupon => coupon.id === control.value)) {
+      console.log("duplicate: true")
+      return { duplicate: true };
+    } else {
+      console.log("is unique branchName")
+      return null;
+    }
   }
 
   handleSelect(shop: any) { // This function is not used
@@ -131,40 +165,38 @@ export class PageCouponsManageComponent implements OnInit {
 
   showCouponTypes() {
     this._managecouponTypes.getAllCouponTypes().subscribe((couponTypes) => {
-      this.couponTypes = couponTypes;
-    this.couponTypes.forEach(couponTypeObj => {
-      this.couponTypeClass.push(new couponType(couponTypeObj.id, couponTypeObj.couponTypeName))
+      this.couponTypes = couponTypes.filter(couponType => couponType.isExists !== false);
+      this.couponTypes.forEach(couponTypeObj => {
+        this.couponTypeClass.push(new couponType(couponTypeObj.id, couponTypeObj.couponTypeName))
+      });
     });
-  });
   }
 
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
-      this.shops = shops;
-    this.shops.forEach(shopObj => {
-      this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+      this.shops = shops.filter(shop => shop.isExists !== false);
+      this.shops.forEach(shopObj => {
+        this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+      });
     });
-  });
   }
 
   showCoupons() {
     this.ShowCouponsService.getCoupons().subscribe((coupons) => {
-      this.coupons = coupons;
+      this.coupons = coupons.filter(coupon => coupon.isExists !== false);;
     })
   }
 
   OnDetails(id: string) {
-    console.log(id);
     this.detailPressed = true;
     this.couponOnDetails = this.coupons.find(coupon => coupon.id === id);
-    console.log(this.couponOnDetails);
   }
 
   onAdd(stateAddPressed: boolean) {
-    if(stateAddPressed){
+    if (stateAddPressed) {
       this.addPressed = true;
     }
-    if(!stateAddPressed){
+    if (!stateAddPressed) {
       this.addPressed = false;
       this.form.reset();
     }
@@ -173,66 +205,94 @@ export class PageCouponsManageComponent implements OnInit {
   onSubmit(value: boolean) {
     this.ShowCouponsService.createCoupon(this.form.value).subscribe(
       (coupons) => { console.log('Success', coupons); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showCoupons(); this.showShops(); this.showCouponTypes(); }
     );
     this.addPressed = false;
     this.form.reset();
   }
 
-  onUpdate(stateUpdatePressed: boolean, id: string){
-    if(stateUpdatePressed){
+  onUpdate(stateUpdatePressed: boolean, id: string) {
+    if (stateUpdatePressed) {
       console.log(id);
       this.updatePressed = true;
       this.updateCoupon = this.coupons.find(coupon => coupon.id === id);
+
+      console.log("this.updateCoupon.numOf_rating = " + this.updateCoupon.numOf_rating)
+
       this.updateForm = this.fb.group({
-        couponId: [this.updateCoupon.id, Validators.compose([Validators.required])],
-        couponName: [this.updateCoupon.couponName, Validators.compose([Validators.required])],
-        description: [this.updateCoupon.description, Validators.compose([Validators.required])],
+        couponId: [this.updateCoupon.id, Validators.compose(
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(6),
+            //this._uniqueIdValidator.bind(this)
+          ])
+        ],
+        couponName: [this.updateCoupon.couponName, Validators.compose([Validators.required, Validators.maxLength(16)])],
+        description: [this.updateCoupon.description, Validators.compose([Validators.required, Validators.maxLength(140)])],
+        published: [this.updateCoupon.published, Validators.compose([Validators.required])],
         expireDate: [this.updateCoupon.expireDate, Validators.compose([Validators.required])],
         newPrice: [this.updateCoupon.newPrice, Validators.compose([Validators.required])],
         oldPrice: [this.updateCoupon.oldPrice, Validators.compose([Validators.required])],
         ratingAvg: [this.updateCoupon.ratingAvg, Validators.compose([])],
         numOf_rating: [this.updateCoupon.numOf_rating, Validators.compose([])],
+        isExists: [true, Validators.compose([Validators.required])],
+        lastUpdated: [this.updateCoupon.lastUpdated, Validators.compose([])],
         Shop: [this.updateCoupon.shop, Validators.compose([])],
         profile_Coupon: [this.updateCoupon.profile_Coupon, Validators.compose([Validators.required])],
         couponType: [this.updateCoupon.couponType, Validators.compose([])],
-  
+
       });
       console.log(this.updateForm.value);
     }
-    if(!stateUpdatePressed){
+    if (!stateUpdatePressed) {
       this.updatePressed = false;
       this.updateForm.reset();
     }
-    
+
   }
 
-  onUpdateSubmit(){
+  onUpdateSubmit() {
     this.ShowCouponsService.updateCoupon(this.updateForm.value, this.updateCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showCoupons(); this.showShops(); this.showCouponTypes(); }
     );
     this.updatePressed = false;
     this.updateForm.reset();
   }
 
-  onDelete(stateDeletePressed: boolean, id: string){
-    
-    this.deleteCoupon = this.coupons.find(coupon => coupon.id === id);
-    if(stateDeletePressed){
+  onDelete(stateDeletePressed: boolean, id: string) {
+
+    if (id !== 'Delete stoped') {
+      this.deleteCoupon = this.coupons.find(coupon => coupon.id === id);
+    }
+    const today = new Date(Date.now());
+    const expireDate = new Date(this.deleteCoupon.expireDate);
+    if (expireDate < today) {
+      this.canDeleteFlag = true;
+    }
+
+    if (stateDeletePressed) {
       this.deletePressed = true;
     }
-    if(!stateDeletePressed){
+    if (!stateDeletePressed) {
       this.deletePressed = false;
+      this.canDeleteFlag = false;
     }
   }
 
-  onDeleteSubmit(){
+  onDeleteSubmit() {
     this.deletePressed = false;
+    this.canDeleteFlag = false;
     console.log(this.deleteCoupon);
-    this.ShowCouponsService.deleteCoupon(this.deleteCoupon.id).subscribe(
+    console.log(this.deleteCoupon.id);
+    console.log(this.deleteCoupon.couponId);
+    this.ShowCouponsService.lockoutCoupon(this.deleteCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showCoupons(); this.showShops(); this.showCouponTypes(); }
     );
   }
 }

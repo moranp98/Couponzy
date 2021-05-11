@@ -6,7 +6,6 @@ import { Branches } from '../../models/branches';
 import { Router } from '@angular/router';
 import { Shops } from '../../models/shops';
 
-
 @Component({
   selector: 'page-shops-map',
   templateUrl: './shops-map.component.html',

@@ -11,8 +11,6 @@ import { Coupons } from '../models/coupons';
   providedIn: 'root'
 })
 export class ManageCouponsService {
-
-  private couponsUrl = environment.couponsUrl;
   private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
@@ -24,22 +22,22 @@ export class ManageCouponsService {
 
   createCoupon(formCoupon): Observable<any> {
     const url = `${this.serverUrl}/${"Coupon"}`;
-    console.log(formCoupon);
     return this.http.post<any>(url, formCoupon);
   }
 
   updateCoupon(formCoupon, id: string): Observable<Coupons[]> {
-    console.log(id);
     const url = `${this.serverUrl}/${'Coupon'}/${id}`;
-    console.log(formCoupon);
-    console.log(url);
-
     return this.http.put<Coupons[]>(url, formCoupon);
   }
 
   deleteCoupon(id: string): Observable<Coupons> {
     const url = `${this.serverUrl}/${'Coupon'}/${id}`;
     return this.http.delete<Coupons>(url);
+  }
+
+  lockoutCoupon(id: string): Observable<Coupons> {
+    const url = `${this.serverUrl}/${'Coupon/lockout'}/${id}`;
+    return this.http.put<Coupons>(url, '');
   }
 
   getCountCoupons(): Observable<number> {

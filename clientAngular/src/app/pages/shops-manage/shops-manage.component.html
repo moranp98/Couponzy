@@ -36,7 +36,6 @@
           </button>
         </mat-list-item>
       </mat-list>
-
       <button mat-fab color="primary" (click)="onAdd(true)">
         <mat-icon>add</mat-icon>
       </button>
@@ -270,7 +269,7 @@
             </mat-form-field>
           </div>
           <div class="col-md-4">
-            <label>סניף פתוחה?</label>
+            <label>הסניף פתוח?</label>
             <mat-radio-group [formControl]="updateForm.controls['isOpen']">
               <mat-radio-button [value]="true">כן</mat-radio-button>
               <mat-radio-button [value]="false">לא</mat-radio-button>
@@ -290,4 +289,4 @@
       </form>
     </card>
   </div>
-</div> -->
+</div>
