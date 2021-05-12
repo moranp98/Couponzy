@@ -1,114 +1,125 @@
 <card [title]="'צור חשבון עבורך'" [align]="'center'" *ngIf="!isSignedIn">
-  <form (ngSubmit)="onSignup(emailSignup.value,passwordSignup.value,passwordValSignup.value)">
+  <form (ngSubmit)="onSignup(emailSignup.value,
+                             passwordSignup.value,
+                             passwordValSignup.value,
+                             firstname.value,
+                             lastname.value,
+                             country.value,
+                             city.value,
+                             zipcode.value,
+                             birthday.value,
+                             maritalstatus.value,
+                             gender.value,
+                             phonenumber.value,
+                             userid.value)">
 
-    <!-- <div class="Row">
+    <div class="Row" formGroupName="username">
       <div class="Column">
         <mat-form-field>
-          <input matInput placeholder="שם פרטי" value="" [formControl]="form.controls['firstname']">
-          <mat-error *ngIf="form.controls['firstname'].hasError('required') && form.controls['firstname'].touched">
+          <input matInput placeholder="שם פרטי" value="" #firstname  >
+          <!-- <mat-error *ngIf="form.controls['firstname'].hasError('required') && form.controls['firstname'].touched">
             הינך נדרש להכניס שם פרטי.
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
       </div>
       <div class="Column">
         <mat-form-field>
-          <input matInput placeholder="שם משפחה" value="" [formControl]="form.controls['lastname']">
-          <mat-error *ngIf="form.controls['lastname'].hasError('required') && form.controls['lastname'].touched">
+          <input matInput placeholder="שם משפחה" value="" #lastname  >
+          <!-- <mat-error *ngIf="form.controls['lastname'].hasError('required') && form.controls['lastname'].touched">
             הינך נדרש להכניס שם משפחה.
-          </mat-error>
+          </mat-error> -->
           </mat-form-field>
       </div>
-    </div> -->
+    </div>
 
 
     <mat-form-field>
-      <input matInput placeholder="Email address" value="" #emailSignup [formControl]="form.controls['email']">
-      <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
+      <input matInput placeholder="Email address" value="" #emailSignup >
+      <!-- <mat-error *ngIf="form.controls['email'].hasError('required') && form.controls['email'].touched">
         הינך נדרש להכניס מייל .
-      </mat-error>
+      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Password" value="" #passwordSignup [formControl]="form.controls['pass']">
+      <input matInput placeholder="Password" value="" #passwordSignup >
       <!-- <mat-error *ngIf="form.controls['pass'].hasError('required') && form.controls['pass'].touched">
         הינך נדרש להכניס סיסמה .
       </mat-error> -->
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Confirm Password" value="" #passwordValSignup
-        [formControl]="form.controls['passconfig']">
+      <input matInput placeholder="Confirm Password" value="" #passwordValSignup >
       <!-- <mat-error *ngIf="form.controls['passconfig'].hasError('required') && form.controls['passconfig'].touched">
         הינך נדרש להכניס סיסמה .
       </mat-error> -->
     </mat-form-field>
 
-    <!-- <div class="row mb-lg" formGroupName="address">
+    <div class="row mb-lg" formGroupName="address">
       <div class="col-md-4">
         <mat-form-field>
-          <input matInput placeholder="עיר" formControlName="city" type="text">
-          <mat-error
+          <input matInput placeholder="עיר" #city  type="text">
+          <!-- <mat-error
             *ngIf="updateForm.controls.address.controls['city'].hasError('required') && updateForm.controls.address.controls['city'].touched">
             הינך נדרש לתת שם לעיר.
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field>
-          <input matInput placeholder="מיקום" formControlName="street" type="text">
-          <mat-error
-            *ngIf="updateForm.controls.address.controls['street'].hasError('required') && updateBranch.controls.address.controls['street'].touched">
+          <input matInput placeholder="מיקום" #zipcode  type="text">
+          <!-- <mat-error
+            *ngIf="updateForm.controls.address.controls['zipcode'].hasError('required') && updateBranch.controls.address.controls['zipcode'].touched">
             הינך נדרש לבחור מיקום.
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field>
-          <input matInput placeholder="מדינה" formControlName="country" type="text">
-          <mat-error
+          <input matInput placeholder="מדינה" #country  type="text">
+          <!-- <mat-error
             *ngIf="updateForm.controls.address.controls['country'].hasError('required') && updateForm.controls.address.controls['country'].touched">
             הינך נדרש לתת שם למדינה.
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
       </div>
     </div>
     <div class="row mb-lg">
       <label for="start">תאריך לידה : </label>
-      <input type="date" class="form-control" id="dob" max="{{date | date:'yyyy-MM-dd'}}">
+      <input type="date"  #birthday data-ng-value="birthday  | date : 'shortDate'" id="birthday" max="{{date | date:'yyyy-MM-dd'}}">
     </div>
     <div class="Row">
       <div class="Column">
-        <label for="cars">מין:</label>
-        <select name="cars" id="cars">
-          <option value="volvo">זכר</option>
-          <option value="saab">נקבה</option>
-          <option value="mercedes">אחר</option>
+        <label for="sex">מין:</label>
+        <select name="sex" id="sex" #gender >
+          <option [ngValue]="Male" >זכר</option>
+          <option [ngValue]="Female" >נקבה</option>
+          <option [ngValue]="Other">אחר</option>
         </select>
       </div>
       <div class="Column">
-        <label for="cars">מצב משפחתי:</label>
-        <select name="cars" id="cars">
-          <option value="single">רווק</option>
-          <option value="married">נשוי</option>
-          <option value="widower">אלמן</option>
-          <option value="divorced">גרוש</option>
-          <option value="other">אחר</option>
+        <label for="maritalstatus">מצב משפחתי:</label>
+        <select name="maritalstatus" id="maritalstatus" #maritalstatus >
+          <option >רווק</option>
+          <option >נשוי</option>
+          <option >אלמן</option>
+          <option >גרוש</option>
+          <option >אחר</option>
         </select>
       </div>
     </div>
 
     <mat-form-field>
-      <input matInput placeholder="תעודת זהות" value="" #emailSignup [formControl]="form.controls['userid']">
-      <mat-error *ngIf="form.controls['userid'].hasError('required') && form.controls['userid'].touched">
+      <input matInput placeholder="תעודת זהות" value="" #userid  >
+      <!-- <mat-error *ngIf="form.controls['userid'].hasError('required') && form.controls['userid'].touched">
         הינך נדרש להכניס ת"ז .
-      </mat-error>
+      </mat-error> -->
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="מספר נייד" value="" #emailSignup [formControl]="form.controls['phonenumber']">
-      <mat-error *ngIf="form.controls['phonenumber'].hasError('required') && form.controls['phonenumber'].touched">
+      <input matInput placeholder="מספר נייד" value="" #phonenumber >
+      <!-- <mat-error *ngIf="form.controls['phonenumber'].hasError('required') && form.controls['phonenumber'].touched">
         הינך נדרש להכניס ת"ז .
-      </mat-error>
-    </mat-form-field> -->
+      </mat-error> -->
+    </mat-form-field>
 
     <div class="text-left mb-module">
       <mat-checkbox>

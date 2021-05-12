@@ -4,14 +4,17 @@ const User = require('../models/User');
 
 const addUser = async (req, res, next) => {
     try {
-        const data = req.body;
+        const data = req.body; 
+        let timeDiff = Math.abs(Date.now() - new Date(data.birthday));
+        let age = Math.floor((timeDiff / (1000 * 3600 * 24))/365.25); 
+        console.log("Age is : " + age)  
         console.log(data);
         data.active = true;
         data.role = 'customer';
         data.employerId = 'Not employed';
         data.created_at = admin.firestore.Timestamp.now();
         data.lastUpdated = admin.firestore.Timestamp.now();
-        data.age = //birthday
+        data.age = age//birthday
         data.lat = 0.0;
         data.long = 0.0; 
         console.log("Acceced in ADDUSER")
