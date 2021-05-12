@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageCouponsService } from '../../services/manage-coupons.service';
 import { Coupons } from '../../models/coupons';
+import { Users } from '../../models/users';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
@@ -83,6 +84,7 @@ export class PageCouponsManageComponent implements OnInit {
   couponOnDetails: Coupons;
   updateCoupon: Coupons;
   deleteCoupon: Coupons;
+  currentUser: Users;
 
   addPressed: boolean = false;
   detailPressed: boolean = false;
@@ -103,18 +105,11 @@ export class PageCouponsManageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
 
-    var role = localStorage.getItem('role');
-    console.log('getItem(role) = ' + localStorage.getItem('role'))
-
-    var employerId = localStorage.getItem('employerId');
-    console.log('getItem(employerId) = ' + localStorage.getItem('employerId'))
-
-    if (role === 'shopManager') {
-      
-    }
-    this.showCoupons();
-    this.showShops();
+    this.showCoupons(this.currentUser.employerId);
+    this.showShops(this.currentUser.employerId);
     this.showCouponTypes();
 
     this.form = this.fb.group({
@@ -172,19 +167,43 @@ export class PageCouponsManageComponent implements OnInit {
     });
   }
 
-  showShops() {
-    this._manageshops.getAllShops().subscribe((shops) => {
-      this.shops = shops.filter(shop => shop.isExists !== false);
-      this.shops.forEach(shopObj => {
-        this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
-      });
-    });
+  showShops(shopId: string) {
+    switch (this.currentUser.role) {
+      case 'shopManager':
+        this._manageshops.getAllShops().subscribe((shops) => {
+          this.shops = shops.filter(shop => shop.isExists !== false && shop.id === shopId);
+          this.shops.forEach(shopObj => {
+            this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+          });
+        });
+        break;
+      default: // role --> 'admin'
+        this._manageshops.getAllShops().subscribe((shops) => {
+          this.shops = shops.filter(shop => shop.isExists !== false);
+          this.shops.forEach(shopObj => {
+            this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
+          });
+        });
+        break;
+    }
+
   }
 
-  showCoupons() {
-    this.ShowCouponsService.getCoupons().subscribe((coupons) => {
-      this.coupons = coupons.filter(coupon => coupon.isExists !== false);;
-    })
+  showCoupons(shopId: string) {
+    switch (this.currentUser.role) {
+      case 'shopManager':
+        this.ShowCouponsService.getCoupons().subscribe((coupons) => {
+          this.coupons = coupons.filter(coupon => (coupon.isExists !== false && coupon.shop.id === shopId));
+          console.log(this.coupons)
+        });
+        break;
+      default: // role --> 'admin'
+        this.ShowCouponsService.getCoupons().subscribe((coupons) => {
+          this.coupons = coupons.filter(coupon => (coupon.isExists !== false));
+          console.log(this.coupons)
+        });
+        break;
+    }
   }
 
   OnDetails(id: string) {
@@ -206,7 +225,11 @@ export class PageCouponsManageComponent implements OnInit {
     this.ShowCouponsService.createCoupon(this.form.value).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
-      () => { this.showCoupons(); this.showShops(); this.showCouponTypes(); }
+      () => {
+        this.showCoupons(this.currentUser.employerId);
+        this.showShops(this.currentUser.employerId);
+        this.showCouponTypes();
+      }
     );
     this.addPressed = false;
     this.form.reset();
@@ -257,7 +280,11 @@ export class PageCouponsManageComponent implements OnInit {
     this.ShowCouponsService.updateCoupon(this.updateForm.value, this.updateCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
-      () => { this.showCoupons(); this.showShops(); this.showCouponTypes(); }
+      () => {
+        this.showCoupons(this.currentUser.employerId);
+        this.showShops(this.currentUser.employerId);
+        this.showCouponTypes();
+      }
     );
     this.updatePressed = false;
     this.updateForm.reset();
@@ -292,7 +319,11 @@ export class PageCouponsManageComponent implements OnInit {
     this.ShowCouponsService.lockoutCoupon(this.deleteCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
-      () => { this.showCoupons(); this.showShops(); this.showCouponTypes(); }
+      () => {
+        this.showCoupons(this.currentUser.employerId);
+        this.showShops(this.currentUser.employerId);
+        this.showCouponTypes();
+      }
     );
   }
 }

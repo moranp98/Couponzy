@@ -23,6 +23,13 @@ export class ManageBranchesService {
     return this.http.post<any>(url, formBranch);
   }
   
+  getBranchById(id: string): Observable<Branches> {
+    console.log(id);
+    const url = `${this.serverUrl}/${'Branch'}/${id}`;
+    console.log(url);
+    return this.http.get<Branches>(url);
+  }
+
   updateBranch(formBranch, id: string): Observable<Branches[]> {
     console.log(id);
     const url = `${this.serverUrl}/${'Branch'}/${id}`;

@@ -22,12 +22,23 @@
     "budgeColor": ""
   },
   {
-    "title": "ניהול סניפים",
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-google-wallet",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "ניהול קופונים",
     "icon": "fa fa-shopping-basket",
     "active": false,
     "groupTitle" : false,
     "sub": "",
-    "routing": "/default-layout/shops-manage",
+    "routing": "/default-layout/coupons-manage",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""
@@ -39,6 +50,17 @@
     "groupTitle" : false,
     "sub": "",
     "routing": "/default-layout/shops-map",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "נתוני מכירות",
+    "icon": "fa fa-line-chart",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

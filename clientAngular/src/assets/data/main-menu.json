@@ -23,7 +23,7 @@
   },
   {
     "title": "דירוגים על ציר הזמן",
-    "icon": "fa fa-tachometer",
+    "icon": "fa fa-google-wallet",
     "active": false,
     "groupTitle": false,
     "sub": "",
@@ -55,6 +55,17 @@
     "budgeColor": ""
   },
   {
+    "title": "ניהול סניפים",
+    "icon": "fa fa-building",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול קופונים",
     "icon": "fa fa-shopping-basket",
     "active": false,
@@ -66,19 +77,8 @@
     "budgeColor": ""
   },
   {
-    "title": "ניהול סניפים",
-    "icon": "fa fa-shopping-basket",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/default-layout/shops-manage",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
     "title": "ניהול קטיגוריות קופונים",
-    "icon": "fa fa-shopping-basket",
+    "icon": "fa fa-book",
     "active": false,
     "groupTitle" : false,
     "sub": "",

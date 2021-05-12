@@ -1,29 +1,29 @@
 
 export interface Users {
     id: string,
-    active: Boolean,
+    userName:{
+        firstName: string,
+        lastName: string
+    },
+    email: string,
+    userID: string,
+    phoneNumber: string,
+    profile_User: string,
+    birthday:string,
+    gender: string,
+    age: number,
+    maritalstatus: string,
     address:{
         city: string,
         street: string,
         country: string
     },
-    age: number,
-    birthday:string,
-    lastUpdated: Date,
-    created_at: Date,
-    employerid: string,
-    gender: string,
-    lat: string,
-    long: string,
-    maritalstatus: string,
+    lat: Number,
+    long: Number,
+    active: Boolean,
     role: string,
-    userid: string,
-    email: string,
-    username:{
-        firstname: string,
-        lastname: string
-    },
-    phoneNumber: string,
-    orders: string,
-    shop:string    
+    employerId: string,
+    created_at: Date,
+    lastUpdated: Date,
+    shop: string
 }
