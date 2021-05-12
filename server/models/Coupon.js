@@ -11,6 +11,7 @@ class Coupon {
     expireDate,
     ratingAvg,
     numOf_rating,
+    isExists,
     lastUpdated,
     couponType,
     shop
@@ -26,6 +27,7 @@ class Coupon {
     this.expireDate = expireDate;
     this.ratingAvg = ratingAvg;
     this.numOf_rating = numOf_rating;
+    this.isExists = isExists;
     this.lastUpdated = lastUpdated;
     this.couponType = couponType;
     this.shop = shop;

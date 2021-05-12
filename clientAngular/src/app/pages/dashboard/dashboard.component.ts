@@ -67,6 +67,7 @@ export class PageDashboardComponent implements OnInit {
     this.showUsers();
     this.showOrders();
     this.showShops();
+    console.log('localStorage.getItem(user) = ' + localStorage.getItem('user'))
     if(localStorage.getItem('user')== null){
       this.router.navigate(['/roadstart-layout/sign-in-social']);
       }

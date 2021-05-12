@@ -8,6 +8,7 @@ const addCoupon = async (req, res, next) => {
     const data = req.body;
     data.ratingAvg = 0;
     data.numOf_rating = 0;
+    data.isExists = true;
     data.lastUpdated = admin.firestore.Timestamp.now();
     data.published = admin.firestore.Timestamp.now();
     console.log(data);
@@ -55,6 +56,7 @@ const getAllCoupons = async (req, res, next) => {
           doc.data().expireDate,
           doc.data().ratingAvg,
           doc.data().numOf_rating,
+          doc.data().isExists,
           doc.data().lastUpdated,
           doc.data().couponType,
           doc.data().Shop
@@ -145,6 +147,7 @@ const updateCoupon = async (req, res, next) => {
   }
 };
 
+/*<--- deleteCoupon Not in used --->*/
 const deleteCoupon = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -165,46 +168,73 @@ const deleteCoupon = async (req, res, next) => {
   }
 };
 
+const lockoutCoupon = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const coupon = await firebase.collection('Coupons').doc(id);
+    await coupon.update({'isExists': false, lastUpdated: admin.firestore.Timestamp.now()});
+
+    const docShopId = (await coupon.get()).data().Shop.id;
+    console.log('data().shop.id = ' + docShopId)
+    const shopsRef = await firebase.collection('Shops').doc(docShopId);
+    shopsRef.update({
+      coupons: admin.firestore.FieldValue.arrayRemove({'id': id})
+    });
+
+    const docCouponTypeId = (await coupon.get()).data().couponType.id;
+    console.log('data().couponType.id = ' + docCouponTypeId)
+    const couponTypeRef = await firebase.collection('CouponTypes').doc(docCouponTypeId);
+    couponTypeRef.update({
+      countOf_Coupons: admin.firestore.FieldValue.increment(-1),
+    });
+
+    res.json('The coupon has been successfully locked');
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
 // <--   Another functions    -->
 
 const getCountCoupons = async (req, res, next) => {
-    try {
-        var size = 0
-        const countOfCoupons = await firebase
-        .collection('Coupons')
-        .get()
-        .then(function(querySnapshot) {    
-            querySnapshot.docChanges().forEach(query => {
-                const coupon = query.doc;
-                const dateNow = admin.firestore.Timestamp.now();
-                if (coupon.data().expireDate >= dateNow){
-                    size ++;
-                }
-            })      
-        });
-        
-        res.status(200).json(size.toString());
-        
-    } catch (error) {
-        res.status(400).json(error.message);
-    }
+  try {
+    var size = 0
+    const countOfCoupons = await firebase
+      .collection('Coupons')
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.docChanges().forEach(query => {
+          const coupon = query.doc;
+          const today = new Date(Date.now());
+          const expireDate = new Date(coupon.data().expireDate)
+          if (expireDate >= today) {
+            size++;
+          }
+        })
+      });
+
+    res.status(200).json(size.toString());
+
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
 }
 
 const getCountValidCoupons = async (req, res, next) => {
-    try {
-        var size = 0
-        const countOfValidCoupons = await firebase
-        .collection('Coupons')
-        .get()
-        .then(function(querySnapshot) { 
-            querySnapshot.docChanges().forEach(query => {
-                const coupon = query.doc;
-                const dateNow = admin.firestore.Timestamp.now();
-                if (coupon.data().expireDate <= dateNow){
-                    size ++;
-                }
-            })     
-        });
+  try {
+    var size = 0
+    const countOfValidCoupons = await firebase
+      .collection('Coupons')
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.docChanges().forEach(query => {
+          const coupon = query.doc;
+          const today = new Date(Date.now());
+          const expireDate = new Date(coupon.data().expireDate)
+          if (expireDate < today && coupon.data().isExists) {
+            size++;
+          }
+        })
       });
     res.status(200).json(size.toString());
   } catch (error) {
@@ -218,6 +248,7 @@ module.exports = {
   getCoupon,
   updateCoupon,
   deleteCoupon,
+  lockoutCoupon,
   getCountCoupons,
   getCountValidCoupons,
 };
