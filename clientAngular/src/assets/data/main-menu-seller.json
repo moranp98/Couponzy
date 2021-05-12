@@ -22,12 +22,45 @@
     "budgeColor": ""
   },
   {
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-google-wallet",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מכירת קופונים",
+    "icon": "",
+    "active": false,
+    "groupTitle" : true,
+    "sub": "",
+    "routing": "",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "מפת חנויות",
     "icon": "fa fa-map-marker",
     "active": false,
     "groupTitle" : false,
     "sub": "",
     "routing": "/default-layout/shops-map",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "נתוני מכירות",
+    "icon": "fa fa-line-chart",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

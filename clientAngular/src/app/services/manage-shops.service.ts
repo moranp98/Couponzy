@@ -23,6 +23,13 @@ export class ManageShopsService {
     return this.http.post<any>(url, formBranch);
   }
 
+  getShopById(id: string): Observable<Shops> {
+    console.log(id);
+    const url = `${this.serverUrl}/${'Shop'}/${id}`;
+    console.log(url);
+    return this.http.get<Shops>(url);
+  }
+
   updateShop(formBranch, id: string): Observable<Shops> {
     console.log(id);
     const url = `${this.serverUrl}/${'Shop'}/${id}`;

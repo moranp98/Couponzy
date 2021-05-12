@@ -13,8 +13,7 @@ export class PageSignInSocialComponent implements OnInit {
   pageTitle: string = 'כניסה';
   data: Users;
   isSignedIn = false
-  //user: String = 'admin@admin.com';
-  //password: String = '123456';
+
   constructor(private router: Router, public firebaseService: FirebaseService) { }
 
   ngOnInit() {
@@ -25,7 +24,6 @@ export class PageSignInSocialComponent implements OnInit {
     else
       this.isSignedIn = false
   }
-
 
   async onSignin(email: string, password: string) {
     await this.firebaseService.signin(email, password)

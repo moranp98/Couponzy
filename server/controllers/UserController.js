@@ -38,7 +38,6 @@ const getAllUsers = async (req, res, next) => {
                     doc.id,
                     doc.data().userName,
                     doc.data().email,
-                    doc.data().password,
                     doc.data().userID,
                     doc.data().phoneNumber,
                     doc.data().profile_User,
@@ -55,7 +54,8 @@ const getAllUsers = async (req, res, next) => {
                     doc.data().created_at,
                     doc.data().lastUpdated
                 );
-                usersArray.push(user);
+                console.log(user)
+                usersArray.push(user);  
             });
             res.json(usersArray);
         }

@@ -2,17 +2,32 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
 
+import { Users } from '../../models/users';
+
+export class userName {
+  firstName: string;
+  lastName: string;
+
+  constructor(firstName: string, lastName: string) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+}
+
 @Component({
   moduleId: module.id,
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
+
 export class NavbarComponent implements OnInit {
   @Input() title: string;
   @Input() openedSidebar: boolean = false;
   @Output() sidebarState = new EventEmitter();
   @Output() isLogout = new EventEmitter<void>()
+  currentUser: Users;
+  currentUserName: userName;
 
   constructor(private router: Router,public firebaseService: FirebaseService) {}
 
@@ -41,6 +56,11 @@ export class NavbarComponent implements OnInit {
   }
   
   ngOnInit(): void {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
+    this.currentUserName = new userName(this.currentUser.userName.firstName, this.currentUser.userName.lastName);
+    console.log(this.currentUserName)
+    
   }
 
   logout(){

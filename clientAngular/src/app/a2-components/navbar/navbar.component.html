@@ -79,8 +79,8 @@
 
         <div class="nav-item" [ngClass]="{ 'opened' : false }">
             <button mat-button (click)="open($event)">
-                <div class="avatar"><img src="assets/content/avatar-2.jpg" width="40" height="40" alt=""></div>
-                <div class="name">Justin Adams</div>
+                <div class="avatar"><img src="{{ this.currentUser.profile_User }}" width="40" height="40" alt=""></div>
+                <div class="name">{{ this.currentUserName.firstName + ' ' + this.currentUserName.lastName}}</div>
             </button>
 
             <div class="dropdown-menu mini-menu">

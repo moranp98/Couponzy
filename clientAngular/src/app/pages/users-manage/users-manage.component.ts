@@ -84,7 +84,7 @@ export class PageUsersManageComponent implements OnInit {
       this.showUsers=false;
       this.updateUser = this.users.find(user => user.id === id);
       this.posSelected=this.checkP(this.updateUser);
-      this.name=this.updateUser.username.firstname + " " + this.updateUser.username.lastname + ", סוג משתמש: " + this.posSelected;
+      this.name=this.updateUser.userName.firstName + " " + this.updateUser.userName.lastName + ", סוג משתמש: " + this.posSelected;
       if(this.updateUser.role=="seller")
         this.isSeller=true;
       this.posControl = new FormControl('', Validators.required);
