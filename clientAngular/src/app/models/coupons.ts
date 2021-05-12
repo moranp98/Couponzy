@@ -2,16 +2,15 @@ export interface Coupons {
     id: string,
     couponName: string,
     description: string,
-    couponId: string,
     profile_Coupon: string,
     oldPrice: Number,
     newPrice: Number,
     published: Date,
     expireDate: Date, 
+    isExpired: Boolean,
     ratingAvg: Number,
     numOf_rating: Number,    
-    isExists: Boolean,
-    lastUpdated: Date,
+    lastUpdated: Number,
     couponType:{
         id: string,
         couponTypeName: string

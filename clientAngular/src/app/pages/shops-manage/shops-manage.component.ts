@@ -72,6 +72,7 @@ export class PageShopsManageComponent implements OnInit {
   updatePressed: boolean = false;
   deletePressed: boolean = false;
   canDeleteFlag: boolean = false;
+  toggleisOpen: boolean = true;
 
   public form: FormGroup;
   public updateForm: FormGroup;
@@ -112,7 +113,7 @@ export class PageShopsManageComponent implements OnInit {
       long: [null, Validators.compose([Validators.required])],
       isOpen: [true, Validators.compose([])],
       isExists: [true, Validators.compose([Validators.required])],
-      lastUpdated: [Date.now(), Validators.compose([])],
+      lastUpdated: [Date.now, Validators.compose([])],
       sellers: [[], Validators.compose([])]
     });
   }
@@ -157,7 +158,9 @@ export class PageShopsManageComponent implements OnInit {
 
   OnDetails(id: string) {
     this.detailPressed = true;
+    
     this.branchOnDetails = this.branches.find(branch => branch.id === id);
+    console.log(this.branchOnDetails.isOpen)
   }
 
   onAdd(stateAddPressed: boolean) {
@@ -175,7 +178,7 @@ export class PageShopsManageComponent implements OnInit {
     this.ShowBranchesService.createBranch(this.form.value).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); },
-      () => { this.showBranches(); this.showShops(); }
+      () => { this.showBranches() }
     );
     this.addPressed = false; // To hide the Add branch Card
     this.form.reset();
@@ -227,7 +230,7 @@ export class PageShopsManageComponent implements OnInit {
     this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); },
-      () => {  this.showBranches(); this.showShops(); }
+      () => {  this.showBranches() }
     );
     this.updatePressed = false;
     this.updateForm.reset();
@@ -259,7 +262,7 @@ export class PageShopsManageComponent implements OnInit {
     this.ShowBranchesService.lockoutBranch(this.deleteBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); },
-      () => { this.showBranches(); this.showShops(); }
+      () => { this.showBranches() }
     );
   }
 }
