@@ -168,44 +168,43 @@ const deleteCoupon = async (req, res, next) => {
 // <--   Another functions    -->
 
 const getCountCoupons = async (req, res, next) => {
-    try {
-        var size = 0
-        const countOfCoupons = await firebase
-        .collection('Coupons')
-        .get()
-        .then(function(querySnapshot) {    
-            querySnapshot.docChanges().forEach(query => {
-                const coupon = query.doc;
-                const dateNow = admin.firestore.Timestamp.now();
-                if (coupon.data().expireDate >= dateNow){
-                    size ++;
-                }
-            })      
-        });
-        
-        res.status(200).json(size.toString());
-        
-    } catch (error) {
-        res.status(400).json(error.message);
-    }
-}
-
-const getCountValidCoupons = async (req, res, next) => {
-    try {
-        var size = 0
-        const countOfValidCoupons = await firebase
-        .collection('Coupons')
-        .get()
-        .then(function(querySnapshot) { 
-            querySnapshot.docChanges().forEach(query => {
-                const coupon = query.doc;
-                const dateNow = admin.firestore.Timestamp.now();
-                if (coupon.data().expireDate <= dateNow){
-                    size ++;
-                }
-            })     
+  try {
+    var size = 0;
+    const countOfCoupons = await firebase
+      .collection('Coupons')
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.docChanges().forEach((query) => {
+          const coupon = query.doc;
+          const dateNow = admin.firestore.Timestamp.now();
+          if (coupon.data().expireDate >= dateNow) {
+            size++;
+          }
         });
       });
+
+    res.status(200).json(size.toString());
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
+const getCountValidCoupons = async (req, res, next) => {
+  try {
+    var size = 0;
+    const countOfValidCoupons = await firebase
+      .collection('Coupons')
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.docChanges().forEach((query) => {
+          const coupon = query.doc;
+          const dateNow = admin.firestore.Timestamp.now();
+          if (coupon.data().expireDate <= dateNow) {
+            size++;
+          }
+        });
+      });
+    v;
     res.status(200).json(size.toString());
   } catch (error) {
     res.status(400).json(error.message);
