@@ -73,12 +73,13 @@ async onSignup(email:string,password:string,passwordVal:string,firstName:string,
         birthday:[birthday, Validators.compose([Validators.required])],
         gender:[gender, Validators.compose([Validators.required])],
         maritalstatus:[maritalstatus, Validators.compose([Validators.required])],
-        userid:[userid, Validators.compose([Validators.required])],
-        username: this.fb.group({ // make a nested group
-          firstname: [firstName, Validators.compose([Validators.required])],
-          lastname: [lastName, Validators.compose([Validators.required])],
+        userID:[userid, Validators.compose([Validators.required])],
+        userName: this.fb.group({ // make a nested group
+          firstName: [firstName, Validators.compose([Validators.required])],
+          lastName: [lastName, Validators.compose([Validators.required])],
         }),
-        phonenumber:[phoneNumber, Validators.compose([Validators.required])],
+        phoneNumber:[phoneNumber, Validators.compose([Validators.required])],
+        profile_User:[null,Validators.compose([Validators.required])]
       });
 
       console.log(this.updateForm.value)
