@@ -20,8 +20,8 @@ export class ManageUsersService {
     return this.http.get<number>(url);
   }
 
-  getLastUsers(): Observable<lastUsers[]> {
+  getLastUsers(): Observable<Users[]> {
     const url = `${this.serverUrl}/${"getLastUsers"}`;
-    return this.http.get<lastUsers[]>(url);
+    return this.http.get<Users[]>(url);
   }
 }

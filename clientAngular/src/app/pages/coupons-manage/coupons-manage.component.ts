@@ -5,6 +5,9 @@ import { Coupons } from '../../models/coupons';
 import { Users } from '../../models/users';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+
+import { Router } from '@angular/router';
+
 import { CustomValidators } from 'ng2-validation';
 import { CalendarTodayDirective } from 'angular-calendar/modules/common/calendar-today.directive';
 import { ManageShopsService } from 'src/app/services/manage-shops.service';
@@ -39,6 +42,14 @@ const details: any[] = [
   },
   {
     icon: 'date_range',
+    badge: false,
+  },
+  {
+    icon: 'star',
+    badge: false,
+  },
+  {
+    icon: 'group',
     badge: false,
   }
 ];
@@ -100,13 +111,18 @@ export class PageCouponsManageComponent implements OnInit {
     private _sharedService: SharedService,
     private _manageshops: ManageShopsService,
     private _managecouponTypes: ManageCouponTypesService,
-    private ShowCouponsService: ManageCouponsService,) {
+    private ShowCouponsService: ManageCouponsService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser)
+
+    if (localStorage.getItem('user') == null || this.currentUser.role === 'seller') {
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    }
 
     this.showCoupons(this.currentUser.employerId);
     this.showShops(this.currentUser.employerId);

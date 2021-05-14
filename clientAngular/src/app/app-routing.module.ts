@@ -14,6 +14,7 @@ import { PageCouponsManageComponent}            from './pages/coupons-manage/cou
 import { PageShopsChainManageComponent }        from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent }        from './pages/coupon-type-manage/coupon-type-manage.component';
 import { PageTimelineCouponzyComponent }        from './pages/timeline-couponzy/timeline-couponzy.component';
+import { PageCouponsSaleComponent }             from './pages/coupons-sale/coupons-sale.component';
 
 const defaultRoutes: Routes = [
   { path: 'dashboard', component: PageDashboardComponent },
@@ -24,6 +25,7 @@ const defaultRoutes: Routes = [
   { path: 'shops-chain-manage', component: PageShopsChainManageComponent },
   { path: 'coupon-type-manage', component: PageCouponTypeManageComponent },
   { path: 'timeline-couponzy', component: PageTimelineCouponzyComponent },
+  { path: 'coupons-sale', component: PageCouponsSaleComponent },
 ];
 
 const roadstartRoutes: Routes = [

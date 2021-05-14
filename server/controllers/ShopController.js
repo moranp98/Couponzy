@@ -57,6 +57,24 @@ const getShop = async (req, res, next) => {
   }
 };
 
+const getShopByBranchId = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const branch = await firebase.collection('Branches').doc(id);
+    const data = await branch.get();
+    const shopId = data.data().shop.id
+    const currentShop = await firebase.collection('Shops').doc(shopId);
+    const dataShop = await currentShop.get();
+    if (!dataShop.data()) {
+      res.status(404).json('Shop with the given ID not found');
+    } else {
+      res.json(dataShop.data());
+    }
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
 const updateShop = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -129,6 +147,7 @@ module.exports = {
   addShop,
   getAllShops,
   getShop,
+  getShopByBranchId,
   updateShop,
   deleteShop,
   lockoutShop

@@ -1,0 +1,185 @@
+<div class="row">
+  <div class="col-lg-6">
+    <card *ngIf="isShowShop" [title]="'הרשת'" [align]="'center'" class="height-Coupon-Sale-Card">
+      <img src="{{ currentShop.profile_Shop }}" width="200" height="200" alt="">
+    </card>
+  </div>
+  <div class="col-lg-6">
+    <card *ngIf="isShowBranch" [title]="'פרטי הסניף'" [align]="'center'" class="height-Coupon-Sale-Card">
+      <img src="{{ currentBranch.profile_Branch }}" width="120" height="120" alt="">
+      <h5>{{ currentBranch.branchName }}</h5>
+    </card>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <card *ngIf="!salePressed && !detailPressed" [title]="'רשימת קופונים'">
+      <mat-list class="couponsCard">
+        <mat-list-item *ngFor="let coupon of coupons; let i = index">
+          <img mat-list-avatar src="{{ coupon.profile_Coupon }}" class="avatar" alt="">
+          <mat-toolbar mat-line>
+            <h2 mat-line class="h2">{{ coupon.couponName }}</h2>
+            <div mat-line>
+              <span><strong>קוד קופון: </strong>{{ coupon.id }}</span>
+              <span class="span">|</span>
+              <span class="span"><strong>שם קופון: </strong>{{ coupon.couponName }}</span>
+              <span class="span">|</span>
+              <span class="span"><strong>תיאור: </strong>{{ coupon.description }}</span>
+              <span class="span">|</span>
+              <span class="span"><strong>מחיר קודם: </strong>{{ coupon.oldPrice }}</span>
+              <span class="span">|</span>
+              <span class="span"><strong>מחיר חדש: </strong>{{ coupon.newPrice }}</span>
+              <span class="span">|</span>
+              <span class="span"><strong>תוקף: </strong>{{ coupon.expireDate | date: 'dd/MM/yyyy' }}</span>
+              <span class="span"></span>
+            </div>
+          </mat-toolbar>
+          <span mat-line></span>
+          <span class="span"></span>
+          <button mat-raised-button color="primary" (click)="OnDetails(true, coupon.id)">פרטים</button>
+          <span class="span"></span>
+          <button mat-raised-button color="accent" (click)="onSale(true, coupon.id)">רכישה</button>
+          <span class="span"></span>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </card>
+  </div>
+</div>
+<div class="row" *ngIf="detailPressed">
+  <div class="col-lg-12">
+    <card [title]="'הצג קפון'" *ngIf="detailPressed">
+      <div class="row couponsCard">
+        <div class="col-lg-0">
+          <mat-list>
+            <mat-list-item *ngFor="let detail of details; let i = index">
+              <mat-icon mat-list-avatar>{{detail.icon}}<badge *ngIf="detail.badge" [color]="'danger'"
+                  [position]="'top-right'">{{detail.badge}}</badge>
+              </mat-icon>
+              <h4 mat-line></h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div class="col-lg-1">
+          <mat-list>
+            <mat-list-item *ngFor="let detail of details; let i = index">
+              <h2 mat-line class="h2">{{ detail.title_row }}</h2>
+              <h4 mat-line></h4>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div class="col-lg-1">
+          <mat-list>
+            <mat-list-item *ngFor="let detail of details; let i = index">
+              <h2 mat-line class="h2">|</h2>
+              <h4 mat-line></h4>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div class="col-lg-9">
+          <mat-list>
+            <mat-list-item>
+              <img mat-line src="{{ couponOnDetails.profile_Coupon }}" class="avatar" alt="">
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.id }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.couponName }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.description }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.oldPrice }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.newPrice }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.expireDate | date: 'dd/MM/yyyy' }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.ratingAvg }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.numOf_rating }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+      <div class="row">
+        <ng-container *ngFor="let detail of details; let i = index">
+          <span class="span"></span>
+          <span class="span"></span>
+          <span class="span"></span>
+        </ng-container>
+        <button mat-mini-fab type="button" color="primary" (click)="OnDetails(false, 'Details stoped')">
+          <mat-icon>keyboard_return</mat-icon>
+        </button>
+      </div>
+    </card>
+  </div>
+</div>
+<div class="row" *ngIf="salePressed">
+  <div class="col-lg-12">
+    <card title="רכישת קופון">
+      <div class="row">
+        <div class="col-lg-2">
+          <img src="{{ saleCoupon.profile_Coupon }}" width="200" height="200" alt="">
+        </div>
+        <div class="col-lg-10">
+          <form [formGroup]="saleForm" *ngIf="salePressed" (ngSubmit)="onSaleSubmit()">
+            <div class="row">
+              <div class="col-lg-12">
+                <mat-toolbar>
+                  <mat-toolbar-row>
+                    <mat-icon mat-list-avatar>code</mat-icon>
+                    <span class="span"></span>
+                    <span mat-line>{{ couponClass.id }}</span>
+                  </mat-toolbar-row>
+                  <mat-toolbar-row>
+                    <mat-icon mat-list-avatar>sell</mat-icon>
+                    <span class="span"></span>
+                    <span mat-line>{{ couponClass.couponName }}</span>
+                  </mat-toolbar-row>
+                  <mat-toolbar-row>
+                    <mat-icon mat-list-avatar>description</mat-icon>
+                    <span class="span"></span>
+                    <span mat-line>{{ couponClass.description }}</span>
+                  </mat-toolbar-row>
+                  <mat-toolbar-row>
+                    <mat-icon mat-list-avatar>attach_money</mat-icon>
+                    <span class="span"></span>
+                    <span mat-line>{{ couponClass.newPrice }}</span>
+                  </mat-toolbar-row>
+                </mat-toolbar>
+              </div>
+            </div>
+            <span class="span"></span>
+            <mat-divider></mat-divider>
+            <span class="span"></span>
+            <div class="row">
+              <span class="span"></span>
+              <button mat-raised-button color="accent" [disabled]="!saleForm.valid">רכישה</button>
+              <span class="span"></span>
+              <button mat-mini-fab type="button" color="primary" (click)="onSale(false, 'sale stoped')">
+                <mat-icon>keyboard_return</mat-icon>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>

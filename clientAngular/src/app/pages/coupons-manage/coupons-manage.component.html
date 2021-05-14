@@ -17,16 +17,16 @@
       </alert>
       <mat-list class="couponsCard">
         <mat-list-item *ngFor="let coupon of coupons; let i = index">
-          <img mat-list-avatar src="{{ coupon.shop.profile_Shop }}" class="avatar" alt="">
-          <h2 mat-line class="h2">{{ coupon.shop.shopName }}</h2>
-          <p mat-line class="details">
-            <span class="span"><strong>קוד קופון: </strong>{{ coupon.id }}</span>
-            <span class="span"></span>
-            <span class="span"><strong>שם קופון: </strong>{{ coupon.couponName }}</span>
-            <span class="span"></span>
-            <span class="span"><strong>תוקף: </strong>{{ coupon.expireDate | date: 'dd/MM/yyyy' }}</span>
-            <span class="span"></span>
-          </p>
+          <img mat-list-avatar src="{{ coupon.profile_Coupon }}" class="avatar" alt="">
+            <h2 mat-line class="h2">{{ coupon.shop.shopName }}</h2>
+            <div mat-line class="details">
+              <span class="span"><strong>קוד קופון: </strong>{{ coupon.id }}</span>
+              <span class="span"></span>
+              <span class="span"><strong>שם קופון: </strong>{{ coupon.couponName }}</span>
+              <span class="span"></span>
+              <span class="span"><strong>תוקף: </strong>{{ coupon.expireDate | date: 'dd/MM/yyyy' }}</span>
+              <span class="span"></span>
+            </div>
           <button mat-raised-button color="primary" (click)="OnDetails(coupon.id)">פרטים</button>
           <span class="span"></span>
           <button mat-raised-button color="accent" (click)="onUpdate(true, coupon.id)">עריכה</button>
@@ -34,6 +34,7 @@
           <button mat-mini-fab color="warn" (click)="onDelete(true, coupon.id)">
             <mat-icon>delete</mat-icon>
           </button>
+          <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
       <button mat-fab color="primary" (click)="onAdd(true)">
@@ -83,6 +84,14 @@
             </mat-list-item>
             <mat-list-item>
               <h4 mat-line>{{ couponOnDetails.expireDate | date: 'dd/MM/yyyy' }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.ratingAvg }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.numOf_rating }}</h4>
               <p mat-line><i></i></p>
             </mat-list-item>
           </mat-list>

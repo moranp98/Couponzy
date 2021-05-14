@@ -1,30 +1,30 @@
 <!-- Row 1 --- 4 Cards -->
-<div class="row">
+<div class="row" *ngIf="currentUser.role === 'admin'">
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(220,20,60,0.6)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-4.jpg'"
       class="info-card">
       <div class="title text-uppercase">כמות הצרכנים והמוכרים</div>
-      <div class="count">{{countOfUsers}}</div>
+      <div class="count">{{countAllUsers}}</div>
     </card>
   </div>
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(255,140,0,0.9)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-4.jpg'"
       class="info-card">
       <div class="title text-uppercase">כמות החנויות</div>
-      <div class="count">{{countOfBranches}}</div>
+      <div class="count">{{countAllBranches}}</div>
     </card>
   </div>
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(0,191,252,0.9)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-4.jpg'"
       class="info-card">
       <div class="title text-uppercase">כמות קופונים תקפים בחנויות</div>
-      <div class="count">{{countCoupons}}</div>
+      <div class="count">{{countAllCoupons}}</div>
     </card>
   </div>
 </div>
 
 <!-- Row 2 --- 3 Cards -->
-<div class="row">
+<div class="row" *ngIf="currentUser.role === 'admin'">
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(220,20,60,0.6)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-5.jpg'"
       class="info-card">
@@ -48,10 +48,43 @@
   </div>
 </div>
 
-<!-- Row 3 --- Line Chart -->
-<div class="row mb-lg-4">
+<!-- Row 3 --- 3 Cards -->
+<div class="row" *ngIf="currentUser.role === 'shopManager'">
+  <div class="col-md-6 col-xl-4">
+    <card [customBgColor]="'rgba(220,20,60,0.6)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-5.jpg'"
+      class="info-card">
+      <div class="title text-uppercase">כמות חנויות ברשת</div>
+      <div class="count">{{countOfBranchesByShopId}}</div>
+    </card>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <card [customBgColor]="'rgba(255,140,0,0.9)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-5.jpg'"
+      class="info-card">
+      <div class="title text-uppercase">כמות קופונים שנמכרו היום</div>
+      <div class="count">{{quantityCouponsSoldToday}}</div>
+    </card>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <card [customBgColor]="'rgba(0,191,252,0.9)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-6.jpg'"
+      class="info-card">
+      <div class="title text-uppercase">הכנסות מקופונים שנמכרו היום</div>
+      <div class="count">{{revenueCouponsSoldToday}}</div>
+    </card>
+  </div>
+</div>
+
+<!-- Row 4 --- Line Chart -->
+<div class="row">
   <!-- Bar Chart -->
-  <div class="col-md">
+  <div class="col-lg-6">
+    <card  class="mb-lg">
+        <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+        </canvas>
+    </card>
+  </div>
+  <!-- Bar Chart -->
+  <div class="col-lg-6">
     <card  class="mb-lg">
         <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels"
             [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
@@ -60,7 +93,7 @@
   </div>
 </div>
   
-<!-- Row 4 --- 2 Table -->
+<!-- Row 5 --- 2 Table -->
 <div class="row">
   <div class="col-lg-6">
     <card title="הזמנות אחרונות">
@@ -69,22 +102,26 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>תמונת חנות</th>
-              <th>שם חנות</th>
-              <th>שם קופון</th>
-              <th>מספר קופון</th>
-              <th>תאריך רכישה</th>
+              <th>תמונת קופון</th>
+              <th *ngIf="currentUser.role === 'admin'">שם הרשת</th>
+              <th>שם הסניף</th>
+              <th>שם הקופון</th>
+              <th>מספר הקופון</th>
+              <th>מחיר הקופון</th>
+              <th>תאריך הרכישה</th>
             </tr>
           </thead>
           <tbody>
-            <!--tr *ngFor="let coupon of Lastcoupons; let i = index;">
+            <tr *ngFor="let coupon of recentPurchases; let i = index;">
               <th scope="row">{{i+1}}</th>
-              <td><img mat-list-avatar src="{{ coupon.pictureName }}" class="avatar" alt="" style="width: 54px;height: 54px;"></td>
-              <td>{{coupon.shop.shopName}}</td>
-              <td>{{coupon.name}}</td>
-              <td>{{coupon.couponCode}}</td>
-              <td>{{LastDateCoupons[i] | date}}</td>
-            </tr-->
+              <td><img mat-list-avatar src="{{ coupon.coupon.profile_Coupon }}" class="avatar" alt="" style="width: 54px;height: 54px;"></td>
+              <td *ngIf="currentUser.role === 'admin'">{{coupon.branch.shopName}}</td>
+              <td>{{coupon.branch.branchName}}</td>
+              <td>{{coupon.coupon.couponName}}</td>
+              <td>{{coupon.coupon.id}}</td>
+              <td>{{coupon.coupon.newPrice}}</td>
+              <td>{{recentPurchasesDate[i] | date}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -123,6 +160,4 @@
       </div>
     </card>
   </div>
-
-
 </div>
