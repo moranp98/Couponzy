@@ -58,7 +58,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser)
+    if(this.currentUser==null){
+      this.currentUserName = new userName("firstName","lastName")
+    }
+    else{
     this.currentUserName = new userName(this.currentUser.userName.firstName, this.currentUser.userName.lastName);
+  }
     console.log(this.currentUserName)
     
   }

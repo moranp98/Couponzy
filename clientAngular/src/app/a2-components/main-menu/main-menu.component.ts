@@ -20,7 +20,10 @@ export class MainMenuComponent  {
     this.mainMenuService.getData().subscribe(OBSERVER);
     var role = localStorage.getItem('role');
     console.log("Current Role : " + role)
-
+    if(role == "customer"){
+      console.log("Entered Seller's MainMenu")
+      this.mainMenuService.getDataSeller().subscribe(OBSERVER);
+    }
     if(role === "admin"){
       console.log("Entered Admin's MainMenu")
       this.mainMenuService.getData().subscribe(OBSERVER);
