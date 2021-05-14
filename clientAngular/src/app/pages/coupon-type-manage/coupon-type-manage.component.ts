@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageCouponTypeService } from '../../services/manage-coupon-type.service';
 import { CouponTypes } from '../../models/couponTypes';
+import { Users } from '../../models/users';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-coupon-type-manage',
@@ -26,13 +29,23 @@ export class PageCouponTypeManageComponent implements OnInit {
   public form: FormGroup;
   public updateForm: FormGroup;
 
+  currentUser: Users;
+
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
-    private _manageCouponTypse: ManageCouponTypeService) {
+    private _manageCouponTypse: ManageCouponTypeService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
+
+    if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    }
+
     this.showCouponTypes();
 
     this.form = this.fb.group({

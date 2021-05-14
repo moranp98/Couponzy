@@ -20,7 +20,7 @@ export class FirebaseService {
     await this.firebaseAuth.signInWithEmailAndPassword(email, password)
       .then(async res => {
         this.isLoggedIn = true
-        localStorage.setItem('user', JSON.stringify(res.user))
+        localStorage.setItem('user', JSON.stringify(res.user));
       })
     await console.log(this.userService.getUser(email))
     await console.log("the Current Rule is : " + localStorage.getItem('role'));

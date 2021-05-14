@@ -43,6 +43,7 @@ export class PageTimelineCouponzyComponent implements OnInit {
           this.currentShop = shop;
           this.loadTimeline();
         });
+
         break;
       case 'seller':
         this.loadBranch(employerId);

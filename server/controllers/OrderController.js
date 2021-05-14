@@ -1,9 +1,25 @@
 const firebase = require('../config/db_adminSdk');
+const admin = require("firebase-admin");
 const Order = require('../models/Order');
 
 const addOrder = async (req, res, next) => {
     try {
         const data = req.body;
+        const lastDoc = await firebase
+            .collection('Orders')
+            .orderBy("orderDate", "desc")
+            .limit(1)
+        const lastData = await lastDoc.get();
+        if (lastData.empty) {
+            data.orderNumber = String(1000)
+            data.orderDate = admin.firestore.Timestamp.now();
+        } else {
+            lastData.forEach(doc => {
+                const docId = Number(doc.id) + 1;
+                data.orderNumber = String(docId);
+                data.orderDate = admin.firestore.Timestamp.now();
+            });
+        }
         await firebase.collection('Orders').doc(data.orderNumber).set(data);
         res.json('Order record saved successfuly');
     } catch (error) {
@@ -25,7 +41,7 @@ const getAllOrders = async (req, res, next) => {
                     doc.data().orderNumber,
                     doc.data().orderDate,
                     doc.data().coupon,
-                    thdoc.data().branch,
+                    doc.data().branch,
                     doc.data().user
                 );
                 ordersArray.push(order);

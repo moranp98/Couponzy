@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageShopsService } from '../../services/manage-shops.service';
 import { Shops } from '../../models/shops';
+import { Users } from '../../models/users';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'page-shops-chain-manage',
@@ -28,14 +31,24 @@ export class PageShopsChainManageComponent implements OnInit {
   public form: FormGroup;
   public updateForm: FormGroup;
 
+  currentUser: Users;
+
   // Constractor
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
-    private _manageshops: ManageShopsService) {
+    private _manageshops: ManageShopsService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
+
+    if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    }
+
     this.showShops();
 
     this.form = this.fb.group({

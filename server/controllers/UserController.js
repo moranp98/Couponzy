@@ -256,10 +256,21 @@ const getLastUsers = async (req, res, next) => {
                     doc.id,
                     doc.data().userName,
                     doc.data().email,
+                    doc.data().userID,
                     doc.data().phoneNumber,
                     doc.data().profile_User,
+                    doc.data().birthday,
+                    doc.data().gender,
+                    doc.data().age,
+                    doc.data().maritalStatus,
                     doc.data().address,
+                    doc.data().lat,
+                    doc.data().long,
+                    doc.data().active,
                     doc.data().role,
+                    doc.data().employerId,
+                    doc.data().created_at,
+                    doc.data().lastUpdated
                 );
                 usersArray.push(user);
             });

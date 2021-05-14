@@ -50,6 +50,7 @@ import { FirebaseService } from './services/firebase.service';
 import { PageShopsChainManageComponent } from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon-type-manage.component';
 import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timeline-couponzy.component';
+import { PageCouponsSaleComponent } from './pages/coupons-sale/coupons-sale.component';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timelin
     PageShopsChainManageComponent,
     PageCouponTypeManageComponent,
     PageTimelineCouponzyComponent,
+    PageCouponsSaleComponent,
     ],
   imports: [
     BrowserModule,

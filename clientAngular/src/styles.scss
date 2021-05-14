@@ -1,3 +1,10 @@
 .span {
     margin: 0 6px;
   }
+
+.height-Coupon-Sale-Card {
+  min-height: 260px;
+  .card-wrap{
+    min-height: inherit;
+  }
+} 

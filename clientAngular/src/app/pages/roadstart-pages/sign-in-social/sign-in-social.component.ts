@@ -13,13 +13,25 @@ export class PageSignInSocialComponent implements OnInit {
   pageTitle: string = 'כניסה';
   data: Users;
   isSignedIn = false
+  currentUser: Users;
 
   constructor(private router: Router, public firebaseService: FirebaseService) { }
 
   ngOnInit() {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser);
+    console.log(this.currentUser)
+
     if (localStorage.getItem('user') !== null) {
       this.isSignedIn = true
-      this.router.navigate(['/default-layout/dashboard']);
+      switch (this.currentUser.role) {
+        case 'seller':
+          this.router.navigate(['/default-layout/coupons-sale']);
+          break;
+        default: // role --> 'admin', shopManager
+          this.router.navigate(['/default-layout/dashboard']);
+          break;
+      }
     }
     else
       this.isSignedIn = false
@@ -30,8 +42,16 @@ export class PageSignInSocialComponent implements OnInit {
 
     if (this.firebaseService.isLoggedIn) {
       console.log("LOGGGEED INNN")
-      this.isSignedIn = true
-      this.router.navigate(['/default-layout/dashboard']);
+      console.log(this.currentUser)
+      this.isSignedIn = true;
+      switch (localStorage.getItem('role')) {
+        case 'seller':
+          this.router.navigate(['/default-layout/coupons-sale']);
+          break;
+        default: // role --> 'admin', shopManager
+          this.router.navigate(['/default-layout/dashboard']);
+          break;
+      }
     }
   }
 }
