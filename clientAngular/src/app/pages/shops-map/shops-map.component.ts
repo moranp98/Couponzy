@@ -39,12 +39,12 @@ export class PageShopsMapComponent implements OnInit {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser)
 
-    if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
+    if(localStorage.getItem('user') == null){
       this.router.navigate(['/roadstart-layout/sign-in-social']);
-    }
-
-    this.showShops();
-    this.showBranches();
+    } else {
+      this.showShops();
+      this.showBranches();
+    } 
   }
 
   showShops() {

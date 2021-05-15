@@ -60,7 +60,7 @@
     "active": false,
     "groupTitle" : false,
     "sub": "",
-    "routing": "",
+    "routing": "/default-layout/sales-management",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

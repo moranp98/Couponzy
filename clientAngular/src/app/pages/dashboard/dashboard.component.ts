@@ -39,16 +39,19 @@ export class PageDashboardComponent implements OnInit {
   revenueCouponsSoldToday: Number;
 
   lastUsers: Users[] = [];
-  showLastUsers: any[] = [];
 
   orders: Orders[] = [];
   shops: Shops[] = [];
-  dataMapReduce: any[];
+  
   branches: Branches[] = [];
-
   currentUser: Users;
 
-  RevenueFromSales: number[] = [];
+  dataMapReduceBarChart: any[];
+  RevenueFromSalesByShopBranch: number[] = [];
+  RevenueFromSalesByCouponType: number[] = [];
+  
+  dataMapReduceRadarChart: any[];
+
   recentPurchases: any[] = [];
   recentPurchasesDate: any[] = [];
 
@@ -77,24 +80,23 @@ export class PageDashboardComponent implements OnInit {
 
     if (localStorage.getItem('user') == null || this.currentUser.role === 'seller') {
       this.router.navigate(['/roadstart-layout/sign-in-social']);
-    }
+    } else {
+      switch (this.currentUser.role) {
+        case 'shopManager':
+          this._managebranches.getCountBranchesByShopId(this.currentUser.employerId).subscribe(countOfBranchesByShopId => this.countOfBranchesByShopId = countOfBranchesByShopId);
+          break;
+        default: // role --> 'admin'
+          this._manageusers.getCountUsers().subscribe(countAllUsers => this.countAllUsers = countAllUsers);
+          this._managebranches.getCountBranches().subscribe(countAllBranches => this.countAllBranches = countAllBranches);
+          this._managebranches.getCountIsOpenBranches().subscribe(countIsOpenBranches => this.countIsOpenBranches = countIsOpenBranches);
+          this._managecoupons.getCountCoupons().subscribe(countAllCoupons => this.countAllCoupons = countAllCoupons);
+          this._managecoupons.getCountValidCoupons().subscribe(countValidCoupons => this.countValidCoupons = countValidCoupons);
+          break;
+      }
 
-    switch (this.currentUser.role) {
-      case 'shopManager':
-        this._managebranches.getCountBranchesByShopId(this.currentUser.employerId).subscribe(countOfBranchesByShopId => this.countOfBranchesByShopId = countOfBranchesByShopId);
-        break;
-      default: // role --> 'admin'
-        this._manageusers.getCountUsers().subscribe(countAllUsers => this.countAllUsers = countAllUsers);
-        this._managebranches.getCountBranches().subscribe(countAllBranches => this.countAllBranches = countAllBranches);
-        this._managebranches.getCountIsOpenBranches().subscribe(countIsOpenBranches => this.countIsOpenBranches = countIsOpenBranches);
-        this._managecoupons.getCountCoupons().subscribe(countAllCoupons => this.countAllCoupons = countAllCoupons);
-        this._managecoupons.getCountValidCoupons().subscribe(countValidCoupons => this.countValidCoupons = countValidCoupons);
-        break;
-    }
-
-    this.showUsers(this.currentUser.employerId);
-    this.showBarChartLabels(this.currentUser.employerId);
-    this.showOrders(this.currentUser.employerId);
+      this.showUsers(this.currentUser.employerId);
+      this.showBarChartLabels(this.currentUser.employerId);
+    } 
   }
 
   showUsers(shopId: string) {
@@ -102,34 +104,11 @@ export class PageDashboardComponent implements OnInit {
       case 'shopManager':
         this._manageusers.getLastUsers().subscribe((lastUsers) => {
           this.lastUsers = lastUsers.filter(user => user.employerId === shopId);
-          this.showLastUsers = this.lastUsers.map(user => {
-            return {
-              profile_User: user.profile_User,
-              /*firstName: user.userName.firstName,
-              lastName: user.userName.lastName,*/
-              email: user.email,
-              //city: user.address.city,
-              role: user.role,
-              phoneNumber: user.phoneNumber
-            }
-          });
         });
         break;
       default: // role --> 'admin'
         this._manageusers.getLastUsers().subscribe((lastUsers) => {
           this.lastUsers = lastUsers;
-          console.log(this.lastUsers)
-          this.showLastUsers = this.lastUsers.map(user => {
-            return {
-              profile_User: user.profile_User,
-              /*firstName: user.userName.firstName,
-              lastName: user.userName.lastName,*/
-              email: user.email,
-              //city: user.address.city,
-              role: user.role,
-              phoneNumber: user.phoneNumber
-            }
-          });
           console.log(this.lastUsers)
         });
         break;
@@ -147,12 +126,14 @@ export class PageDashboardComponent implements OnInit {
         this._managebranches.getAllBranchesByShopId(shopId).subscribe((branches) => {
           this.branches = branches.filter(branch => branch.isExists !== false);
           this.barChartLabels = this.branches.map((branch) => branch.branchName);
+          this.showOrders(this.currentUser.employerId);
         });
         break;
       default: // role --> 'admin'
         this._manageshops.getAllShops().subscribe((shops) => {
           this.shops = shops.filter(shop => shop.isExists !== false);
           this.barChartLabels = this.shops.map((shop) => shop.shopName);
+          this.showOrders(this.currentUser.employerId);
         });
         break;
     }
@@ -163,29 +144,55 @@ export class PageDashboardComponent implements OnInit {
       case 'shopManager':
         this._manageorders.getAllOrders().subscribe((orders) => {
           this.orders = orders.filter(order => order.branch['shopId'] === shopId);
-
+          console.log(this.orders)
           this.recentPurchasesDate = this.orders
-            .map(order => { return new Date(order.orderDate['_seconds'] * 1000) }).reverse().slice(0, 5);
+            .map(order => { return new Date(order.orderDate['_seconds'] * 1000) })
+            .reverse()
+            .slice(0, 5);
           this.recentPurchases = this.orders.reverse().slice(0, 5);
-          this.dataMapReduce = this.orders
-            .map(order => { return { branchName: order.branch['branchName'], price: order.coupon['newPrice'] } })
-            .reduce(function (obj, shopc, arr) {
-              if (!obj[shopc.branchName]) {
-                obj[shopc.branchName] = 1;
+
+          //For shopManager barChart
+          this.dataMapReduceBarChart = this.orders
+            .map(order => { return { branchName: order.branch['branchName'], price: order.coupon['newPrice']}})
+            .reduce(function (obj, orderC, arr) {
+              if (!obj[orderC.branchName]) {
+                obj[orderC.branchName] = 1;
               } else {
-                obj[shopc.branchName] += Number(shopc.price);
+                obj[orderC.branchName] += Number(orderC.price);
               }
               return obj;
             }, []);
+            
           this.barChartLabels.forEach(branch => {
-            this.RevenueFromSales.push(this.dataMapReduce[branch]);
+            this.RevenueFromSalesByShopBranch.push(this.dataMapReduceBarChart[branch]);
           });
-          this.barChartData["data"] = (this.RevenueFromSales);
+          this.barChartData["data"] = (this.RevenueFromSalesByShopBranch);
+          
+          //For shopManager Radar
+          const checkCouponeTypeReleventToShop = this.orders.map(order => { return { shopId: order.branch['shopId'], couponTypeName: order.coupon['couponTypeName'] } })
+          const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop.reduce((m, t) => m.set(t.couponTypeName, t), new Map()).values());
+          this.radarChartLabels = resultCouponeTypeName.map((couponType) => couponType.couponTypeName);
+
+          this.dataMapReduceRadarChart = this.orders
+            .map(order => { return { couponTypeName: order.coupon['couponTypeName'], price: order.coupon['newPrice'] } })
+            .reduce(function (obj, orderC, arr) {
+              if (!obj[orderC.couponTypeName]) {
+                obj[orderC.couponTypeName] = 1;
+              } else {
+                obj[orderC.couponTypeName] += Number(orderC.price);
+              }
+              return obj;
+            }, []);
+
+          this.radarChartLabels.forEach(couponType => {
+            this.RevenueFromSalesByCouponType.push(this.dataMapReduceRadarChart[couponType]);
+          });
+          this.radarChartData["data"] = (this.RevenueFromSalesByCouponType);
 
           //For shopManager dashboard Cards
           this.quantityCouponsSoldToday = this.orders.filter(order => new Date(order.orderDate['_seconds'] * 1000).getDate() === new Date().getDate()).length;
           this.revenueCouponsSoldToday = this.orders
-            .filter(order => { return new Date(order.orderDate['_seconds'] * 1000).getDate() === new Date().getDate()})
+            .filter(order => { return new Date(order.orderDate['_seconds'] * 1000).getDate() === new Date().getDate() })
             .reduce(function (accumulator, order) {
               return accumulator + Number(order.coupon['newPrice']);
             }, 0);
@@ -197,43 +204,91 @@ export class PageDashboardComponent implements OnInit {
           this.recentPurchasesDate = this.orders
             .map(order => { return new Date(order.orderDate['_seconds'] * 1000) }).reverse().slice(0, 5);
           this.recentPurchases = this.orders.reverse().slice(0, 5);
-          this.dataMapReduce = this.orders
+
+          //For admin barChart
+          this.dataMapReduceBarChart = this.orders
             .map(order => { return { shopName: order.branch['shopName'], price: order.coupon['newPrice'] } })
-            .reduce(function (obj, shopc, arr) {
-              if (!obj[shopc.shopName]) {
-                obj[shopc.shopName] = 1;
+            .reduce(function (obj, orderC, arr) {
+              if (!obj[orderC.shopName]) {
+                obj[orderC.shopName] = 1;
               } else {
-                obj[shopc.shopName] += Number(shopc.price);
+                obj[orderC.shopName] += Number(orderC.price);
               }
               return obj;
             }, []);
           this.barChartLabels.forEach(shop => {
-            this.RevenueFromSales.push(this.dataMapReduce[shop]);
+            this.RevenueFromSalesByShopBranch.push(this.dataMapReduceBarChart[shop]);
           });
-          this.barChartData["data"] = (this.RevenueFromSales);
+          this.barChartData["data"] = (this.RevenueFromSalesByShopBranch);
+
+          //For shopManager Radar
+          const checkCouponeTypeReleventToShop = this.orders.map(order => { return { shopId: order.branch['shopId'], couponTypeName: order.coupon['couponTypeName'] } })
+          const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop.reduce((m, t) => m.set(t.couponTypeName, t), new Map()).values());
+          this.radarChartLabels = resultCouponeTypeName.map((couponType) => couponType.couponTypeName);
+          
+          this.dataMapReduceRadarChart = this.orders
+            .map(order => { return { couponTypeName: order.coupon['couponTypeName'], price: order.coupon['newPrice'] } })
+            .reduce(function (obj, orderC, arr) {
+              if (!obj[orderC.couponTypeName]) {
+                obj[orderC.couponTypeName] = 1;
+              } else {
+                obj[orderC.couponTypeName] += Number(orderC.price);
+              }
+              return obj;
+            }, []);
+            console.log(this.dataMapReduceRadarChart)
+          this.radarChartLabels.forEach(couponType => {
+            if(this.dataMapReduceRadarChart[couponType]){
+              this.RevenueFromSalesByCouponType.push(this.dataMapReduceRadarChart[couponType]);
+            } else {
+              this.RevenueFromSalesByCouponType.push(0);
+            }        
+          });
+          console.log(this.radarChartLabels)
+          this.radarChartData["data"] = (this.RevenueFromSalesByCouponType);
+          console.log(this.RevenueFromSalesByCouponType)
         });
         break;
     }
   }
 
-  // barChart
+  // <----- barChart: Revenue From Sales By Branches/Shops ----->
+  public barChartData: any[] = [
+    {
+      data: this.RevenueFromSalesByShopBranch,
+      label: 'הכנסות מכל התקופות',
+      borderWidth: this.borderW,
+      pointRadius: 1
+    }
+  ];
+  public barChartLabels: string[] = [];
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
     responsiveAnimationDuration: 500
   };
-
-  // All shops
-  public barChartLabels: string[] = [];
-  public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
+  public barChartType: string = 'bar';
 
-  public barChartData: any[] = [
+  // <----- Radar: Revenue From Sales By couponTypes ----->
+  public radarChartData: any = [
     {
-      data: this.RevenueFromSales,
-      label: 'הכנסות ממכירת קופונים לפי רשתות/חנויות',
-      borderWidth: this.borderW,
+      data: this.RevenueFromSalesByCouponType,
+      label: 'הכנסות מכל התקופות',
+      borderWidth: 1,
       pointRadius: 1
+    }
+  ];
+  public radarChartLabels: string[] = [];
+  public radarChartType: string = 'radar';
+  public radarChartColors: any[] = [
+    {
+      backgroundColor: 'rgba(93,173,224,0.2)',
+      borderColor: '#5dade0',
+      pointBackgroundColor: '#5dade0',
+      pointBorderColor: '#0e7cc5',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: '#000'
     }
   ];
 }

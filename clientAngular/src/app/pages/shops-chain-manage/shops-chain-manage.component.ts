@@ -47,9 +47,9 @@ export class PageShopsChainManageComponent implements OnInit {
 
     if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
       this.router.navigate(['/roadstart-layout/sign-in-social']);
+    } else {
+      this.showShops();
     }
-
-    this.showShops();
 
     this.form = this.fb.group({
       shopName: [null, Validators.compose(

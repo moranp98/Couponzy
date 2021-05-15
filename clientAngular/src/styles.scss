@@ -8,3 +8,11 @@
     min-height: inherit;
   }
 } 
+
+.height-ngx-charts-Sale-Card {
+  min-height: 450px;
+  .card-wrap{
+    min-height: inherit;
+    width: inherit;
+  }
+}
