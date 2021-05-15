@@ -1,5 +1,5 @@
 export interface Orders {
-    _id: string,
+    id: string,
     orderDate: Date,
     coupon: string,
     branch: string,

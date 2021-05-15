@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common'
 import { ChartsModule }	from 'ng2-charts';
 import { AgmCoreModule }	from '@agm/core';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -46,8 +47,10 @@ import { ManageBranchesService } from './services/manage-branches.service';
 import { AlertComponent } from './a2-components/alert/alert.component';
 import { ListComponent } from './a2-components/list/list.component';
 import { DesignchartDirective } from './directives/designchart.directive';
+
 import {AngularFireModule} from '@angular/fire'
 import { AngularFireStorageModule } from '@angular/fire/storage';
+
 import { FirebaseService } from './services/firebase.service';
 import { PageShopsChainManageComponent } from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon-type-manage.component';
@@ -57,6 +60,7 @@ import { DropzoneDirective } from './dropzone.directive';
 import { UploaderComponent } from './uploader/uploader.component';
 import { UploadTaskComponent } from './upload-task/upload-task.component';
 import { MyAccountComponent } from './my-account/my-account.component';
+import { PageSalesManagementComponent } from './pages/sales-management/sales-management.component';
 
 
 @NgModule({
@@ -90,6 +94,7 @@ import { MyAccountComponent } from './my-account/my-account.component';
     UploaderComponent,
     UploadTaskComponent,
     MyAccountComponent,
+    PageSalesManagementComponent,
     ],
   imports: [
     BrowserModule,
@@ -114,7 +119,14 @@ import { MyAccountComponent } from './my-account/my-account.component';
       messagingSenderId: "704246937854",
       appId: "1:704246937854:web:5dd6ffad1b013c2456cdaf",
       measurementId: "G-78BG04KRCB"
-    }),AngularFireModule,AngularFireStorageModule,MatDialogModule
+    }),
+    AngularFireModule,
+    AngularFireStorageModule,
+    MatDialogModule,
+    NgxChartsModule,
+    BrowserModule, 
+    BrowserAnimationsModule, 
+    NgxChartsModule
     
   ],
   providers: [ManageBranchesService,FirebaseService],

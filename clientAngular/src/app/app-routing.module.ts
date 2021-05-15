@@ -17,6 +17,7 @@ import { PageTimelineCouponzyComponent }        from './pages/timeline-couponzy/
 import { PageCouponsSaleComponent }             from './pages/coupons-sale/coupons-sale.component';
 import { UploaderComponent } from './uploader/uploader.component';
 import { MyAccountComponent } from './my-account/my-account.component';
+import { PageSalesManagementComponent }         from './pages/sales-management/sales-management.component';
 
 const defaultRoutes: Routes = [
   { path: 'dashboard', component: PageDashboardComponent },
@@ -30,6 +31,7 @@ const defaultRoutes: Routes = [
   { path: 'coupons-sale', component: PageCouponsSaleComponent },
   { path: 'uploader', component: UploaderComponent },
   { path: 'my-account', component: MyAccountComponent },
+  { path: 'sales-management', component: PageSalesManagementComponent },
 ];
 
 const roadstartRoutes: Routes = [

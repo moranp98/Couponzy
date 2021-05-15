@@ -122,11 +122,11 @@ export class PageCouponsManageComponent implements OnInit {
 
     if (localStorage.getItem('user') == null || this.currentUser.role === 'seller') {
       this.router.navigate(['/roadstart-layout/sign-in-social']);
+    } else {
+      this.showCoupons(this.currentUser.employerId);
+      this.showShops(this.currentUser.employerId);
+      this.showCouponTypes();
     }
-
-    this.showCoupons(this.currentUser.employerId);
-    this.showShops(this.currentUser.employerId);
-    this.showCouponTypes();
 
     this.form = this.fb.group({
       couponId: [null, Validators.compose(
@@ -150,7 +150,6 @@ export class PageCouponsManageComponent implements OnInit {
       Shop: [null, Validators.compose([Validators.required])],
       profile_Coupon: [null, Validators.compose([Validators.required])],
       couponType: [null, Validators.compose([Validators.required])],
-
     });
   }
 

@@ -1,0 +1,86 @@
+<!-- Row 3 --- Bar and Radar Chart -->
+<div class="row">
+    <!-- ngx-charts-pie-grid -->
+    <div class="col-lg-12">
+        <card title="הכנסות הרשת לפי קופון" class="height-ngx-charts-Sale-Card">
+            <ngx-charts-pie-grid [view]="[view, 400]" [scheme]="colorScheme" [results]="single"
+                (select)="onSelect($event)">
+            </ngx-charts-pie-grid>
+        </card>
+
+    </div>
+</div>
+<!-- Row 2 --- 1 Table -->
+<div class="row">
+    <div class="col-lg-12">
+        <card title="רשימת הקופונים">
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>תמונת קופון</th>
+                            <th>שם הקופון</th>
+                            <th>תיאור הקופון</th>
+                            <th>מספר הקופון</th>
+                            <th>מחיר הקופון</th>
+                            <th>שם הקופון</th>
+                            <!--th>סך הרווח בש"ח</th-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let coupon of coupons; let i = index;">
+                            <th scope="row">{{i+1}}</th>
+                            <td><img mat-list-avatar src="{{ coupon.profile_Coupon }}" class="avatar" alt=""
+                                    style="width: 54px;height: 54px;"></td>
+                            <td>{{coupon.couponName}}</td>
+                            <td>{{coupon.description}}</td>
+                            <td>{{coupon.id}}</td>
+                            <td>{{coupon.newPrice}}</td>
+                            <td>{{coupon.expireDate | date}}</td>
+                            <!--td >{{resultCouponeNameToDisplayIntoTable[coupon?.couponName]}}</td-->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </card>
+    </div>
+</div>
+<!-- Row 2 --- 2 Table -->
+<div class="row">
+    <div class="col-lg-12">
+        <card title="הזמנות אחרונות">
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>תמונת קופון</th>
+                            <th>שם הסניף</th>
+                            <th>שם הקופון</th>
+                            <th>תיאור הקופון</th>
+                            <th>מספר הקופון</th>
+                            <th>מחיר הקופון</th>
+                            <th>מספר הזמנה</th>
+                            <th>תאריך הרכישה</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of ordersListDisplay; let i = index;">
+                            <th scope="row">{{i+1}}</th>
+                            <td><img mat-list-avatar src="{{ order.coupon.profile_Coupon }}" class="avatar" alt=""
+                                    style="width: 54px;height: 54px;"></td>
+                            <td>{{order.branch.branchName}}</td>
+                            <td>{{order.coupon.couponName}}</td>
+                            <td>{{order.coupon.description}}</td>
+                            <td>{{order.coupon.id}}</td>
+                            <td>{{order.coupon.newPrice}}</td>
+                            <td>{{order.orderNumber}}</td>
+                            <td>{{order.date | date}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </card>
+    </div>
+</div>

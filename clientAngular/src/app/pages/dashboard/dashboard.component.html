@@ -21,7 +21,6 @@
       <div class="count">{{countAllCoupons}}</div>
     </card>
   </div>
-</div>
 
 <!-- Row 2 --- 3 Cards -->
 <div class="row" *ngIf="currentUser !== null && currentUser.role === 'admin'">
@@ -73,27 +72,31 @@
   </div>
 </div>
 
-<!-- Row 4 --- Line Chart -->
+<!-- Row 3 --- Bar and Radar Chart -->
 <div class="row">
   <!-- Bar Chart -->
-  <div class="col-lg-6">
-    <card  class="mb-lg">
-        <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels"
-            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
-        </canvas>
+  <div class="col-lg-8">
+    <card title="הכנסות לפי רשתות חנויות" *ngIf="currentUser.role === 'admin'">
+      <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+        [legend]="barChartLegend" [chartType]="barChartType">
+      </canvas>
+    </card>
+    <card title="הכנסות לפי סניפים" *ngIf="currentUser.role === 'shopManager'">
+      <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+        [legend]="barChartLegend" [chartType]="barChartType">
+      </canvas>
     </card>
   </div>
-  <!-- Bar Chart -->
-  <div class="col-lg-6">
-    <card  class="mb-lg">
-        <canvas appDesignchart baseChart [datasets]="barChartData" [labels]="barChartLabels"
-            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
-        </canvas>
+  <!-- Radar Chart -->
+  <div class="col-lg-4">
+    <card title="הכנסות לפי קטיגוריות קופונים">
+      <canvas baseChart [datasets]="radarChartData" [labels]="radarChartLabels" [chartType]="radarChartType"
+        [colors]="radarChartColors" width="100%" height="100%"></canvas>
     </card>
   </div>
 </div>
-  
-<!-- Row 5 --- 2 Table -->
+
+<!-- Row 4 --- 2 Table -->
 <div class="row">
   <div class="col-lg-6">
     <card title="הזמנות אחרונות">
@@ -114,7 +117,8 @@
           <tbody>
             <tr *ngFor="let coupon of recentPurchases; let i = index;">
               <th scope="row">{{i+1}}</th>
-              <td><img mat-list-avatar src="{{ coupon.coupon.profile_Coupon }}" class="avatar" alt="" style="width: 54px;height: 54px;"></td>
+              <td><img mat-list-avatar src="{{ coupon.coupon.profile_Coupon }}" class="avatar" alt=""
+                  style="width: 54px;height: 54px;"></td>
               <td *ngIf="currentUser.role === 'admin'">{{coupon.branch.shopName}}</td>
               <td>{{coupon.branch.branchName}}</td>
               <td>{{coupon.coupon.couponName}}</td>
@@ -135,25 +139,25 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>פרופיל משתמש</th>
-              <!--th>שם פרטי</th>
-              <th>שם משפחה</th-->
+              <!--th>פרופיל משתמש</th-->
+              <th>שם פרטי</th>
+              <th>שם משפחה</th>
               <th>שם משתמש</th>
-              <!--th>עיר</th-->
+              <th>עיר</th>
               <th>תפקיד</th>
               <th>טלפון</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of showLastUsers; let i = index">
+            <tr *ngFor="let user of lastUsers; let i = index">
               <th scope="row">{{i+1}}</th>
-              <td>{{user.profile_User}}</td>
-              <!--td>{{user.userName.firstName}}</td>
-              <td>{{user.userName.lastName}}</td-->
-              <td>{{user.email}}</td>
-              <!--td>{{user.address.city}}</td-->
-              <td>{{user.role}}</td>
-              <td>{{user.phoneNumber}}</td>
+              <!--td>{{user.profile_User}}</td-->
+              <td>{{ user?.userName?.firstName }}</td>
+              <td>{{ user?.userName?.lastName }}</td>
+              <td>{{ user?.email }}</td>
+              <td>{{ user?.address?.city }}</td>
+              <td>{{ user?.role }}</td>
+              <td>{{ user?.phoneNumber }}</td>
             </tr>
           </tbody>
         </table>

@@ -94,11 +94,11 @@ export class PageShopsManageComponent implements OnInit {
 
     if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
       this.router.navigate(['/roadstart-layout/sign-in-social']);
-    }
+    } else {
+      this.showShops();
+      this.showBranches();
+    } 
     
-    this.showShops();
-    this.showBranches();
-
     this.form = this.fb.group({
       shop: [null, Validators.compose([Validators.required])],
       branchName: [null, Validators.compose(

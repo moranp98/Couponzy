@@ -6,7 +6,7 @@
             </button>
             <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-6">
                         <mat-form-field>
                             <input matInput placeholder="שם רשת החנויות" [formControl]="form.controls['shopName']"
                                 type="text">
@@ -16,7 +16,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-lg-6">
                         <mat-form-field>
                             <input matInput placeholder="תמונת פרופיל הרשת"
                                 [formControl]="form.controls['profile_Shop']" type="text">
@@ -42,7 +42,7 @@
             <mat-icon mat-list-avatar>update</mat-icon>
             <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-6">
                         <mat-form-field>
                             <input matInput placeholder="שם רשת החנויות"
                                 [formControl]="updateForm.controls['shopName']" type="text">
@@ -52,7 +52,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-lg-6">
                         <mat-form-field>
                             <input matInput placeholder="תמונת פרופיל הרשת"
                                 [formControl]="updateForm.controls['profile_Shop']" type="text">
@@ -90,7 +90,7 @@
 </div>
 <span class="span"></span>
 <div class="row">
-    <div class="col-md-6 col-xl-3 " *ngFor="let shop of shops; let i = index">
+    <div class="col-lg-3" *ngFor="let shop of shops; let i = index">
         <card [align]="'center'" class="mb-xl-0">
             <img mat-list-avatar class="mat-profile" src="{{ shop.profile_Shop }}" width="150" alt="">
             <h5>{{ shop.shopName }}</h5>
