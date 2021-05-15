@@ -15,7 +15,7 @@ export interface Users {
     maritalstatus: string,
     address:{
         city: string,
-        street: string,
+        zipcode: string,
         country: string
     },
     lat: Number,

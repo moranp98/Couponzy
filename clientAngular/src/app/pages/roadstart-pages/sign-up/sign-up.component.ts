@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Input, ChangeDetectorRef} from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { FirebaseService } from '../../../services/firebase.service'
-import { UserService } from '../../../services/user.service'
+import { FirebaseService } from '../../../services/firebase.service';
+import { UserService } from '../../../services/user.service';
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'page-sign-up',
@@ -10,6 +15,24 @@ import { UserService } from '../../../services/user.service'
   styleUrls: ['./sign-up.component.scss']
 })
 export class PageSignUpComponent implements OnInit {
+  /*
+  START
+  Upload Profile Picture
+  */
+  @Input() file: File;
+
+  task: AngularFireUploadTask;
+
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  downloadURL: string;
+  i:number = 0;
+  filename : string;
+  datefile : any;
+/*
+  END
+  Upload Profile Picture
+  */
   pageTitle: string = 'רישום';
   isSignedIn = false
   public form: FormGroup;
@@ -17,7 +40,10 @@ export class PageSignUpComponent implements OnInit {
   constructor(private router: Router,
               public firebaseService : FirebaseService,
               public userService : UserService,
-              private fb: FormBuilder) {}
+              private fb: FormBuilder,
+              private storage: AngularFireStorage, 
+              private db: AngularFirestore,
+              ) {var i=0;}
               
 
   ngOnInit(){
@@ -25,7 +51,8 @@ export class PageSignUpComponent implements OnInit {
     this.isSignedIn= true
     this.router.navigate(['/default-layout/dashboard']);
     }
-    else
+    else{
+
     this.isSignedIn = false
     this.form = this.fb.group({
       email: [null, Validators.compose([Validators.required])],
@@ -44,10 +71,40 @@ export class PageSignUpComponent implements OnInit {
       }),
       phonenumber:[null, Validators.compose([Validators.required])],
     });
+    
+  }
+  }
+ /*
+  START
+  Upload Profile Picture
+  */
+  isHovering: boolean;
+
+  files: File[] = [];
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+
+  onDrop(files: FileList) {
+    console.log("Started on Drop")
+      this.files.push(files.item(0));
+      this.filename=files.item(0).name
+      this.datefile=Date.now;
+      //this.startUpload();
   }
   
+/*
+  END
+  Upload Profile Picture
+  */
 async onSignup(email:string,password:string,passwordVal:string,firstName:string,lastName:string,country:string,city:string,zipcode:string,birthday:string,maritalstatus:string,gender:string,phoneNumber:string,userid:string){
   if(password==passwordVal){
+    console.log("dOWNLOAD LINK: "+ localStorage.getItem('downloadURL'))
+    this.downloadURL = await localStorage.getItem('downloadURL')
+    if(this.downloadURL == null){
+      this.downloadURL = "../../../assets/content/avatar-2.jpg"
+    }
     await this.firebaseService.signup(email,password)
     if(this.firebaseService.isLoggedIn){
       this.form=this.fb.group({
@@ -79,7 +136,7 @@ async onSignup(email:string,password:string,passwordVal:string,firstName:string,
           lastName: [lastName, Validators.compose([Validators.required])],
         }),
         phoneNumber:[phoneNumber, Validators.compose([Validators.required])],
-        profile_User:[null,Validators.compose([Validators.required])]
+        profile_User:[this.downloadURL,Validators.compose([Validators.required])]
       });
 
       console.log(this.updateForm.value)

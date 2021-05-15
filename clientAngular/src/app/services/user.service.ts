@@ -20,6 +20,12 @@ export class UserService {
     console.log(formUser.email + " this is for user")
     return this.http.post<any>(url, formUser);
   }
+  updateUser(id,formUser):Observable<any> {
+    const url = `${this.serverUrl}/UpdateUser/${id}`;
+    console.log(url + " this is for user update")
+    console.log(formUser.email + " this is for user")
+    return this.http.put<any>(url, formUser);
+  }
 
   getUser(email:string): Observable<Users> {
     const url=`${this.UsersUrl}/${email}`

@@ -6,7 +6,9 @@ const { addUser,
         updateUser,
         deleteUser,
         getCountUsers,
-        getLastUsers
+        getLastUsers,
+        getProfilePicture,
+        updateUserDetails
       } = require('../controllers/UserController');
 
 const router = express.Router();
@@ -14,6 +16,7 @@ const router = express.Router();
 router.post('/User', addUser);
 router.get('/Users', getAllUsers);
 router.get('/User/:id', getUser);
+router.put('/UpdateUser/:id', updateUserDetails);
 router.put('/User/:id', updateUser);
 router.delete('/User/:id', deleteUser);
 router.get('/getCountUsers', getCountUsers);
