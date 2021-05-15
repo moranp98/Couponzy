@@ -7,6 +7,7 @@ import { Reviews } from '../../models/reviews';
 import { Users } from '../../models/users';
 import { Shops } from 'src/app/models/shops';
 import { Branches } from 'src/app/models/branches';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'timeline-couponzy',
@@ -25,15 +26,19 @@ export class PageTimelineCouponzyComponent implements OnInit {
   constructor(private _sharedService: SharedService,
     private _manageTimelineCouponzy: TimelineCouponzyService,
     private _manageshops: ManageShopsService,
-    private _managebranches: ManageBranchesService) {
+    private _managebranches: ManageBranchesService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser)
-
-    this.showReviews(this.currentUser.employerId);
+    if(localStorage.getItem('user') == null){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    } else {
+      this.showReviews(this.currentUser.employerId);
+    }
   }
 
   showReviews(employerId: string) {

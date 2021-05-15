@@ -67,7 +67,7 @@
   },
   {
     "title": "ניהול קופונים",
-    "icon": "fa fa-shopping-basket",
+    "icon": "fa fa-money",
     "active": false,
     "groupTitle" : false,
     "sub": "",

@@ -44,9 +44,9 @@ export class PageCouponTypeManageComponent implements OnInit {
 
     if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
       this.router.navigate(['/roadstart-layout/sign-in-social']);
+    } else {
+      this.showCouponTypes();
     }
-
-    this.showCouponTypes();
 
     this.form = this.fb.group({
       couponTypeName: [null, Validators.compose(

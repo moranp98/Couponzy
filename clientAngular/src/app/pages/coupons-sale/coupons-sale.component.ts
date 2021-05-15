@@ -69,13 +69,24 @@ export class coupon {
   description: string;
   newPrice: Number;
   profile_Coupon: string;
+  couponTypeId: string;
+  couponTypeName: string;
 
-  constructor(id: string, couponName: string, description: string, newPrice: Number, profile_Coupon: string) {
+  constructor(id: string, 
+    couponName: string, 
+    description: string, 
+    newPrice: Number, 
+    profile_Coupon: string, 
+    couponTypeId: string, 
+    couponTypeName: string) {
+
     this.id = id;
     this.couponName = couponName;
     this.description = description;
     this.newPrice = newPrice;
     this.profile_Coupon = profile_Coupon;
+    this.couponTypeId = couponTypeId;
+    this.couponTypeName = couponTypeName;
   }
 }
 
@@ -84,14 +95,14 @@ export class branch {
   shopId: string;
   branchName: string;
   shopName: string;
-  profile_Shop: string;
+  profile_Branch: string;
 
-  constructor(id: string, shopId: string, branchName: string, shopName: string, profile_Shop: string) {
+  constructor(id: string, shopId: string, branchName: string, shopName: string, profile_Branch: string) {
     this.id = id;
     this.shopId = shopId;
     this.branchName = branchName;
     this.shopName = shopName;
-    this.profile_Shop = profile_Shop;
+    this.profile_Branch = profile_Branch;
   }
 }
 
@@ -156,12 +167,12 @@ export class PageCouponsSaleComponent implements OnInit {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser);
 
-    if(localStorage.getItem('user') == null || this.currentUser.role === 'shopManager'){
-      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    if(localStorage.getItem('user') == null || this.currentUser.role !== 'seller'){
+      this.router.navigate(['/default-layout/dashboard']);
+    } else {
+      this.showShopByBranchId(this.currentUser.employerId)
+      this.showBranchId(this.currentUser.employerId)
     }
-
-    this.showShopByBranchId(this.currentUser.employerId)
-    this.showBranchId(this.currentUser.employerId)
   }
 
   showShopByBranchId(branchId: string) {
@@ -220,14 +231,16 @@ export class PageCouponsSaleComponent implements OnInit {
         this.saleCoupon.couponName, 
         this.saleCoupon.description, 
         this.saleCoupon.newPrice, 
-        this.saleCoupon.profile_Coupon);
+        this.saleCoupon.profile_Coupon,
+        this.saleCoupon.couponType.id,
+        this.saleCoupon.couponType.couponTypeName);
         
       this.branchClass = new branch(
         this.currentUser.employerId, 
         this.currentBranch.shop.id, 
         this.currentBranch.branchName, 
         this.currentShop.shopName, 
-        this.saleCoupon.profile_Coupon);
+        this.currentBranch.profile_Branch);
 
       this.userClass = new user(
         this.currentUser.email, 
@@ -244,7 +257,9 @@ export class PageCouponsSaleComponent implements OnInit {
           couponName: [this.couponClass.couponName, Validators.compose([Validators.required])],
           description: [this.couponClass.description, Validators.compose([Validators.required])],
           newPrice: [this.couponClass.newPrice, Validators.compose([Validators.required])],
-          profile_Coupon: [this.couponClass.profile_Coupon, Validators.compose([Validators.required])]
+          profile_Coupon: [this.couponClass.profile_Coupon, Validators.compose([Validators.required])],
+          couponTypeId: [this.couponClass.couponTypeId, Validators.compose([Validators.required])],
+          couponTypeName: [this.couponClass.couponTypeName, Validators.compose([Validators.required])]
         }),
         branch: [this.branchClass, Validators.compose([Validators.required])],
         user: [this.userClass, Validators.compose([Validators.required])],
