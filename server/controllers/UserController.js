@@ -17,6 +17,9 @@ const addUser = async (req, res, next) => {
         data.age = age//birthday
         data.lat = 0.0;
         data.long = 0.0; 
+        if(data.profile_User == null){
+            data.profile_User = "../../../assets/content/avatar-2.jpg"
+        }
         console.log("Acceced in ADDUSER")
         await firebase.collection('Users').doc(data.email).set(data);
         res.json('User record saved successfuly');
@@ -63,7 +66,21 @@ const getAllUsers = async (req, res, next) => {
         res.status(400).json(error.message);
     }
 }
-
+const getProfilePicture = async (req,res,next)=>{
+    try
+    {
+        const path = req.params.id;
+        const photo = await firebase.collection('photos').doc(path);
+        const data = await photo.get();
+        if (!data.exists) {
+            res.status(404).json('Photo with the given Path not found');
+        } else {
+            res.json(data.data());
+        }
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+}
 const getUser = async (req, res, next) => {
     try {
         const id = req.params.id;
@@ -78,7 +95,17 @@ const getUser = async (req, res, next) => {
         res.status(400).json(error.message);
     }
 }
-
+const updateUserDetails = async (req, res, next) =>{
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        data.lastUpdated = admin.firestore.Timestamp.now();
+        await firebase.collection('Users').doc(id).update(data)
+        res.json('User update saved successfuly');
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+}
 const updateUser = async (req, res, next) => {
     try {
         const id = req.params.id;
@@ -288,5 +315,7 @@ module.exports = {
     updateUser,
     deleteUser,
     getCountUsers,
-    getLastUsers
+    getLastUsers,
+    getProfilePicture,
+    updateUserDetails
 }

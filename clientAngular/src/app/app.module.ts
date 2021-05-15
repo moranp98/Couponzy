@@ -1,6 +1,7 @@
 import { ElementRef, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MaterialModule } from './material/material.module';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -46,11 +47,16 @@ import { AlertComponent } from './a2-components/alert/alert.component';
 import { ListComponent } from './a2-components/list/list.component';
 import { DesignchartDirective } from './directives/designchart.directive';
 import {AngularFireModule} from '@angular/fire'
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { FirebaseService } from './services/firebase.service';
 import { PageShopsChainManageComponent } from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent } from './pages/coupon-type-manage/coupon-type-manage.component';
 import { PageTimelineCouponzyComponent } from './pages/timeline-couponzy/timeline-couponzy.component';
 import { PageCouponsSaleComponent } from './pages/coupons-sale/coupons-sale.component';
+import { DropzoneDirective } from './dropzone.directive';
+import { UploaderComponent } from './uploader/uploader.component';
+import { UploadTaskComponent } from './upload-task/upload-task.component';
+import { MyAccountComponent } from './my-account/my-account.component';
 
 
 @NgModule({
@@ -80,6 +86,10 @@ import { PageCouponsSaleComponent } from './pages/coupons-sale/coupons-sale.comp
     PageCouponTypeManageComponent,
     PageTimelineCouponzyComponent,
     PageCouponsSaleComponent,
+    DropzoneDirective,
+    UploaderComponent,
+    UploadTaskComponent,
+    MyAccountComponent,
     ],
   imports: [
     BrowserModule,
@@ -104,10 +114,11 @@ import { PageCouponsSaleComponent } from './pages/coupons-sale/coupons-sale.comp
       messagingSenderId: "704246937854",
       appId: "1:704246937854:web:5dd6ffad1b013c2456cdaf",
       measurementId: "G-78BG04KRCB"
-    })
+    }),AngularFireModule,AngularFireStorageModule,MatDialogModule
     
   ],
   providers: [ManageBranchesService,FirebaseService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[UploaderComponent]
 })
 export class AppModule { }
