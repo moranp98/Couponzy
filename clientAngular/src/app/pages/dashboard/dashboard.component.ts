@@ -156,7 +156,7 @@ export class PageDashboardComponent implements OnInit {
             .map(order => { return { branchName: order.branch['branchName'], price: order.coupon['newPrice']}})
             .reduce(function (obj, orderC, arr) {
               if (!obj[orderC.branchName]) {
-                obj[orderC.branchName] = 1;
+                obj[orderC.branchName] = orderC.price;
               } else {
                 obj[orderC.branchName] += Number(orderC.price);
               }
@@ -177,7 +177,7 @@ export class PageDashboardComponent implements OnInit {
             .map(order => { return { couponTypeName: order.coupon['couponTypeName'], price: order.coupon['newPrice'] } })
             .reduce(function (obj, orderC, arr) {
               if (!obj[orderC.couponTypeName]) {
-                obj[orderC.couponTypeName] = 1;
+                obj[orderC.couponTypeName] = orderC.price;
               } else {
                 obj[orderC.couponTypeName] += Number(orderC.price);
               }
@@ -230,7 +230,7 @@ export class PageDashboardComponent implements OnInit {
             .map(order => { return { couponTypeName: order.coupon['couponTypeName'], price: order.coupon['newPrice'] } })
             .reduce(function (obj, orderC, arr) {
               if (!obj[orderC.couponTypeName]) {
-                obj[orderC.couponTypeName] = 1;
+                obj[orderC.couponTypeName] = orderC.price;
               } else {
                 obj[orderC.couponTypeName] += Number(orderC.price);
               }

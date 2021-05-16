@@ -1,5 +1,5 @@
-<!-- Row 1 --- 4 Cards -->
-<div class="row" *ngIf="currentUser !== null && currentUser.role === 'admin'">
+<!-- Row 1 --- 6 Cards for admin -->
+<div class="row" *ngIf="currentUser.role === 'admin'">
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(220,20,60,0.6)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-4.jpg'"
       class="info-card">
@@ -22,8 +22,6 @@
     </card>
   </div>
 
-<!-- Row 2 --- 3 Cards -->
-<div class="row" *ngIf="currentUser !== null && currentUser.role === 'admin'">
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(220,20,60,0.6)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-5.jpg'"
       class="info-card">
@@ -47,8 +45,8 @@
   </div>
 </div>
 
-<!-- Row 3 --- 3 Cards -->
-<div class="row" *ngIf="currentUser !== null && currentUser.role === 'shopManager'">
+<!-- Row 2 --- 3 Cards for shopManager -->
+<div class="row" *ngIf="currentUser.role === 'shopManager'">
   <div class="col-md-6 col-xl-4">
     <card [customBgColor]="'rgba(220,20,60,0.6)'" [customColor]="'#fff'" [bgImage]="'assets/content/card-5.jpg'"
       class="info-card">
@@ -106,7 +104,7 @@
             <tr>
               <th>#</th>
               <th>תמונת קופון</th>
-              <th *ngIf="currentUser !== null && currentUser.role === 'admin'">שם הרשת</th>
+              <th *ngIf="currentUser.role === 'admin'">שם הרשת</th>
               <th>שם הסניף</th>
               <th>שם הקופון</th>
               <th>מספר הקופון</th>
