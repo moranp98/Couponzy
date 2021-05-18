@@ -15,7 +15,7 @@ export class ShopService {
   getShops(): Observable<Shops[]>{
     return this.http.get<Shops[]>(this.ShopsUrl);
   }
-
+  
   addShopToUser(sellerId,shopId){
       const url=`${this.ShopsUrl}/${sellerId}`;
       return this.http.patch<Shops>(url,{shopId:shopId}).subscribe();

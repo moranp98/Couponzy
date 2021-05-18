@@ -42,12 +42,12 @@ export class ManageShopsService {
     const url = `${this.serverUrl}/${'Shop'}/${id}`;
     return this.http.put<Shops>(url, formBranch);
   }
-
+/*Don't use it */
   deleteShop(id: string): Observable<Shops> {
     const url = `${this.serverUrl}/${'Shop'}/${id}`;
     return this.http.delete<Shops>(url);
   }
-
+/*Use this for Delete */
   lockoutShop(id: string): Observable<Shops> {
     const url = `${this.serverUrl}/${'Shop/lockout'}/${id}`;
     return this.http.put<Shops>(url, '');
