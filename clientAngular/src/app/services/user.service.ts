@@ -34,7 +34,9 @@ export class UserService {
   }
 
   getUsers(): Observable<Users[]>{
-    return this.http.get<Users[]>(this.UsersUrl);
+    const url = `${this.serverUrl}/${'Users'}`;
+    console.log(url);
+    return this.http.get<Users[]>(url);
   }
 
   updatePos(id,position:number){
