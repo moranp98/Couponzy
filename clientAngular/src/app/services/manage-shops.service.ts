@@ -24,9 +24,9 @@ export class ManageShopsService {
   }
 
   getShopById(id: string): Observable<Shops> {
-    console.log(id);
+    //console.log(id);
     const url = `${this.serverUrl}/${'Shop'}/${id}`;
-    console.log(url);
+    //console.log(url);
     return this.http.get<Shops>(url);
   }
 
