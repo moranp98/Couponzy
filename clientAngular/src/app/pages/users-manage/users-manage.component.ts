@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { shop } from '../shops-manage/shops-manage.component';
 import { Branches } from 'src/app/models/branches';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 interface Pos{
   value:number;
   viewValue:string;
@@ -26,11 +27,13 @@ interface Pos{
 export class PageUsersManageComponent implements OnInit {
   pageTitle: string = 'ניהול משתמשים';
 
+  map = new Map<string, string>(); 
   users : Users[] = [];  
   shops: Shops[]=[];
   branches: Branches[]=[];
   currentShop : Shops;
-  currentShopBranchName:string;
+  currentBranch : Branches;
+  currentShopSeller:string;
   updatePressed:boolean= false;
   showUsers:boolean=true;
   updateUser:Users;
@@ -39,6 +42,7 @@ export class PageUsersManageComponent implements OnInit {
   posNumber:number;
   isSeller:boolean=false;
   isShopManager:boolean=false;
+  isShopSeller : boolean=false;
   currentUser: Users;
   public updateForm: FormGroup;
   // Constractor
@@ -91,18 +95,37 @@ export class PageUsersManageComponent implements OnInit {
     return "לקוח"
   }
 
-   checkShop(user:Users){
-    if(user.employerId!="Not employed"){
-      console.log(user.employerId)
-    this.shopsServices.getShopById(user.employerId).subscribe
-     ( (shop) =>   {  this.currentShop  = shop; },
-      (error) => { this.shopsServices.getShopByBranchId(user.employerId).subscribe(
-       (branch) =>   {  this.currentShop  = branch; },
-       (error) => {return "---";})}
-       ); 
-       return this.currentShop.shopName;
+    checkShop(user:Users){
+     var cUser = this.map.get(user.email)
+     if(user.employerId!="Not employed"){
+     if(user.role=="seller"){
+      
+      if(cUser==null){
+      this.branchServices.getBranchById(user.employerId).subscribe(
+        (branch) =>   {  this.currentBranch= branch;this.map.set(user.email,branch.branchName); },
+        (error) => {return "---";})
+        return this.currentBranch==null ? "---" : this.currentBranch.branchName;
+      }
+      else{
+        return cUser;
+      }
+     }
+     else if(user.role=="shopManager"){
+     
+      if(cUser==null){
+      this.shopsServices.getShopById(user.employerId).subscribe
+      ( (shop) =>   {  this.currentShop = shop;this.map.set(user.email,shop.shopName); },
+         (error)=>{return "---"; })
+         return this.currentShop==null ? "---" : this.currentShop.shopName;
+      }
+      else{
+        return cUser;
+      }
+     }
     }
-    return "---";
+     else{
+     return "---";
+     }
   }
 
   onUpdate( email: string, state: boolean,){
@@ -129,6 +152,8 @@ export class PageUsersManageComponent implements OnInit {
       this.showUsers=true;
       this.isSeller=false;
       this.isShopManager=false;
+      this.isShopSeller=false;
+      window.location.reload();
     }
   }
 
@@ -148,15 +173,31 @@ export class PageUsersManageComponent implements OnInit {
       this.branches = data;
     });
   }
-
+  getBranchesbyID(employerId){
+    this.branchServices.getAllBranchesByShopId(employerId).subscribe(data => {
+      this.branches = data;
+      console.log("Branches : " + data)
+    });
+  }
    onShopSubmit(shop){
-    this.shopServices.addShopToUser(this.updateUser.email,shop);
-    this.onUpdate(this.updateUser.email,false);
-    //window.location.reload();
+    console.log("shop id " +shop)
+    this.updateForm=this.fb.group({
+      employerId:[shop, Validators.compose([Validators.required])],
+    });
+    this.userServices.updateUser(this.updateUser.email,this.updateForm.value).subscribe
+    ( (user) => {console.log('Success updated user role', user); },
+      (error) => { console.log('Error', error); });
+    this.onUpdate(this.updateUser.email,false);;
+  }
+  onShopSubmitSeller(shop){
+    console.log("Entered Submit seller ")
+    this.currentShopSeller =shop;
+    console.log("shop id " +shop)
+    this.getBranchesbyID(this.currentShopSeller);
+    this.isShopSeller=true;
   }
   onBranchSubmit(branch,email){
-    console.log("branch : "+ branch)
-    console.log("email : "+ email)
+    console.log("Entered Submit seller ")
     this.updateForm=this.fb.group({
       employerId:[branch, Validators.compose([Validators.required])],
     });
@@ -182,9 +223,11 @@ export class PageUsersManageComponent implements OnInit {
    ChangeUserRole(email,role){
       console.log(email)
       console.log(role)
+      var flag = false;
       this.posNumber=role;
       if(role==0){
         role="admin"
+        flag=true;
       }
       else if (role==1){
         role="seller"
@@ -194,6 +237,7 @@ export class PageUsersManageComponent implements OnInit {
       }
       else{
         role="customer"
+        flag=true;
       }
       console.log(role)
      this.updateForm=this.fb.group({
@@ -202,6 +246,11 @@ export class PageUsersManageComponent implements OnInit {
     this.userServices.updateUser(email,this.updateForm.value).subscribe
     ( (user) => {console.log('Success updated user role', user); },
       (error) => { console.log('Error', error); });
+      if(flag){
+        console.log("flag is true");
+       this.onUpdate(this.updateUser.email,false);
+      }
    }
+   
    
 }
