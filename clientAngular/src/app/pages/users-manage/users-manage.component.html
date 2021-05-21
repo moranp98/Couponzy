@@ -56,12 +56,31 @@
           </div>
         </div>
       </form>
-      <form (ngSubmit)="onShopSubmit(shop.value)"  *ngIf=" isShopManager || posNumber==2">
+      <form (ngSubmit)="onShopSubmit(shop.value)"  *ngIf=" isShopManager || posNumber==2 ">
         <div class="row">  
         <div class="col-md-4">
           <mat-form-field>
             <mat-select #shop placeholder="בחר חנות" dir="rtl" [formControl]="shopControl" required>
-              <mat-option *ngFor="let shop of shops" [value]=shop._id>
+              <mat-option *ngFor="let shop of shops" [value]=shop.id>
+                {{shop.shopName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="shopControl.hasError('required')">אנא בחר חנות</mat-error>
+          </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button color="accent">שמור</button>
+            <span class="span"></span>
+            <button mat-raised-button color="accent" (click)="onUpdate(0,false)">חזור</button>
+          </div>
+        </div>
+      </form>
+      <form (ngSubmit)="onShopSubmitSeller(shop.value)"  *ngIf=" isShopSeller || posNumber==1">
+        <div class="row">  
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-select #shop placeholder="בחר חנות" dir="rtl" [formControl]="shopControl" required>
+              <mat-option *ngFor="let shop of shops" [value]=shop.id>
                 {{shop.shopName}}
               </mat-option>
             </mat-select>

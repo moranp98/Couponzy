@@ -74,9 +74,10 @@ export class PageDashboardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    var currentUser = localStorage.getItem('userDetails');
-    this.currentUser = JSON.parse(currentUser)
+  async ngOnInit() {
+    var currentUser2 = await localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser2)
+    console.log(this.currentUser);
 
     if (localStorage.getItem('user') == null || this.currentUser.role === 'seller') {
       this.router.navigate(['/roadstart-layout/sign-in-social']);
