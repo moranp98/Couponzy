@@ -1,6 +1,6 @@
 <!-- Row 1 --- Branches map -->
 <div class="row mapHeight">
-    <div class="col-lg map-col mb-4 mb-lg-0">
+    <div class="col-lg-6 map-col mb-4">
         <card [title]="'מפת חנויות'">
             <agm-map [latitude]="lat" [longitude]="lng" [zoom]="10">
                 <agm-marker *ngFor="let branch of branches; let i = index" [latitude]="branch.lat"
@@ -17,7 +17,7 @@
             </agm-map>
         </card>
     </div>
-    <div class="col-lg">
+    <div class="col-lg-6 mb-4">
         <card [title]="'חיפוש'">
             <mat-form-field>
                 <mat-select placeholder="בחר רשת חנויות" [(ngModel)]="selectedShop">
@@ -81,9 +81,9 @@
 </div>
 <span class="apan"></span>
 <!-- Row 2 --- Branches table -->
-<div class="row rowMargin" >
+<div class="row" >
     <div class="col-lg">
-        <card title="רשימת החנויות והסניפים" class="mb-0">
+        <card title="רשימת החנויות והסניפים">
 
             <div class="table-responsive">
                 <table class="table table-bordered mb-0">

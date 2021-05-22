@@ -277,7 +277,7 @@ export class PageCouponsManageComponent implements OnInit {
         numOf_rating: [this.updateCoupon.numOf_rating, Validators.compose([])],
         isExists: [true, Validators.compose([Validators.required])],
         lastUpdated: [this.updateCoupon.lastUpdated, Validators.compose([])],
-        Shop: [this.updateCoupon.shop, Validators.compose([])],
+        shop: [this.updateCoupon.shop, Validators.compose([])],
         profile_Coupon: [this.updateCoupon.profile_Coupon, Validators.compose([Validators.required])],
         couponType: [this.updateCoupon.couponType, Validators.compose([])],
 

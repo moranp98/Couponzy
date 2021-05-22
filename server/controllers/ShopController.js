@@ -83,12 +83,16 @@ const updateShop = async (req, res, next) => {
     const shop = await firebase.collection('Shops').doc(id);
     await shop.update(data);
 
-    const couponsRef = await firebase.collection('Coupons').where('Shop.id', '==', id);
+    const couponsRef = await firebase.collection('Coupons').where('shop.id', '==', id);
     couponsRef.get().then((query) => {
       query.docChanges().forEach(change => {
         const coupon = change.doc;
-        const newShopInsidCoupon = data.shopName;
-        coupon.ref.update({ 'Shop.shopName': newShopInsidCoupon });
+        const newShopInsidCoupon = {
+          "id": id,
+          "shopName": data.shopName,
+          "profile_Shop": data.profile_Shop
+        };
+        coupon.ref.update({ 'shop': newShopInsidCoupon });
       });
     });
 

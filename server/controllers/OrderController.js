@@ -8,7 +8,7 @@ const addOrder = async (req, res, next) => {
         const lastDoc = await firebase
             .collection('Orders')
             .orderBy("orderDate", "desc")
-            .limit(1)
+            .limit(1);
         const lastData = await lastDoc.get();
         if (lastData.empty) {
             data.orderNumber = String(1000)

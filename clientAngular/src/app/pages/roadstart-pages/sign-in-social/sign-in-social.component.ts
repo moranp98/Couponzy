@@ -21,7 +21,6 @@ export class PageSignInSocialComponent implements OnInit {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser);
     console.log(this.currentUser)
-
     if (localStorage.getItem('user') !== null) {
       this.isSignedIn = true
       switch (this.currentUser.role) {

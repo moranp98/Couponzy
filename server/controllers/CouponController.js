@@ -15,7 +15,7 @@ const addCoupon = async (req, res, next) => {
     console.log(data.Shop.id);
 
     await firebase.collection('Coupons').doc(data.couponId).set(data);
-    const docId = data.Shop.id;
+    const docId = data.shop.id;
     const shopsRef = await firebase.collection('Shops').doc(docId);
     shopsRef.update({
       coupons: admin.firestore.FieldValue.arrayUnion({ id: data.couponId }),
@@ -59,7 +59,7 @@ const getAllCoupons = async (req, res, next) => {
           doc.data().isExists,
           doc.data().lastUpdated,
           doc.data().couponType,
-          doc.data().Shop
+          doc.data().shop
         );
         couponsArray.push(coupon);
       });
@@ -130,14 +130,14 @@ const updateCoupon = async (req, res, next) => {
     ordersRef.get().then((query) => {
       query.docChanges().forEach((change) => {
         const order = change.doc;
-        const newCouponInsidOrder = {
-          id: data.couponId,
-          couponName: data.couponName,
-          description: data.description,
-          newPrice: change.doc.newPrice,
-          profile_Coupon: data.profile_Coupon,
-        };
-        order.ref.update({ coupon: newCouponInsidOrder });
+        const newCouponNameInsidCoupon = data.couponName;
+        const newCouponDescriptionInsidCoupon = data.description;
+        const newCouponProfile_CouponInsidCoupon = data.profile_Coupon;
+        order.ref.update({ 
+          'coupon.couponName': newCouponNameInsidCoupon,
+          'coupon.description': newCouponDescriptionInsidCoupon,
+          'coupon.profile_Coupon': newCouponProfile_CouponInsidCoupon,
+        });
       });
     });
 
@@ -174,7 +174,7 @@ const lockoutCoupon = async (req, res, next) => {
     const coupon = await firebase.collection('Coupons').doc(id);
     await coupon.update({'isExists': false, lastUpdated: admin.firestore.Timestamp.now()});
 
-    const docShopId = (await coupon.get()).data().Shop.id;
+    const docShopId = (await coupon.get()).data().shop.id;
     console.log('data().shop.id = ' + docShopId)
     const shopsRef = await firebase.collection('Shops').doc(docShopId);
     shopsRef.update({

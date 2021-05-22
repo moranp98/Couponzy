@@ -132,10 +132,10 @@ const updateBranch = async (req, res, next) => {
                 const order = change.doc;
                 const newBranchInsidOrder = {
                     "id": id,
-                    "shopId": data.shop.shopId,
+                    "shopId": data.shop.id,
                     "branchName": data.branchName,
                     "shopName": data.shop.shopName,
-                    "profile_Shop": data.shop.profile_Shop
+                    "profile_Branch": data.profile_Branch
                 };
                 order.ref.update({ 'branch': newBranchInsidOrder });
             });
