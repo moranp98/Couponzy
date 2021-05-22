@@ -147,7 +147,7 @@ export class PageCouponsManageComponent implements OnInit {
       numOf_rating: [0, Validators.compose([Validators.required])],
       isExists: [true, Validators.compose([Validators.required])],
       lastUpdated: [Date.now(), Validators.compose([])],
-      Shop: [null, Validators.compose([Validators.required])],
+      shop: [null, Validators.compose([Validators.required])],
       profile_Coupon: [null, Validators.compose([Validators.required])],
       couponType: [null, Validators.compose([Validators.required])],
     });
@@ -264,12 +264,10 @@ export class PageCouponsManageComponent implements OnInit {
             Validators.required,
             Validators.minLength(6),
             Validators.maxLength(6),
-            //this._uniqueIdValidator.bind(this)
           ])
         ],
         couponName: [this.updateCoupon.couponName, Validators.compose([Validators.required, Validators.maxLength(16)])],
         description: [this.updateCoupon.description, Validators.compose([Validators.required, Validators.maxLength(140)])],
-        published: [this.updateCoupon.published, Validators.compose([Validators.required])],
         expireDate: [this.updateCoupon.expireDate, Validators.compose([Validators.required])],
         newPrice: [this.updateCoupon.newPrice, Validators.compose([Validators.required])],
         oldPrice: [this.updateCoupon.oldPrice, Validators.compose([Validators.required])],
