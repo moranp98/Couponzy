@@ -1,6 +1,8 @@
 const express = require('express');
 
-const { addUser,
+const { Register,
+        uploadImage,
+        addUser,
         getAllUsers,
         getUser,
         updateUser,
@@ -13,6 +15,8 @@ const { addUser,
 
 const router = express.Router();
 
+router.post('/User/Register', Register); //for android- using 'Volley Http'- not used
+router.post('/User/UploadImage', uploadImage); //for android- using 'Volley Http'- not used
 router.post('/User', addUser);
 router.get('/Users', getAllUsers);
 router.get('/User/:id', getUser);

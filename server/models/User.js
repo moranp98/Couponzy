@@ -13,7 +13,7 @@ class User {
       maritalStatus, 
       address, 
       lat, 
-      long,    
+      lon,    
       active, 
       role, 
       employerId, 
@@ -32,7 +32,7 @@ class User {
         this.maritalStatus = maritalStatus;
         this.address = address;
         this.lat = lat;
-        this.long = long;
+        this.lon = lon;
         this.active = active;
         this.role = role;
         this.employerId = employerId;

@@ -12,8 +12,8 @@ const BranchRoutes = require('./routes/Branch-routes');
 const ShopRoutes = require('./routes/Shop-routes');
 
 const app = express();
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded( { extended: true } ))
+app.use(express.json({limit: "50mb"}));
+app.use(express.urlencoded( { limit: "50mb", extended: true, parameterLimit:50000 } ))
 app.use(cors({ withCredentials: false }));
 
 app.use('/api', couponRoutes.routes);

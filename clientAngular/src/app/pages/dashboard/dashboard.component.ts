@@ -149,8 +149,10 @@ export class PageDashboardComponent implements OnInit {
           this.recentPurchasesDate = this.orders
             .map(order => { return new Date(order.orderDate['_seconds'] * 1000) })
             .reverse()
-            .slice(0, 5);
-          this.recentPurchases = this.orders.reverse().slice(0, 5);
+            .slice(0, 10);
+          this.recentPurchases = this.orders
+            .reverse()
+            .slice(0, 10);
 
           //For shopManager barChart
           this.dataMapReduceBarChart = this.orders
@@ -171,7 +173,9 @@ export class PageDashboardComponent implements OnInit {
           
           //For shopManager Radar
           const checkCouponeTypeReleventToShop = this.orders.map(order => { return { shopId: order.branch['shopId'], couponTypeName: order.coupon['couponTypeName'] } })
-          const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop.reduce((m, t) => m.set(t.couponTypeName, t), new Map()).values());
+          const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop.
+            reduce((m, t) => m.set(t.couponTypeName, t), new Map())
+            .values());
           this.radarChartLabels = resultCouponeTypeName.map((couponType) => couponType.couponTypeName);
 
           this.dataMapReduceRadarChart = this.orders
@@ -203,8 +207,13 @@ export class PageDashboardComponent implements OnInit {
         this._manageorders.getAllOrders().subscribe((orders) => {
           this.orders = orders;
           this.recentPurchasesDate = this.orders
-            .map(order => { return new Date(order.orderDate['_seconds'] * 1000) }).reverse().slice(0, 5);
-          this.recentPurchases = this.orders.reverse().slice(0, 5);
+            .map(order => { return new Date(order.orderDate['_seconds'] * 1000) })
+            .reverse()
+            .slice(0, 10);
+          this.recentPurchases = this.orders
+            .reverse()
+            .slice(0, 10);
+          console.log(this.orders)
 
           //For admin barChart
           this.dataMapReduceBarChart = this.orders
@@ -224,7 +233,9 @@ export class PageDashboardComponent implements OnInit {
 
           //For shopManager Radar
           const checkCouponeTypeReleventToShop = this.orders.map(order => { return { shopId: order.branch['shopId'], couponTypeName: order.coupon['couponTypeName'] } })
-          const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop.reduce((m, t) => m.set(t.couponTypeName, t), new Map()).values());
+          const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop
+            .reduce((m, t) => m.set(t.couponTypeName, t), new Map())
+            .values());
           this.radarChartLabels = resultCouponeTypeName.map((couponType) => couponType.couponTypeName);
           
           this.dataMapReduceRadarChart = this.orders

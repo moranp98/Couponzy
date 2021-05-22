@@ -2,6 +2,93 @@ const firebase = require('../config/db_adminSdk');
 const admin = require("firebase-admin");
 const User = require('../models/User');
 
+const Register = async (req, res, next) => {
+    try {
+        const data = req.body;
+        const userName = {
+            firstName: data.firstName,
+            lastName: data.lastName
+        }
+        const address = {
+            city: data.city,
+            country: data.country,
+            zipcode: data.zipcode
+        }
+        // Calculate age
+        var dateParts = data.birthday.split("/");
+        var dateBirthday = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
+        var today = new Date();
+        let age = new Date(today.getTime() - dateBirthday.getTime()).getUTCFullYear() - 1970;
+        
+        if (data.profile_User === null) {
+            data.profile_User = "../../../assets/content/avatar-2.jpg"
+        }
+        const userRecord2 = {
+            userName: userName,
+            email: data.email,
+            userID: data.userID,
+            phoneNumber: data.phoneNumber,
+            profile_User: data.profile_User,
+            address: address,
+            gender: data.gender,
+            birthday: data.birthday,
+            age: age,
+            maritalStatus: data.maritalStatus,
+            lat: data.lat,
+            lon: data.lon, 
+            active: true,
+            role: 'customer',
+            employerId: 'Not employed',
+            created_at: admin.firestore.Timestamp.now(),
+            lastUpdated: admin.firestore.Timestamp.now()
+        }
+        console.log(userRecord2)
+        admin
+            .auth()
+            .createUser({
+                email: data.email,
+                emailVerified: false,       
+                password: data.password,
+                displayName: userName.firstName + ' ' + userName.lastName,
+                photoURL: data.profile_User,
+                disabled: false 
+            })
+            .then((userRecord) => {
+                firebase.collection('Users').doc(userRecord2.email).set(userRecord2)
+                console.log('Successfully created new user:', userRecord.uid);
+            })
+            .catch((error) => {
+                console.log('Error creating new user:', error);
+            });
+
+        console.log("Acceced in ADDUSER")        
+        res.json({
+            status: "200",
+            message: "User record Registered successfuly with admin SDK"
+        });
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+}
+
+const uploadImage = async (req, res, next) => {
+
+    try {
+        const data = req.body;
+        console.log('data = ' + data.finalBitmap);
+        const bucket = admin.storage().bucket();
+        bucket.upload(data.finalBitmap).then(result => {
+            //const user = firebase.collection('Users').doc(data.email);
+            //user.update({ 'profile_User': data.finalBitmap });
+            console.log('upload success = ' + result);
+        }).catch(err => {
+            console.log('error uploading to storage', err);
+        });
+    } catch (error) {
+        res.status(400).json(error.message);
+    }
+}
+
 const addUser = async (req, res, next) => {
     try {
         const data = req.body; 
@@ -50,7 +137,7 @@ const getAllUsers = async (req, res, next) => {
                     doc.data().maritalStatus,
                     doc.data().address,
                     doc.data().lat,
-                    doc.data().long,
+                    doc.data().lon,
                     doc.data().active,
                     doc.data().role,
                     doc.data().employerId,
@@ -58,7 +145,7 @@ const getAllUsers = async (req, res, next) => {
                     doc.data().lastUpdated
                 );
                 console.log(user)
-                usersArray.push(user);  
+                usersArray.push(user);
             });
             res.json(usersArray);
         }
@@ -66,9 +153,8 @@ const getAllUsers = async (req, res, next) => {
         res.status(400).json(error.message);
     }
 }
-const getProfilePicture = async (req,res,next)=>{
-    try
-    {
+const getProfilePicture = async (req, res, next) => {
+    try {
         const path = req.params.id;
         const photo = await firebase.collection('photos').doc(path);
         const data = await photo.get();
@@ -95,7 +181,7 @@ const getUser = async (req, res, next) => {
         res.status(400).json(error.message);
     }
 }
-const updateUserDetails = async (req, res, next) =>{
+const updateUserDetails = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
@@ -122,21 +208,21 @@ const updateUser = async (req, res, next) => {
                         var shopRef = await firebase.collection('Shops').doc(data.employerId);
 
                         var checkAffiliation = await firebase.collection('Shops')
-                            .where('shopManagers', 'array-contains', {'id': data.email}).get();
+                            .where('shopManagers', 'array-contains', { 'id': data.email }).get();
 
-                        var checkId = "" 
+                        var checkId = ""
                         checkAffiliation.docChanges().forEach(change => {
                             const checkshop = change.doc;
                             checkId = checkshop.id
                         });
 
-                        if (checkAffiliation.docChanges().length === 0 || checkId === data.employerId){
+                        if (checkAffiliation.docChanges().length === 0 || checkId === data.employerId) {
                             shopRef.get().then((doc) => {
                                 if (doc.exists) {
                                     shopRef.update({
-                                        shopManagers: admin.firestore.FieldValue.arrayUnion({'id': data.email})
+                                        shopManagers: admin.firestore.FieldValue.arrayUnion({ 'id': data.email })
                                     });
-    
+
                                     data.lastUpdated = admin.firestore.Timestamp.now();
                                     user.update(data);
                                 } else {
@@ -149,24 +235,24 @@ const updateUser = async (req, res, next) => {
                             res.json('The user is already associated with a particular branch');
                         }
                         break;
-                    
+
                     case 'seller':
                         var branchRef = await firebase.collection('Branches').doc(data.employerId);
 
                         var checkAffiliation = await firebase.collection('Branches')
-                            .where('sellers', 'array-contains', {'id': data.email}).get();
-                            
-                        var checkId = "" 
+                            .where('sellers', 'array-contains', { 'id': data.email }).get();
+
+                        var checkId = ""
                         checkAffiliation.docChanges().forEach(change => {
                             const checkbranch = change.doc;
                             checkId = checkbranch.id
                         });
-                    
-                        if (checkAffiliation.docChanges().length === 0 || checkId === data.employerId){
+
+                        if (checkAffiliation.docChanges().length === 0 || checkId === data.employerId) {
                             branchRef.get().then((doc) => {
                                 if (doc.exists) {
                                     branchRef.update({
-                                        sellers: admin.firestore.FieldValue.arrayUnion({'id': data.email})
+                                        sellers: admin.firestore.FieldValue.arrayUnion({ 'id': data.email })
                                     });
 
                                     data.lastUpdated = admin.firestore.Timestamp.now();
@@ -196,7 +282,7 @@ const updateUser = async (req, res, next) => {
                     "lastName": data.userName.lastName,
                     "profile_User": data.profile_User
                 };
-                review.ref.update({'user': newUserInsidReview});
+                review.ref.update({ 'user': newUserInsidReview });
             });
         });
 
@@ -210,7 +296,7 @@ const updateUser = async (req, res, next) => {
                     "lastName": data.userName.lastName,
                     "profile_User": data.profile_User
                 };
-                star.ref.update({'user': newUserInsidStar});
+                star.ref.update({ 'user': newUserInsidStar });
             });
         });
 
@@ -254,14 +340,14 @@ const getCountUsers = async (req, res, next) => {
     try {
         var size = 0
         const countOfUsers = await firebase
-        .collection('Users')
-        .get()
-        .then(function(querySnapshot) {      
-            size = querySnapshot.size;
-        });
-        
+            .collection('Users')
+            .get()
+            .then(function (querySnapshot) {
+                size = querySnapshot.size;
+            });
+
         res.status(200).json(size.toString());
-        
+
     } catch (error) {
         res.status(400).json(error.message);
     }
@@ -270,9 +356,9 @@ const getCountUsers = async (req, res, next) => {
 const getLastUsers = async (req, res, next) => {
     try {
         const users = await firebase
-        .collection('Users')
-        .orderBy("created_at", "desc")
-        .limit(10)
+            .collection('Users')
+            .orderBy("created_at", "desc")
+            .limit(10)
         const data = await users.get();
         const usersArray = [];
         if (data.empty) {
@@ -309,6 +395,8 @@ const getLastUsers = async (req, res, next) => {
 }
 
 module.exports = {
+    Register,
+    uploadImage,
     addUser,
     getAllUsers,
     getUser,

@@ -137,7 +137,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <!--th>פרופיל משתמש</th-->
+              <th>פרופיל משתמש</th>
               <th>שם פרטי</th>
               <th>שם משפחה</th>
               <th>שם משתמש</th>
@@ -149,7 +149,8 @@
           <tbody>
             <tr *ngFor="let user of lastUsers; let i = index">
               <th scope="row">{{i+1}}</th>
-              <!--td>{{user.profile_User}}</td-->
+              <td><img mat-list-avatar src="{{ user.profile_User }}" class="avatar" alt=""
+                style="width: 54px;height: 54px;"></td>
               <td>{{ user?.userName?.firstName }}</td>
               <td>{{ user?.userName?.lastName }}</td>
               <td>{{ user?.email }}</td>

@@ -104,7 +104,7 @@ export class PageShopsManageComponent implements OnInit {
       branchName: [null, Validators.compose(
         [
           Validators.required,
-          Validators.maxLength(16),
+          Validators.maxLength(32),
           this._uniqueIdValidator.bind(this)
         ])
       ],
@@ -198,14 +198,14 @@ export class PageShopsManageComponent implements OnInit {
         this.updateBranch.shop.shopName,
         this.updateBranch.shop.profile_Shop
       );
+      console.log(this.shopUpdateNow);
       console.log(this.updateBranch);
       this.updateForm = this.fb.group({
         shop: [this.updateBranch.shop, Validators.compose([Validators.required])],
         branchName: [this.updateBranch.branchName, Validators.compose(
           [
             Validators.required,
-            Validators.maxLength(16),
-            this._uniqueIdValidator.bind(this)
+            Validators.maxLength(32)
           ])
         ],
         profile_Branch: [this.updateBranch.profile_Branch, Validators.compose([Validators.required])],

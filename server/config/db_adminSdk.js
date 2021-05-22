@@ -1,9 +1,11 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('./adminsdk-serviceAccountKey.json');
+const uuid = require('uuid-v4');
 
 //initialize admin SDK using serciceAcountKey
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "gs://couponzysystem.appspot.com/Photos"
 });
  
 const uid = 'some-uid';

@@ -68,7 +68,18 @@ const updateCouponType = async (req, res, next) => {
             query.docChanges().forEach(change => {
                 const coupon = change.doc;
                 const newCouponTypeInsidCoupon = data.couponTypeName;
-                coupon.ref.update({'couponType.couponName': newCouponTypeInsidCoupon});
+                coupon.ref.update({ 'couponType.couponTypeName': newCouponTypeInsidCoupon });
+            });
+        });
+
+        const ordersRef = await firebase
+            .collection('Orders')
+            .where('coupon.couponTypeId', '==', id);
+        ordersRef.get().then((query) => {
+            query.docChanges().forEach((change) => {
+                const order = change.doc;    
+                const newcouponTypeInsidOrder = data.couponTypeName;
+                order.ref.update({ 'coupon.couponTypeName': newcouponTypeInsidOrder });
             });
         });
 
@@ -93,7 +104,7 @@ const lockoutCouponType = async (req, res, next) => {
     try {
         const id = req.params.id;
         const couponType = await firebase.collection('CouponTypes').doc(id);
-        await couponType.update({'isExists': false, lastUpdated: admin.firestore.Timestamp.now()});
+        await couponType.update({ 'isExists': false, lastUpdated: admin.firestore.Timestamp.now() });
 
         res.json(' The couponType has been successfully locked');
     } catch (error) {
