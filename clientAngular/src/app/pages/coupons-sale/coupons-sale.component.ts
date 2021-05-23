@@ -256,7 +256,7 @@ export class PageCouponsSaleComponent implements OnInit {
           id: [this.couponClass.id, Validators.compose([Validators.required])],
           couponName: [this.couponClass.couponName, Validators.compose([Validators.required])],
           description: [this.couponClass.description, Validators.compose([Validators.required])],
-          newPrice: [this.couponClass.newPrice, Validators.compose([Validators.required])],
+          newPrice: [Number(this.couponClass.newPrice), Validators.compose([Validators.required])],
           profile_Coupon: [this.couponClass.profile_Coupon, Validators.compose([Validators.required])],
           couponTypeId: [this.couponClass.couponTypeId, Validators.compose([Validators.required])],
           couponTypeName: [this.couponClass.couponTypeName, Validators.compose([Validators.required])]

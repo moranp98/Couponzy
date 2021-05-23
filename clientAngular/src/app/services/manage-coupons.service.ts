@@ -21,6 +21,7 @@ export class ManageCouponsService {
   }
 
   createCoupon(formCoupon): Observable<any> {
+    console.log(formCoupon);
     const url = `${this.serverUrl}/${"Coupon"}`;
     return this.http.post<any>(url, formCoupon);
   }
