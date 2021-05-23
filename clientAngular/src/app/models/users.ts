@@ -19,7 +19,7 @@ export interface Users {
         country: string
     },
     lat: Number,
-    long: Number,
+    lon: Number,
     active: Boolean,
     role: string,
     employerId: string,

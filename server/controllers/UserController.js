@@ -16,7 +16,7 @@ const addUser = async (req, res, next) => {
         data.lastUpdated = admin.firestore.Timestamp.now();
         data.age = age//birthday
         data.lat = 0.0;
-        data.long = 0.0; 
+        data.lon = 0.0; 
         if(data.profile_User == null){
             data.profile_User = "../../../assets/content/avatar-2.jpg"
         }

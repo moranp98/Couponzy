@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageBranchesService } from '../../services/manage-branches.service';
 import { ManageShopsService } from '../../services/manage-shops.service';
@@ -9,6 +9,8 @@ import { Users } from '../../models/users';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Router } from '@angular/router';
+import { AngularFireUploadTask } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 
 const details: any[] = [
   {
@@ -78,6 +80,30 @@ export class PageShopsManageComponent implements OnInit {
   public updateForm: FormGroup;
 
   currentUser: Users;
+    /*
+  START
+  Upload Profile Picture
+  */
+  @Input() file: File;
+
+  task: AngularFireUploadTask;
+
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  i:number = 0;
+  filename : string;
+  datefile : any;
+  isEdit : boolean = false;
+  downloadURL : string ;
+  shopProfileUrl : string;
+  AddedPhoto :boolean = false;
+  UpdatedPhoto : boolean = false;
+  AddedTitle :boolean = false;
+  isAddPhoto : boolean = false;
+/*
+  END
+  Upload Profile Picture
+  */
 
   // Constractor
   constructor(private fb: FormBuilder,
@@ -179,12 +205,14 @@ export class PageShopsManageComponent implements OnInit {
 
   onSubmit(value: boolean) {
     console.log(this.form.value);
+    this.form.patchValue({profile_Branch:this.shopProfileUrl});
     this.ShowBranchesService.createBranch(this.form.value).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); },
       () => { this.showBranches(); this.showShops(); }
     );
     this.addPressed = false; // To hide the Add branch Card
+    this.AddedPhoto = false;
     this.form.reset();
   }
 
@@ -231,12 +259,14 @@ export class PageShopsManageComponent implements OnInit {
   }
 
   onUpdateSubmit() {
+    this.updateForm.patchValue({profile_Branch:this.shopProfileUrl});
     this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); },
       () => {  this.showBranches(); this.showShops(); }
     );
     this.updatePressed = false;
+    this.UpdatedPhoto = false;
     this.updateForm.reset();
   }
 
@@ -269,4 +299,43 @@ export class PageShopsManageComponent implements OnInit {
       () => { this.showBranches(); this.showShops(); }
     );
   }
+          /*
+  START
+  Upload Profile Picture
+  */
+  async onPhotoSubmit(){
+    console.log("dOWNLOAD LINK: "+ localStorage.getItem('downloadURL'))
+    this.downloadURL = await localStorage.getItem('downloadURL')
+    if(this.downloadURL!=null){
+    this.AddedPhoto=true;
+    this.UpdatedPhoto = true;
+    this.shopProfileUrl = this.downloadURL;
+    console.log(this.shopProfileUrl)
+    this.isAddPhoto=false;
+    localStorage.removeItem('downloadURL');
+
+    }
+  }
+
+  isHovering: boolean;
+
+  files: File[] = [];
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+
+  onDrop(files: FileList) {
+    console.log("Started on Drop")
+      this.files.push(files.item(0));
+      this.filename=files.item(0).name
+      this.datefile=Date.now;
+      //this.startUpload();
+  }
+
+  
+/*
+  END
+  Upload Profile Picture
+  */
 }

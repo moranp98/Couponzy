@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Users } from '../models/users';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import{ UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import{ MatDialog , MatDialogConfig } from "@angular/material"
 import { UploaderComponent } from '../uploader/uploader.component';
+import { ModalComponent } from '../_modal/modal.component';
+import { ModalService } from '../_modal';
+import { Observable } from 'rxjs';
+import { AngularFireUploadTask } from '@angular/fire/storage';
 export class userName {
   firstName: string;
   lastName: string;
@@ -25,7 +29,28 @@ export class MyAccountComponent implements OnInit {
   currentUser: Users;
   currentUserName: userName;
   public updateForm: FormGroup;
-  constructor( private dialog:MatDialog ,private fb: FormBuilder,public userService : UserService,private router: Router) { }
+  isModal : boolean = false;
+      /*
+  START
+  Upload Profile Picture
+  */
+  @Input() file: File;
+
+  task: AngularFireUploadTask;
+
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  downloadURL: string;
+  i:number = 0;
+  filename : string;
+  datefile : any;
+  isEdit : boolean = false;
+/*
+  END
+  Upload Profile Picture
+  */
+
+  constructor( public modalService:ModalService ,private dialog:MatDialog ,private fb: FormBuilder,public userService : UserService,private router: Router) { }
 
   ngOnInit(): void {
     var currentUser = localStorage.getItem('userDetails');
@@ -82,8 +107,58 @@ export class MyAccountComponent implements OnInit {
   EditPicture(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    dialogConfig.autoFocus = false;
     dialogConfig.width="60%";
     this.dialog.open(UploaderComponent)
   }
+  async onSubmit(){
+    console.log("dOWNLOAD LINK: "+ localStorage.getItem('downloadURL'))
+    this.downloadURL = await localStorage.getItem('downloadURL')
+    if(this.downloadURL!=null){
+    this.updateForm=this.fb.group({
+      profile_User:[this.downloadURL, Validators.compose([Validators.required])],
+    });
+    this.userService.updateUser(this.currentUser.email,this.updateForm.value).subscribe(
+      async (user) => { 
+        console.log('Success', user); 
+        this.updateForm.reset(); 
+        this.isEdit=false;
+        localStorage.removeItem('downloadURL');
+        await this.userService.getUser(this.currentUser.email).subscribe(
+          async (user) => {
+            await localStorage.setItem('role', user.role);
+            await localStorage.setItem('userDetails', JSON.stringify(user))
+            await localStorage.setItem('userId', JSON.stringify(user.id))
+            console.log(localStorage.getItem('userDetails'))
+          }
+        );
+        window.location.reload();
+      },(error) => { console.log('Error', error); });
+    }
+  }
+      /*
+  START
+  Upload Profile Picture
+  */
+  isHovering: boolean;
+
+  files: File[] = [];
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+
+  onDrop(files: FileList) {
+    console.log("Started on Drop")
+      this.files.push(files.item(0));
+      this.filename=files.item(0).name
+      this.datefile=Date.now;
+      //this.startUpload();
+  }
+
+  
+/*
+  END
+  Upload Profile Picture
+  */
 }
