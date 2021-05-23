@@ -61,7 +61,7 @@ import { UploaderComponent } from './uploader/uploader.component';
 import { UploadTaskComponent } from './upload-task/upload-task.component';
 import { MyAccountComponent } from './my-account/my-account.component';
 import { PageSalesManagementComponent } from './pages/sales-management/sales-management.component';
-
+import {ModalModule} from './_modal'
 
 @NgModule({
   declarations: [
@@ -126,8 +126,8 @@ import { PageSalesManagementComponent } from './pages/sales-management/sales-man
     NgxChartsModule,
     BrowserModule, 
     BrowserAnimationsModule, 
-    NgxChartsModule
-    
+    NgxChartsModule,
+    ModalModule
   ],
   providers: [ManageBranchesService,FirebaseService],
   bootstrap: [AppComponent],

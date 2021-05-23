@@ -18,7 +18,7 @@
       <mat-list class="couponsCard">
         <mat-list-item *ngFor="let coupon of coupons; let i = index">
           <img mat-list-avatar src="{{ coupon.profile_Coupon }}" class="avatar" alt="">
-            <h2 mat-line class="h2">{{ coupon.shop.shopName }}</h2>
+            <h2 mat-line class="h2">{{ coupon.shop ==null ? ' ' :coupon.shop.shopName }}</h2>
             <div mat-line class="details">
               <span class="span"><strong>קטיגוריה: </strong>{{ coupon.couponType.couponTypeName }}</span>
               <span class="span"></span>

@@ -1,3 +1,4 @@
+<div *ngIf="isAddPhoto==false">
  <div class="row mb-lg-4">
   <div class="col-lg-8 ">
     <card [title]="'רשימת סניפים'">
@@ -112,16 +113,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="col-md-4">
-            <mat-form-field>
-              <input matInput placeholder="תמונת פרופיל הסניף" [formControl]="form.controls['profile_Branch']"
-                type="text">
-              <mat-error
-                *ngIf="form.controls['profile_Branch'].hasError('required') && form.controls['profile_Branch'].touched">
-                הינך נדרש לתת שם לסניף.
-              </mat-error>
-            </mat-form-field>
-          </div>
+         
           <div class="row mb-lg" formGroupName="address">
             <div class="col-md-4">
               <mat-form-field>
@@ -176,9 +168,13 @@
               </mat-error>
             </mat-form-field>
           </div>
+          <div class="col-md-4">
+            <br>
+            <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">תמונת פרופיל הסניף</button>
+          </div>
         </div>
         <div class="row">
-          <button mat-raised-button color="accent" [disabled]="!form.valid">יצירת סניף</button>
+          <button mat-raised-button color="accent" [disabled]="!AddedPhoto">יצירת סניף</button>
           <span class="span"></span>
           <button mat-mini-fab type="button" color="primary" (click)="onAdd(false)">
             <mat-icon>keyboard_return</mat-icon>
@@ -204,14 +200,7 @@
             </mat-form-field>
           </div>
           <div class="col-md-4">
-            <mat-form-field>
-              <input matInput placeholder="תמונת פרופיל הסניף" [formControl]="updateForm.controls['profile_Branch']"
-                type="text">
-              <mat-error
-                *ngIf="updateForm.controls['profile_Branch'].hasError('required') && updateForm.controls['profile_Branch'].touched">
-                הינך נדרש להכניס תמונת פרופיל לסניף.
-              </mat-error>
-            </mat-form-field>
+            <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">תמונת פרופיל הסניף</button>
           </div>
           <div class="row mb-lg" formGroupName="address">
             <div class="col-md-4">
@@ -280,7 +269,7 @@
           </div>
         </div>
         <div class="row">
-          <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי סניף</button>
+          <button mat-raised-button color="accent" [disabled]="!UpdatedPhoto">עדכון פרטי סניף</button>
           <span class="span"></span>
           <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
             <mat-icon>keyboard_return</mat-icon>
@@ -289,4 +278,41 @@
       </form>
     </card>
   </div>
+</div>
+</div>
+<div *ngIf="isAddPhoto" class="center">
+  <h3 >Upload Your Profile Image </h3>
+  <div class="dropzone" 
+           dropzone
+           (hovered)="toggleHover($event)"
+           (dropped)="onDrop($event)"
+           [class.hovering]="isHovering" style=" height: 300px;
+           width: 450px;">
+      
+      
+           <h3>Profile Image</h3>
+           <p>Drag and Drop a File</p>
+      </div>
+      
+      
+      
+      <div *ngFor="let file of files">
+        <upload-task [file]="file"></upload-task>
+      </div>
+      <br><br>
+      <div style="width:450px;">
+          <div style="float: left; width: 130px"> 
+            
+                  <button  class="btn" (click)="onPhotoSubmit()" style="color:#43509b;font-weight:600">Submit</button>
+              
+          </div>
+          <div style="float: right; width: 225px"> 
+              
+                  <button  class="btn" (click)="isAddPhoto=false" style="color:#c02830;font-weight:600">Cancel</button>
+           
+          </div>
+      </div>
+     
+      <br>
+      
 </div>

@@ -18,6 +18,7 @@ import { PageCouponsSaleComponent }             from './pages/coupons-sale/coupo
 import { UploaderComponent } from './uploader/uploader.component';
 import { MyAccountComponent } from './my-account/my-account.component';
 import { PageSalesManagementComponent }         from './pages/sales-management/sales-management.component';
+import {ModalComponent } from 'src/app/_modal/modal.component'
 
 const defaultRoutes: Routes = [
   { path: 'dashboard', component: PageDashboardComponent },
@@ -32,6 +33,7 @@ const defaultRoutes: Routes = [
   { path: 'uploader', component: UploaderComponent },
   { path: 'my-account', component: MyAccountComponent },
   { path: 'sales-management', component: PageSalesManagementComponent },
+  { path: 'modal', component: ModalComponent },
 ];
 
 const roadstartRoutes: Routes = [
