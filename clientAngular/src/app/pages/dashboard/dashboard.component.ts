@@ -223,18 +223,19 @@ export class PageDashboardComponent implements OnInit {
             .map(order => { return { shopName: order.branch['shopName'], price: order.coupon['newPrice'] } })
             .reduce(function (obj, orderC, arr) {
               if (!obj[orderC.shopName]) {
-                obj[orderC.shopName] = 1;
+                obj[orderC.shopName] = orderC.price;
               } else {
                 obj[orderC.shopName] += Number(orderC.price);
               }
               return obj;
             }, []);
+
           this.barChartLabels.forEach(shop => {
             this.RevenueFromSalesByShopBranch.push(this.dataMapReduceBarChart[shop]);
           });
           this.barChartData["data"] = (this.RevenueFromSalesByShopBranch);
 
-          //For shopManager Radar
+          //For admin Radar
           const checkCouponeTypeReleventToShop = this.orders.map(order => { return { shopId: order.branch['shopId'], couponTypeName: order.coupon['couponTypeName'] } })
           const resultCouponeTypeName = Array.from(checkCouponeTypeReleventToShop
             .reduce((m, t) => m.set(t.couponTypeName, t), new Map())

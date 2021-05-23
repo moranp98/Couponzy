@@ -12,7 +12,6 @@ const addCoupon = async (req, res, next) => {
     data.lastUpdated = admin.firestore.Timestamp.now();
     data.published = admin.firestore.Timestamp.now();
     console.log(data);
-    console.log(data.Shop.id);
 
     await firebase.collection('Coupons').doc(data.couponId).set(data);
     const docId = data.shop.id;
