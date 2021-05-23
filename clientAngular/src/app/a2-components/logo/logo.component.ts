@@ -17,13 +17,13 @@ export class LogoComponent implements OnInit {
 
     switch (this.currentUser.role) {
       case 'shopManager':
-        this.displayRole = 'מנהל מכירות';
+        this.displayRole = 'מנהל חנות';
         break;
       case 'seller':
         this.displayRole = 'מוכר';
         break;
       default:
-        this.displayRole = 'מנהח מערכת';
+        this.displayRole = 'מנהל מערכת';
         break;
     }
   }

@@ -67,6 +67,11 @@ export class PageDashboardComponent implements OnInit {
     private _manageshops: ManageShopsService,
     public firebaseService: FirebaseService,
     private router: Router) {
+
+      var currentUser2 = localStorage.getItem('userDetails');
+      this.currentUser = JSON.parse(currentUser2)
+      console.log(this.currentUser);
+
     this.countAllBranches = 0;
     this._sharedService.emitChange(this.pageTitle);
     this._realtime.listen('count').subscribe((res: any) => {
@@ -75,9 +80,7 @@ export class PageDashboardComponent implements OnInit {
   }
 
   async ngOnInit() {
-    var currentUser2 = await localStorage.getItem('userDetails');
-    this.currentUser = JSON.parse(currentUser2)
-    console.log(this.currentUser);
+    
 
     if (localStorage.getItem('user') == null || this.currentUser.role === 'seller') {
       this.router.navigate(['/roadstart-layout/sign-in-social']);
