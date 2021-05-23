@@ -144,7 +144,7 @@ const getAllUsers = async (req, res, next) => {
                     doc.data().created_at,
                     doc.data().lastUpdated
                 );
-                console.log(user)
+                //console.log(user)
                 usersArray.push(user);
             });
             res.json(usersArray);
@@ -187,15 +187,73 @@ const updateUserDetails = async (req, res, next) => {
         const data = req.body;
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('Users').doc(id).update(data)
+
+        /*const reviewsRef = await firebase.collection('Reviews').where('user.id', '==', data.email);
+        reviewsRef.get().then((query) => {
+            query.docChanges().forEach(change => {
+                const review = change.doc;
+                const newUserInsidReview = {
+                    "id": data.email,
+                    "firstName": data.userName.firstName,
+                    "lastName": data.userName.lastName,
+                    "profile_User": data.profile_User
+                };
+                review.ref.update({ 'user': newUserInsidReview });
+            });
+        });
+
+        const starsRef = await firebase.collection('Stars').where('user.id', '==', data.email);
+        starsRef.get().then((query) => {
+            query.docChanges().forEach(change => {
+                const star = change.doc;
+                const newUserInsidStar = {
+                    "id": data.email,
+                    "firstName": data.userName.firstName,
+                    "lastName": data.userName.lastName,
+                    "profile_User": data.profile_User
+                };
+                star.ref.update({ 'user': newUserInsidStar });
+            });
+        });
+
+        const ordersRef = await firebase.collection('Orders').where('user.id', '==', id);
+        ordersRef.get().then((query) => {
+            query.docChanges().forEach(change => {
+                const order = change.doc;
+                const newUserInsidOrder = {
+                    "id": id,
+                    "firstName": data.userName.firstName,
+                    "lastName": data.userName.lastName,
+                    "userID": data.userID,
+                    "profile_User": data.profile_User,
+                };
+                order.ref.update({ 'user': newUserInsidOrder });
+            });
+        });*/
+
+        res.json('User update saved successfuly');
+    } catch (error) {
+        res.status(400).json(error.message);
+    } 
+}
+
+const updateRoleUserNotEmployed = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        data.lastUpdated = admin.firestore.Timestamp.now();
+        await firebase.collection('Users').doc(id).update(data)
         res.json('User update saved successfuly');
     } catch (error) {
         res.status(400).json(error.message);
     }
 }
-const updateUser = async (req, res, next) => {
+
+const updateRoleUserYesEmployed = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        console.log(data)
         const user = await firebase.collection('Users').doc(id);
 
         switch (data.employerId) {
@@ -272,53 +330,41 @@ const updateUser = async (req, res, next) => {
                 }
         }
 
-        const reviewsRef = await firebase.collection('Reviews').where('user.id', '==', data.email);
-        reviewsRef.get().then((query) => {
-            query.docChanges().forEach(change => {
-                const review = change.doc;
-                const newUserInsidReview = {
-                    "id": data.email,
-                    "firstName": data.userName.firstName,
-                    "lastName": data.userName.lastName,
-                    "profile_User": data.profile_User
-                };
-                review.ref.update({ 'user': newUserInsidReview });
-            });
-        });
-
-        const starsRef = await firebase.collection('Stars').where('user.id', '==', data.email);
-        starsRef.get().then((query) => {
-            query.docChanges().forEach(change => {
-                const star = change.doc;
-                const newUserInsidStar = {
-                    "id": data.email,
-                    "firstName": data.userName.firstName,
-                    "lastName": data.userName.lastName,
-                    "profile_User": data.profile_User
-                };
-                star.ref.update({ 'user': newUserInsidStar });
-            });
-        });
-
-        const ordersRef = await firebase.collection('Orders').where('user.id', '==', id);
-        ordersRef.get().then((query) => {
-            query.docChanges().forEach(change => {
-                const order = change.doc;
-                const newUserInsidOrder = {
-                    "id": id,
-                    "firstName": data.userName.firstName,
-                    "lastName": data.userName.lastName,
-                    "userID": data.userID,
-                    "profile_User": data.profile_User,
-                    "street": data.address.street,
-                    "city": data.address.city,
-                    "country": data.address.country
-                };
-                order.ref.update({ 'user': newUserInsidOrder });
-            });
-        });
-
         res.json('User record updated successfuly');
+    } catch (error) {
+        res.status(400).json(error.message  + "last");
+    }
+}
+
+const cancelRoleForEmployer = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        
+        switch (data.role) {
+            case 'shopManager':
+                var shopRef = await firebase.collection('Shops').doc(data.employerId);
+                shopRef.update({
+                    shopManagers: admin.firestore.FieldValue.arrayRemove({'id': id})
+                });   
+                break;
+
+            case 'seller':
+                var branchRef = await firebase.collection('Branches').doc(data.employerId);
+                branchRef.update({
+                    sellers: admin.firestore.FieldValue.arrayRemove({'id': id})
+                });
+                break;
+            default:
+                
+        }
+
+        data.employerId = 'Not employed';
+        data.role = 'customer';
+        data.lastUpdated = admin.firestore.Timestamp.now();
+        await firebase.collection('Users').doc(id).update(data);
+
+        res.json('User update saved successfuly');
     } catch (error) {
         res.status(400).json(error.message);
     }
@@ -400,7 +446,9 @@ module.exports = {
     addUser,
     getAllUsers,
     getUser,
-    updateUser,
+    updateRoleUserNotEmployed,
+    updateRoleUserYesEmployed,
+    cancelRoleForEmployer,
     deleteUser,
     getCountUsers,
     getLastUsers,

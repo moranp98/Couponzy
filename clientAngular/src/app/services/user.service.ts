@@ -20,10 +20,28 @@ export class UserService {
     console.log(formUser.email + " this is for user")
     return this.http.post<any>(url, formUser);
   }
-  updateUser(id,formUser):Observable<any> {
+  updateUser(id: string,formUser):Observable<any> {
     const url = `${this.serverUrl}/UpdateUser/${id}`;
     console.log(url + " this is for user update")
     console.log(formUser.email + " this is for user")
+    return this.http.put<any>(url, formUser);
+  }
+
+  updateRoleUserNotEmployed(id: string,formUser):Observable<any> {
+    const url = `${this.serverUrl}/UserNotEmployed/${id}`;
+    return this.http.put<any>(url, formUser);
+  }
+  updateRoleUserYesEmployed(id: string, formUser): Observable<any> {
+    console.log(formUser);
+    console.log(id);
+    const url = `${this.serverUrl}/${'UserYesEmployed'}/${id}`;
+    return this.http.put<any>(url, formUser);
+  }
+
+  cancelRoleForEmployer(id: string, formUser): Observable<any> {
+    console.log(formUser);
+    console.log(id);
+    const url = `${this.serverUrl}/${'UserCancelEmployer'}/${id}`;
     return this.http.put<any>(url, formUser);
   }
 

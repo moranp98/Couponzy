@@ -5,7 +5,9 @@ const { Register,
         addUser,
         getAllUsers,
         getUser,
-        updateUser,
+        updateRoleUserNotEmployed,
+        updateRoleUserYesEmployed,
+        cancelRoleForEmployer,
         deleteUser,
         getCountUsers,
         getLastUsers,
@@ -21,7 +23,9 @@ router.post('/User', addUser);
 router.get('/Users', getAllUsers);
 router.get('/User/:id', getUser);
 router.put('/UpdateUser/:id', updateUserDetails);
-router.put('/User/:id', updateUser);
+router.put('/UserNotEmployed/:id', updateRoleUserNotEmployed);
+router.put('/UserYesEmployed/:id', updateRoleUserYesEmployed);
+router.put('/UserCancelEmployer/:id', cancelRoleForEmployer);
 router.delete('/User/:id', deleteUser);
 router.get('/getCountUsers', getCountUsers);
 router.get('/getLastUsers', getLastUsers);
