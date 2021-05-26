@@ -5,9 +5,13 @@ const Review = require('../models/Review');
 const addReview = async (req, res, next) => {
     try {
         const data = req.body;
+        console.log(data)
         data.published_date = admin.firestore.Timestamp.now();
         await firebase.collection('Reviews').doc().set(data);
-        res.json('Review record saved successfuly');
+        res.json({
+            status: "200",
+            message: "Review record saved successfuly"
+        });
     } catch (error) {
         res.status(400).json(error.message);
     }

@@ -33,6 +33,17 @@
     "budgeColor": ""
   },
   {
+    "title": "מפת חנויות",
+    "icon": "fa fa-map-marker",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-map",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
     "title": "ניהול משתמשים",
     "icon": "fa fa-users",
     "active": false,
@@ -66,17 +77,6 @@
     "budgeColor": ""
   },
   {
-    "title": "ניהול קופונים",
-    "icon": "fa fa-money",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/default-layout/coupons-manage",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
     "title": "ניהול קטיגוריות קופונים",
     "icon": "fa fa-book",
     "active": false,
@@ -88,12 +88,12 @@
     "budgeColor": ""
   },
   {
-    "title": "מפת חנויות",
-    "icon": "fa fa-map-marker",
+    "title": "ניהול קופונים",
+    "icon": "fa fa-money",
     "active": false,
     "groupTitle" : false,
     "sub": "",
-    "routing": "/default-layout/shops-map",
+    "routing": "/default-layout/coupons-manage",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

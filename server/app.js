@@ -10,6 +10,7 @@ const UserRoutes = require('./routes/User-routes');
 const OrderRoutes = require('./routes/Order-routes');
 const BranchRoutes = require('./routes/Branch-routes');
 const ShopRoutes = require('./routes/Shop-routes');
+var rec = require('product-recommender')
 
 const app = express();
 app.use(express.json({limit: "50mb"}));
