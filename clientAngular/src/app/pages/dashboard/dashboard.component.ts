@@ -15,6 +15,15 @@ import { Router } from '@angular/router';
 import { Users } from '../../models/users';
 import { Branches } from 'src/app/models/branches';
 
+const Role: any = 
+  {
+    admin: 'מנהל',
+    shopManager: 'מנהל חנות',
+    seller: 'מוכר',
+    customer: 'לקוח'
+  }
+
+
 @Component({
   selector: 'page-dashboard',
   templateUrl: './dashboard.component.html',
@@ -24,6 +33,8 @@ export class PageDashboardComponent implements OnInit {
   pageTitle: string = 'עמוד ראשי';
 
   @Input() borderW: number = 1;
+
+  Role = Role;
 
   // Amount of users connected
   counter: Number;
@@ -101,6 +112,10 @@ export class PageDashboardComponent implements OnInit {
       this.showUsers(this.currentUser.employerId);
       this.showBarChartLabels(this.currentUser.employerId);
     } 
+  }
+
+  Roler(role): string {
+    return Role[role];
   }
 
   showUsers(shopId: string) {
