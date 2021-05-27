@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageCouponsService } from '../../services/manage-coupons.service';
 import { Coupons } from '../../models/coupons';
@@ -14,6 +14,8 @@ import { ManageShopsService } from 'src/app/services/manage-shops.service';
 import { Shops } from 'src/app/models/shops';
 import { CouponTypes } from 'src/app/models/couponTypes';
 import { ManageCouponTypesService } from 'src/app/services/manage-couponTypes.service';
+import { AngularFireUploadTask } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 
 const details: any[] = [
   {
@@ -105,7 +107,30 @@ export class PageCouponsManageComponent implements OnInit {
 
   public form: FormGroup;
   public updateForm: FormGroup;
+    /*
+  START
+  Upload Profile Picture
+  */
+  @Input() file: File;
 
+  task: AngularFireUploadTask;
+
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  i:number = 0;
+  filename : string;
+  datefile : any;
+  isEdit : boolean = false;
+  downloadURL : string ;
+  ProfileUrl : string;
+  AddedPhoto :boolean = false;
+  UpdatedPhoto : boolean = false;
+  AddedTitle :boolean = false;
+  isAddPhoto : boolean = false;
+/*
+  END
+  Upload Profile Picture
+  */
   // Constractor
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
@@ -237,6 +262,7 @@ export class PageCouponsManageComponent implements OnInit {
   }
 
   onSubmit(value: boolean) {
+    this.form.patchValue({profile_Coupon:this.ProfileUrl});
     this.ShowCouponsService.createCoupon(this.form.value).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
@@ -247,6 +273,7 @@ export class PageCouponsManageComponent implements OnInit {
       }
     );
     this.addPressed = false;
+    this.AddedPhoto = false;
     this.form.reset();
   }
 
@@ -290,6 +317,7 @@ export class PageCouponsManageComponent implements OnInit {
   }
 
   onUpdateSubmit() {
+    this.updateForm.patchValue({profile_Coupon:this.ProfileUrl});
     this.ShowCouponsService.updateCoupon(this.updateForm.value, this.updateCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
@@ -300,6 +328,7 @@ export class PageCouponsManageComponent implements OnInit {
       }
     );
     this.updatePressed = false;
+    this.UpdatedPhoto = false;
     this.updateForm.reset();
   }
 
@@ -339,4 +368,43 @@ export class PageCouponsManageComponent implements OnInit {
       }
     );
   }
+           /*
+  START
+  Upload Profile Picture
+  */
+  async onPhotoSubmit(){
+    console.log("dOWNLOAD LINK: "+ localStorage.getItem('downloadURL'))
+    this.downloadURL = await localStorage.getItem('downloadURL')
+    if(this.downloadURL!=null){
+    this.AddedPhoto=true;
+    this.UpdatedPhoto = true;
+    this.ProfileUrl = this.downloadURL;
+    console.log(this.ProfileUrl)
+    this.isAddPhoto=false;
+    localStorage.removeItem('downloadURL');
+
+    }
+  }
+
+  isHovering: boolean;
+
+  files: File[] = [];
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+
+  onDrop(files: FileList) {
+    console.log("Started on Drop")
+      this.files.push(files.item(0));
+      this.filename=files.item(0).name
+      this.datefile=Date.now;
+      //this.startUpload();
+  }
+
+  
+/*
+  END
+  Upload Profile Picture
+  */
 }
