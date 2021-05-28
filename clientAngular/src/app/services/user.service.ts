@@ -24,6 +24,7 @@ export class UserService {
     const url = `${this.serverUrl}/UpdateUser/${id}`;
     console.log(url + " this is for user update")
     console.log(formUser.email + " this is for user")
+    console.log(formUser);
     return this.http.put<any>(url, formUser);
   }
 

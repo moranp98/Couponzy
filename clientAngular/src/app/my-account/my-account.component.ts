@@ -83,8 +83,12 @@ export class MyAccountComponent implements OnInit {
         lastName: [lastName, Validators.compose([Validators.required])],
       }),
       phoneNumber:[phoneNumber, Validators.compose([Validators.required])],
+      profile_User:["",Validators.compose([Validators.required])],
     });
     console.log(this.updateForm.value)
+    this.userService.getUser(this.currentUser.email).subscribe(
+      (user)=>{
+    this.updateForm.patchValue({profile_User:user.profile_User});
     this.userService.updateUser(this.currentUser.email,this.updateForm.value).subscribe(
       async (user) => { 
         console.log('Success', user); 
@@ -102,7 +106,9 @@ export class MyAccountComponent implements OnInit {
         )
         this.router.navigate(['/default-layout/my-account']);},
       (error) => { console.log('Error', error); }
-    );;
+    );
+  }
+  );
   }
   EditPicture(){
     const dialogConfig = new MatDialogConfig();
