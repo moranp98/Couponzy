@@ -1,20 +1,31 @@
 const express = require('express');
 
-const { addUser,
+const { Register,
+        uploadImage,
+        addUser,
         getAllUsers,
         getUser,
-        updateUser,
+        updateRoleUserNotEmployed,
+        updateRoleUserYesEmployed,
+        cancelRoleForEmployer,
         deleteUser,
         getCountUsers,
-        getLastUsers
+        getLastUsers,
+        getProfilePicture,
+        updateUserDetails
       } = require('../controllers/UserController');
 
 const router = express.Router();
 
+router.post('/User/Register', Register); //for android- using 'Volley Http'- not used
+router.post('/User/UploadImage', uploadImage); //for android- using 'Volley Http'- not used
 router.post('/User', addUser);
 router.get('/Users', getAllUsers);
 router.get('/User/:id', getUser);
-router.put('/User/:id', updateUser);
+router.put('/UpdateUser/:id', updateUserDetails);
+router.put('/UserNotEmployed/:id', updateRoleUserNotEmployed);
+router.put('/UserYesEmployed/:id', updateRoleUserYesEmployed);
+router.put('/UserCancelEmployer/:id', cancelRoleForEmployer);
 router.delete('/User/:id', deleteUser);
 router.get('/getCountUsers', getCountUsers);
 router.get('/getLastUsers', getLastUsers);

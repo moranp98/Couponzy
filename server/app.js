@@ -10,10 +10,11 @@ const UserRoutes = require('./routes/User-routes');
 const OrderRoutes = require('./routes/Order-routes');
 const BranchRoutes = require('./routes/Branch-routes');
 const ShopRoutes = require('./routes/Shop-routes');
+const RecommendRoutes = require('./routes/recommend_routes');
 
 const app = express();
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded( { extended: true } ))
+app.use(express.json({limit: "50mb"}));
+app.use(express.urlencoded( { limit: "50mb", extended: true, parameterLimit:50000 } ));
 app.use(cors({ withCredentials: false }));
 
 app.use('/api', couponRoutes.routes);
@@ -24,6 +25,8 @@ app.use('/api', UserRoutes.routes);
 app.use('/api', OrderRoutes.routes);
 app.use('/api', BranchRoutes.routes);
 app.use('/api', ShopRoutes.routes);
+app.use('/api', ShopRoutes.routes);
+app.use('/api', RecommendRoutes.routes);
 
 const server = http.createServer(app); 
 
@@ -56,6 +59,6 @@ io.on('connection', (socket) => {
   console.log('Client connected');
 });
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080;
 
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

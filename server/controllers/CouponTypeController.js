@@ -6,11 +6,12 @@ const addCouponType = async (req, res, next) => {
     try {
         const data = req.body;
         data.countOf_Coupons = 0;
+        data.isExists = true;
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('CouponTypes').doc().set(data);
-        res.send('CouponType record saved successfuly');
+        res.json('CouponType record saved successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -20,21 +21,22 @@ const getAllCouponTypes = async (req, res, next) => {
         const data = await couponTypes.get();
         const couponTypesArray = [];
         if (data.empty) {
-            res.status(404).send('No couponType record found');
+            res.status(404).json('No couponType record found');
         } else {
             data.forEach(doc => {
                 const couponType = new CouponType(
                     doc.id,
                     doc.data().couponTypeName,
                     doc.data().countOf_Coupons,
+                    doc.data().isExists,
                     doc.data().lastUpdated
                 );
                 couponTypesArray.push(couponType);
             });
-            res.send(couponTypesArray);
+            res.json(couponTypesArray);
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -44,12 +46,12 @@ const getCouponType = async (req, res, next) => {
         const couponType = await firebase.collection('CouponTypes').doc(id);
         const data = await couponType.get();
         if (!data.exists) {
-            res.status(404).send('CouponType with the given ID not found');
+            res.status(404).json('CouponType with the given ID not found');
         } else {
-            res.send(data.data());
+            res.json(data.data());
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
@@ -66,23 +68,47 @@ const updateCouponType = async (req, res, next) => {
             query.docChanges().forEach(change => {
                 const coupon = change.doc;
                 const newCouponTypeInsidCoupon = data.couponTypeName;
-                coupon.ref.update({'couponType.couponName': newCouponTypeInsidCoupon});
+                coupon.ref.update({ 'couponType.couponTypeName': newCouponTypeInsidCoupon });
             });
         });
 
-        res.send('CouponType record updated successfuly');
+        const ordersRef = await firebase
+            .collection('Orders')
+            .where('coupon.couponTypeId', '==', id);
+        ordersRef.get().then((query) => {
+            query.docChanges().forEach((change) => {
+                const order = change.doc;    
+                const newcouponTypeInsidOrder = data.couponTypeName;
+                order.ref.update({ 'coupon.couponTypeName': newcouponTypeInsidOrder });
+            });
+        });
+
+        res.json('CouponType record updated successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
     }
 }
 
+/*<--- deleteCouponType Not in used --->*/
 const deleteCouponType = async (req, res, next) => {
     try {
         const id = req.params.id;
         await firebase.collection('CouponTypes').doc(id).delete();
-        res.send('CouponType record deleted successfuly');
+        res.json('CouponType record deleted successfuly');
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).json(error.message);
+    }
+}
+
+const lockoutCouponType = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const couponType = await firebase.collection('CouponTypes').doc(id);
+        await couponType.update({ 'isExists': false, lastUpdated: admin.firestore.Timestamp.now() });
+
+        res.json(' The couponType has been successfully locked');
+    } catch (error) {
+        res.status(400).json(error.message);
     }
 }
 
@@ -91,5 +117,6 @@ module.exports = {
     getAllCouponTypes,
     getCouponType,
     updateCouponType,
-    deleteCouponType
+    deleteCouponType,
+    lockoutCouponType
 }

@@ -3,18 +3,25 @@ import { throwError as observableThrowError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class MainMenuService {
 
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) { }
 
 	public getData() {
 		const URL: string = 'assets/data/main-menu.json';
 		return this.http.get(URL);
 	}
-
-  public handleError(error: any) {
-    return observableThrowError(error.error || 'Server Error');
-  }
+	public getDataSeller() {
+		const URL: string = 'assets/data/main-menu-seller.json';
+		return this.http.get(URL);
+	}
+	public getDataShopManager() {
+		const URL: string = 'assets/data/main-menu-shopmanager.json';
+		return this.http.get(URL);
+	}
+	public handleError(error: any) {
+		return observableThrowError(error.error || 'Server Error');
+	}
 }

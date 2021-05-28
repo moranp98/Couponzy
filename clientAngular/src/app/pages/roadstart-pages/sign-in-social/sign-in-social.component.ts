@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { FirebaseService } from '../../../services/firebase.service'
 import { Users } from 'src/app/models/users';
 @Component({
   selector: 'page-sign-in-social',
@@ -11,22 +12,47 @@ import { Users } from 'src/app/models/users';
 export class PageSignInSocialComponent implements OnInit {
   pageTitle: string = 'כניסה';
   data: Users;
-  //user: String = 'admin@admin.com';
-  //password: String = '123456';
-  constructor(private router: Router, private userService : UserService) {}
+  isSignedIn = false
+  currentUser: Users;
+
+  constructor(private router: Router, public firebaseService: FirebaseService) { }
 
   ngOnInit() {
-    this.router.navigate(['/default-layout/dashboard']);
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser);
+    console.log(this.currentUser)
+    if (localStorage.getItem('user') !== null) {
+      this.isSignedIn = true
+      switch (this.currentUser.role) {
+        case 'seller':
+          this.router.navigate(['/default-layout/coupons-sale']);
+          break;
+        default: // role --> 'admin', shopManager
+          this.router.navigate(['/default-layout/dashboard']);
+          break;
+      }
+    }
+    else
+      this.isSignedIn = false
   }
 
-  onSubmit(username,pass) {
-    this.router.navigate(['/default-layout/dashboard']);
-    /*this.userService.getUser(username,pass).subscribe(data => {
-      if(data)
-        this.router.navigate(['/default-layout/dashboard']);
-    });*/
-  }
+  async onSignin(email: string, password: string) {
+    await this.firebaseService.signin(email, password)
 
+    if (this.firebaseService.isLoggedIn) {
+      console.log("LOGGGEED INNN")
+      console.log(this.currentUser)
+      this.isSignedIn = true;
+      switch (localStorage.getItem('role')) {
+        case 'seller':
+          this.router.navigate(['/default-layout/coupons-sale']);
+          break;
+        default: // role --> 'admin', shopManager
+          this.router.navigate(['/default-layout/dashboard']);
+          break;
+      }
+    }
+  }
 }
 
 

@@ -1,69 +1,108 @@
 <div class="row">
-    <div class="col mb-lg" >
-      <card title="משתמשים רשומים" class="mb-lg" *ngIf="showUsers">
-        <div class="col-lg">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>שם מלא</th>
-              <th>סוג משתמש</th>
-              <th>שם חנות</th>
-            </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let user of users">
-                <td><strong>{{user.firstName}} {{user.lastName}}</strong></td>
-                <td>{{checkP(user)}}</td>
-                <td>{{checkShop(user)}}</td>
-                <td><button mat-raised-button color="accent" (click)="onUpdate(true, user._id)">עריכה</button></td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="col-lg-12 ">
+    <card [title]="'עדכון תפקיד המשתמש'" [align]="'center'" class="mb-xl-0 heightCard">
+      <mat-icon mat-list-avatar>update</mat-icon>
+      <form [formGroup]="updateForm" *ngIf="updatePressed && employedState === 'Not employed'"
+        (ngSubmit)="ChangeRoleForAdminOrCustomer(updateUser.email)">
+        <div class="row">
+          <div class="col-lg-4">
+            <mat-form-field>
+              <mat-select #position placeholder="נא לבחור תפקיד" dir="rtl" [formControl]="updateForm.controls['role']"
+                required>
+                <mat-option *ngFor="let pos of posi" [value]=pos.role>
+                  {{pos.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="updateForm.controls['role'].hasError('required') && updateForm.controls['role'].touched">
+                הינך נדרש לבחור תפקיד
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4" *ngIf="position.value === 'shopManager'">
+            <mat-form-field>
+              <mat-select placeholder="נא לבחור רשת חנויות" dir="rtl" [formControl]="updateForm.controls['employerId']"
+                required>
+                <mat-option *ngFor="let shop of shops" [value] = shop.id>
+                  {{shop.shopName}}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="updateForm.controls['employerId'].hasError('required') && updateForm.controls['employerId'].touched">
+                הינך נדרש לבחור רשת חנויות
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-4" *ngIf="position.value === 'seller'">
+            <mat-form-field>
+              <mat-select placeholder="נא לבחור חנות מכירות" dir="rtl" [formControl]="updateForm.controls['employerId']"
+                required>
+                <mat-option *ngFor="let branch of branches" [value] = branch.id>
+                  {{branch.branchName}}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="updateForm.controls['employerId'].hasError('required') && updateForm.controls['employerId'].touched">
+                הינך נדרש לבחור חנות מכירות
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
-      </card>
-    </div>
-</div>
-<div class="row mb-lg-4" *ngIf="updatePressed" >
-  <div class="col-lg-8">
-    <card [title]="name">
-      <form (ngSubmit)="onUpdateSubmit(position.value)">
-        <div class="row">  
-        <div class="col-md-4">
-          <mat-form-field>
-            <mat-select #position placeholder="בחר תפקיד" dir="rtl" [formControl]="posControl" required>
-              <mat-option *ngFor="let pos of posi" [value]=pos.value>
-                {{pos.viewValue}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="posControl.hasError('required')">אנא בחר תפקיד</mat-error>
-          </mat-form-field>
-          </div>
-          <div>
-            <button mat-raised-button color="accent">שמור</button>
-            <span class="span"></span>
-            <button mat-raised-button color="accent" (click)="onUpdate(false, 0)">חזור</button>
-          </div>
-        </div>
-      </form>
-      <form (ngSubmit)="onShopSubmit(shop.value)" *ngIf="isSeller">
-        <div class="row">  
-        <div class="col-md-4">
-          <mat-form-field>
-            <mat-select #shop placeholder="בחר חנות" dir="rtl" [formControl]="shopControl" required>
-              <mat-option *ngFor="let shop of shops" [value]=shop._id>
-                {{shop.shopName}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="shopControl.hasError('required')">אנא בחר חנות</mat-error>
-          </mat-form-field>
-          </div>
-          <div>
-            <button mat-raised-button color="accent">שמור</button>
-            <span class="span"></span>
-            <button mat-raised-button color="accent" (click)="onUpdate(false, 0)">חזור</button>
-          </div>
+        <div class="row">
+          <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי חנות</button>
+          <span class="span"></span>
+          <button mat-mini-fab type="button" color="primary" (click)="onUpdate('Update role stoped', false)">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
         </div>
       </form>
+      <alert *ngIf="updatePressed && employedState !== 'Not employed'" [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>האם אתה בטוח שאתה מעוניין להחליף תפקיד למנהל חנות/מוכר?</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="accent" (click)="onUpdate('Update role stoped', false)">לא</button>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="onCancelRoleForEmployer()">כן</button>
+      </alert>
     </card>
   </div>
-
+</div>
+<span class="span"></span>
+<div class="row">
+  <div class="col mb-lg">
+    <card title="משתמשים רשומים" class="mb-lg" *ngIf="showUsers">
+      <div class="col-lg">
+        <table class="table" id="cssTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>פרופיל</th>
+              <th>שם מלא</th>
+              <th>מייל</th>
+              <th>תפקיד המשתמש</th>
+              <th>סטטוס</th>
+              <th>שם חנות</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users; let i = index">
+              <th scope="row">{{i+1}}</th>
+              <td><img style="height: 50px;width: 50px;" src={{user.profile_User}}></td>
+              <td><strong>{{user.userName.firstName}} {{user.userName.lastName}}</strong></td>
+              <td>{{user.email}}</td>
+              <td>{{checkP(user)}}</td>
+              <td>
+                <label class="switch">
+                  <input type="checkbox" [checked]="user.active" (click)="onToggle(user.email,$event.target.checked)">
+                  <span class="slider round"></span>
+                </label>
+              </td>
+              <td>{{checkShop(user)}}</td>
+              <td><button mat-raised-button color="accent" (click)="onUpdate(user.email, true)">עריכה</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </card>
+  </div>
+</div>

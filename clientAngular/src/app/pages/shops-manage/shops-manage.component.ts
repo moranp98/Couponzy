@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedService } from '../../layouts/shared.service';
 import { ManageBranchesService } from '../../services/manage-branches.service';
 import { ManageShopsService } from '../../services/manage-shops.service';
 import { Branches } from '../../models/branches';
 import { Shops } from '../../models/shops';
+import { Users } from '../../models/users';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { Router } from '@angular/router';
+import { AngularFireUploadTask } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 
 const details: any[] = [
   {
@@ -54,7 +58,7 @@ export class shop {
 })
 
 export class PageShopsManageComponent implements OnInit {
-  pageTitle: string = 'ניהול חנויות';
+  pageTitle: string = 'ניהול סניפים';
   details = details;
 
   shops: Shops[] = [];
@@ -70,39 +74,90 @@ export class PageShopsManageComponent implements OnInit {
   detailPressed: boolean = false;
   updatePressed: boolean = false;
   deletePressed: boolean = false;
+  canDeleteFlag: boolean = false;
 
   public form: FormGroup;
   public updateForm: FormGroup;
+
+  currentUser: Users;
+    /*
+  START
+  Upload Profile Picture
+  */
+  @Input() file: File;
+
+  task: AngularFireUploadTask;
+
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  i:number = 0;
+  filename : string;
+  datefile : any;
+  isEdit : boolean = false;
+  downloadURL : string ;
+  shopProfileUrl : string;
+  AddedPhoto :boolean = false;
+  UpdatedPhoto : boolean = false;
+  AddedTitle :boolean = false;
+  isAddPhoto : boolean = false;
+/*
+  END
+  Upload Profile Picture
+  */
 
   // Constractor
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
     private _manageshops: ManageShopsService,
-    private ShowBranchesService: ManageBranchesService) {
+    private ShowBranchesService: ManageBranchesService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
 
-    this.showShops();
-    this.showBranches();
-
+    if(localStorage.getItem('user') == null || this.currentUser.role === 'seller'){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    } else {
+      this.showShops();
+      this.showBranches();
+    } 
+    
     this.form = this.fb.group({
       shop: [null, Validators.compose([Validators.required])],
-      branchName: [null, Validators.compose([Validators.required])],
+      branchName: [null, Validators.compose(
+        [
+          Validators.required,
+          Validators.maxLength(32),
+          this._uniqueIdValidator.bind(this)
+        ])
+      ],
       profile_Branch: [null, Validators.compose([Validators.required])],
       address: this.fb.group({ // make a nested group
-        city: [null, Validators.compose([Validators.required])],
-        street: [null, Validators.compose([Validators.required])],
-        country: [null, Validators.compose([Validators.required])]
+        city: [null, Validators.compose([Validators.required, Validators.maxLength(16)])],
+        street: [null, Validators.compose([Validators.required, Validators.maxLength(36)])],
+        country: [null, Validators.compose([Validators.required, Validators.maxLength(16)])]
       }),
-      phoneNumber: [null, Validators.compose([Validators.required])],
+      phoneNumber: [null, Validators.compose([Validators.required, Validators.maxLength(16)])],
       lat: [null, Validators.compose([Validators.required])],
       long: [null, Validators.compose([Validators.required])],
       isOpen: [true, Validators.compose([])],
-      lastUpdated: [Date.now, Validators.compose([])],
+      isExists: [true, Validators.compose([Validators.required])],
+      lastUpdated: [Date.now(), Validators.compose([])],
       sellers: [[], Validators.compose([])]
     });
+  }
+  
+  private _uniqueIdValidator(control: FormControl) {
+    if (this.branches.find(branch => branch.branchName === control.value)) {
+      console.log("duplicate: true")
+      return { duplicate: true };
+    } else {
+      console.log("is unique branchName")
+      return null;
+    }
   }
 
   handleSelect(shop: any) { // This function is not used
@@ -112,7 +167,7 @@ export class PageShopsManageComponent implements OnInit {
 
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
-      this.shops = shops;
+      this.shops = shops.filter(shop => shop.isExists !== false);
       this.shops.forEach(shopObj => {
         this.shopClass.push(new shop(shopObj.id, shopObj.shopName, shopObj.profile_Shop))
       });
@@ -127,7 +182,7 @@ export class PageShopsManageComponent implements OnInit {
         else
           branch.stateOpen = "סגור";
       });
-      this.branches = branches;
+      this.branches = branches.filter(branch => branch.isExists !== false);
       console.log(this.branches);
     })
   }
@@ -150,11 +205,14 @@ export class PageShopsManageComponent implements OnInit {
 
   onSubmit(value: boolean) {
     console.log(this.form.value);
+    this.form.patchValue({profile_Branch:this.shopProfileUrl});
     this.ShowBranchesService.createBranch(this.form.value).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showBranches(); this.showShops(); }
     );
     this.addPressed = false; // To hide the Add branch Card
+    this.AddedPhoto = false;
     this.form.reset();
   }
 
@@ -168,19 +226,28 @@ export class PageShopsManageComponent implements OnInit {
         this.updateBranch.shop.shopName,
         this.updateBranch.shop.profile_Shop
       );
+      console.log(this.shopUpdateNow);
       console.log(this.updateBranch);
       this.updateForm = this.fb.group({
         shop: [this.updateBranch.shop, Validators.compose([Validators.required])],
-        branchName: [this.updateBranch.branchName, Validators.compose([Validators.required])],
+        branchName: [this.updateBranch.branchName, Validators.compose(
+          [
+            Validators.required,
+            Validators.maxLength(32)
+          ])
+        ],
         profile_Branch: [this.updateBranch.profile_Branch, Validators.compose([Validators.required])],
         address: this.fb.group({ // make a nested group
-          city: [this.updateBranch.address.city, Validators.compose([Validators.required])],
-          street: [this.updateBranch.address.street, Validators.compose([Validators.required])],
-          country: [this.updateBranch.address.country, Validators.compose([Validators.required])]
+          city: [this.updateBranch.address.city, Validators.compose([Validators.required, Validators.maxLength(16)])],
+          street: [this.updateBranch.address.street, Validators.compose([Validators.required, Validators.maxLength(36)])],
+          country: [this.updateBranch.address.country, Validators.compose([Validators.required, Validators.maxLength(16)])]
         }),
-        phoneNumber: [this.updateBranch.phoneNumber, Validators.compose([Validators.required])],
+        phoneNumber: [this.updateBranch.phoneNumber, Validators.compose([Validators.required, Validators.maxLength(16)])],
         lat: [this.updateBranch.lat, Validators.compose([Validators.required])],
         long: [this.updateBranch.long, Validators.compose([Validators.required])],
+        isOpen: [this.updateBranch.isOpen, Validators.compose([Validators.required])],
+        isExists: [true, Validators.compose([Validators.required])],
+        lastUpdated: [this.updateBranch.lastUpdated, Validators.compose([])],
       });
       console.log(this.updateForm.value);
     }
@@ -192,31 +259,83 @@ export class PageShopsManageComponent implements OnInit {
   }
 
   onUpdateSubmit() {
+    this.updateForm.patchValue({profile_Branch:this.shopProfileUrl});
     this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => {  this.showBranches(); this.showShops(); }
     );
     this.updatePressed = false;
+    this.UpdatedPhoto = false;
     this.updateForm.reset();
   }
 
   onDelete(stateDeletePressed: boolean, id: string) {
 
-    this.deleteBranch = this.branches.find(branch => branch.id === id);
+    if (id !== 'Delete stoped') {
+      this.deleteBranch = this.branches.find(branch => branch.id === id);
+    }
+
+    if (this.deleteBranch.sellers.length === 0) {
+      this.canDeleteFlag = true;
+    }
+
     if (stateDeletePressed) {
       this.deletePressed = true;
     }
     if (!stateDeletePressed) {
       this.deletePressed = false;
+      this.canDeleteFlag = false;
     }
   }
 
   onDeleteSubmit() {
     this.deletePressed = false;
+    this.canDeleteFlag = false;
     console.log(this.deleteBranch);
-    this.ShowBranchesService.deleteBranch(this.deleteBranch.id).subscribe(
+    this.ShowBranchesService.lockoutBranch(this.deleteBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
-      (error) => { console.log('Error', error); }
+      (error) => { console.log('Error', error); },
+      () => { this.showBranches(); this.showShops(); }
     );
   }
+          /*
+  START
+  Upload Profile Picture
+  */
+  async onPhotoSubmit(){
+    console.log("dOWNLOAD LINK: "+ localStorage.getItem('downloadURL'))
+    this.downloadURL = await localStorage.getItem('downloadURL')
+    if(this.downloadURL!=null){
+    this.AddedPhoto=true;
+    this.UpdatedPhoto = true;
+    this.shopProfileUrl = this.downloadURL;
+    console.log(this.shopProfileUrl)
+    this.isAddPhoto=false;
+    localStorage.removeItem('downloadURL');
+
+    }
+  }
+
+  isHovering: boolean;
+
+  files: File[] = [];
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+
+  onDrop(files: FileList) {
+    console.log("Started on Drop")
+      this.files.push(files.item(0));
+      this.filename=files.item(0).name
+      this.datefile=Date.now;
+      //this.startUpload();
+  }
+
+  
+/*
+  END
+  Upload Profile Picture
+  */
 }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Users } from '../../models/users';
 
 @Component({
   moduleId: module.id,
@@ -6,6 +7,24 @@ import { Component } from '@angular/core';
   templateUrl: './logo.component.html',
   styleUrls: ['./logo.component.scss']
 })
-export class LogoComponent {
+export class LogoComponent implements OnInit {
+  currentUser: Users;
+  displayRole: string;
 
+  ngOnInit(): void {
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
+
+    switch (this.currentUser.role) {
+      case 'shopManager':
+        this.displayRole = 'מנהל חנות';
+        break;
+      case 'seller':
+        this.displayRole = 'מוכר';
+        break;
+      default:
+        this.displayRole = 'מנהל מערכת';
+        break;
+    }
+  }
 }

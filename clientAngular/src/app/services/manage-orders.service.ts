@@ -9,17 +9,17 @@ import { Orders } from '../models/orders';
   providedIn: 'root'
 })
 export class ManageOrdersService {
-  
-  private ordersUrl = environment.ordersUrl;
+  private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
 
   getAllOrders(): Observable<Orders[]> {
-    return this.http.get<Orders[]>(this.ordersUrl);
+    const url = `${this.serverUrl}/${"Orders"}`;
+    return this.http.get<Orders[]>(url);
   }
 
-  getMapReduceOrders(): Observable<any[]> {
-    const url = `${this.ordersUrl}/${"mapChartData"}`;
-    return this.http.get<any[]>(url);
+  saleCoupon(formCoupon): Observable<any> {
+    const url = `${this.serverUrl}/${"Order"}`;
+    return this.http.post<any>(url, formCoupon);
   }
 }

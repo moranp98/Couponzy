@@ -1,0 +1,68 @@
+[
+  {
+    "title": "ראשי",
+    "icon": "",
+    "active": true,
+    "groupTitle" : true,
+    "sub": "",
+    "routing": "",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "לוח מחוונים",
+    "icon": "fa fa-tachometer",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/dashboard",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-google-wallet",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מפת חנויות",
+    "icon": "fa fa-map-marker",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-map",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "ניהול קופונים",
+    "icon": "fa fa-shopping-basket",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/coupons-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "נתוני מכירות",
+    "icon": "fa fa-line-chart",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/sales-management",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  }
+]

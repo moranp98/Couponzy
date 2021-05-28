@@ -10,18 +10,30 @@ import { PageShopsManageComponent }             from './pages/shops-manage/shops
 import { PageShopsMapComponent }                from './pages/shops-map/shops-map.component';
 import { PageSignInSocialComponent }            from './pages/roadstart-pages/sign-in-social/sign-in-social.component';
 import { PageSignUpComponent }                  from './pages/roadstart-pages/sign-up/sign-up.component';
+import { PageCouponsManageComponent}            from './pages/coupons-manage/coupons-manage.component';
 import { PageShopsChainManageComponent }        from './pages/shops-chain-manage/shops-chain-manage.component';
 import { PageCouponTypeManageComponent }        from './pages/coupon-type-manage/coupon-type-manage.component';
 import { PageTimelineCouponzyComponent }        from './pages/timeline-couponzy/timeline-couponzy.component';
+import { PageCouponsSaleComponent }             from './pages/coupons-sale/coupons-sale.component';
+import { UploaderComponent } from './uploader/uploader.component';
+import { MyAccountComponent } from './my-account/my-account.component';
+import { PageSalesManagementComponent }         from './pages/sales-management/sales-management.component';
+import {ModalComponent } from 'src/app/_modal/modal.component'
 
 const defaultRoutes: Routes = [
   { path: 'dashboard', component: PageDashboardComponent },
   { path: 'users-manage', component: PageUsersManageComponent },
   { path: 'shops-manage', component: PageShopsManageComponent },
   { path: 'shops-map', component: PageShopsMapComponent },
+  { path: 'coupons-manage', component: PageCouponsManageComponent},
   { path: 'shops-chain-manage', component: PageShopsChainManageComponent },
   { path: 'coupon-type-manage', component: PageCouponTypeManageComponent },
   { path: 'timeline-couponzy', component: PageTimelineCouponzyComponent },
+  { path: 'coupons-sale', component: PageCouponsSaleComponent },
+  { path: 'uploader', component: UploaderComponent },
+  { path: 'my-account', component: MyAccountComponent },
+  { path: 'sales-management', component: PageSalesManagementComponent },
+  { path: 'modal', component: ModalComponent },
 ];
 
 const roadstartRoutes: Routes = [

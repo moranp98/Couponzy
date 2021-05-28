@@ -1,0 +1,179 @@
+<form (ngSubmit)="UpdateDetails(firstName.value,
+                                lastName.value,
+                                country.value,
+                                city.value,
+                                zipcode.value,
+                                birthday.value,
+                                phone.value,
+                                userid.value)" *ngIf="isEdit==false">
+<div class="container-fluid main" style="height:100vh;padding-left:0px;">
+        
+    <div class="d-block d-md-none menu">
+
+        <div class="bar"></div>
+    
+    </div>
+    
+    <div class="expand-menu nav flex-column">
+    
+        <a href="#" class="nav-link active mt-auto"><i class="far fa-user-circle"></i> Profile</a>
+            <a href="#" class="nav-link"><i class="far fa-bell"></i> Notifications</a>
+            <a href="#" class="nav-link"><i class="far fa-file-alt"></i> Billing Info</a>
+            <a href="#" class="nav-link mb-auto"><i class="fas fa-cogs"></i> General</a>    
+    
+    </div>
+    
+    <div class="row align-items-center" style="height:100%">
+
+
+    
+    <div class="col-md-9">
+        
+        <div class="container content clear-fix">
+    
+        
+        <div class="row" style="height:100%">
+        
+            <div class="col-md-3">
+            
+                <div href=# class="d-inline"><img src="{{ this.currentUser.profile_User }}" width=130px style="margin:0;"><br>
+                    <p class="pl-2 mt-2">
+                        <button  class="btn" (click)="isEdit =true" style="color:#8f9096;font-weight:600">Edit Picture</button>
+                    </p>
+                </div>
+                
+                
+            </div>
+            
+            <div class="col-md-9">
+                
+                <div class="container">
+                
+                    <form>
+                        <h2>פרטים אישיים</h2>
+                        <div class="form-group">
+                            <label for=firstName>שם פרטי</label>
+                            <input type="text" class="form-control" id="firstName" value="{{this.currentUser.userName.firstName}}" #firstName>
+                            <label for=lastName>שם משפחה</label>
+                            <input type="text" class="form-control" id="lastName" value="{{this.currentUser.userName.lastName}}" #lastName>
+                        </div>
+                        <div class="form-group">
+
+                            <label for=userid>תעודת זהות</label>
+                            <input type="text" class="form-control" id="userid" value="{{this.currentUser.userID}}" #userid>
+                            <label for=phone>מספר טלפון</label>
+                            <input type="text" class="form-control" id="phone" value="{{this.currentUser.phoneNumber}}" #phone>
+
+
+                        </div>
+                        <div class="form-group ">
+
+                            <label for=birthday>Birthday</label>
+                            <input type="date" class="form-control" id="birthday" value="{{this.currentUser.birthday}}" #birthday>
+
+                        </div>
+                        <!-- <div class="form-group">
+
+                            <label for=pass>Password</label>
+                            <input type="password" class="form-control" id="pass">
+
+                        </div> -->
+                        <h2>כתובת</h2>
+                         <div class="form-group">
+
+                            <label for=city>עיר</label>
+                            <input type="text" class="form-control" id="city" value="{{this.currentUser.address.city}}" #city>
+                            <label for=zipCode>מיקום</label>
+                            <input type="text" class="form-control" id="zipCode" value="{{this.currentUser.address.zipcode}}" #zipcode>
+                            <label for=country>מדינה</label>
+                            <input type="text" class="form-control" id="country" value="{{this.currentUser.address.country}}" #country>
+
+                        </div>
+                        
+                        
+                        <div class="row mt-5">
+                        
+                            <div class="col">
+                            
+                                <button mat-raised-button class="btn btn-primary btn-block" type="submit" (click)='UpdateDetails(
+                                    firstName.value,
+                                    lastName.value,
+                                    country.value,
+                                    city.value,
+                                    zipcode.value,
+                                    birthday.value,
+                                    phone.value,
+                                    userid.value)'>שמור</button>
+                            
+                            </div>
+                            
+                            <div class="col">
+                            
+                                <button onclick="location.href = '#/default-layout/dashboard';"  type="button" class="btn btn-default btn-block">ביטול</button>
+                            
+                            </div>
+                        
+                        </div>
+                    </form>
+                
+                </div>
+            
+            </div>
+        
+        </div>
+    
+    </div>
+        
+    </div>
+
+</div>
+
+</div>
+
+</form>
+<div *ngIf="isEdit" class="center">
+    <h3 >Upload Your Profile Image </h3>
+    <div class="dropzone" 
+             dropzone
+             (hovered)="toggleHover($event)"
+             (dropped)="onDrop($event)"
+             [class.hovering]="isHovering" style=" height: 300px;
+             width: 450px;">
+        
+        
+             <h3>Profile Image</h3>
+             <p>Drag and Drop a File</p>
+        </div>
+        
+        
+        
+        <div *ngFor="let file of files">
+          <upload-task [file]="file"></upload-task>
+        </div>
+        <br><br>
+        <div style="width:450px;">
+            <div style="float: left; width: 130px"> 
+              
+                    <button  class="btn" (click)="onSubmit()" style="color:#43509b;font-weight:600">Submit</button>
+                
+            </div>
+            <div style="float: right; width: 225px"> 
+                
+                    <button  class="btn" (click)="isEdit=false" style="color:#c02830;font-weight:600">Cancel</button>
+             
+            </div>
+        </div>
+       
+        <br>
+        
+</div>
+<jw-modal id="modal-1">
+    <button  class="btn" (click)="modalService.close('modal-1');" style="color:#8f9096;font-weight:600">Close Picture</button>
+    <p>some modal text</p>
+</jw-modal>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>

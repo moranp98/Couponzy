@@ -1,13 +1,29 @@
 
 export interface Users {
-    _id: string,
-    firstName: string,
-    lastName: string,
+    id: string,
+    userName:{
+        firstName: string,
+        lastName: string
+    },
     email: string,
+    userID: string,
     phoneNumber: string,
-    orders: string,
-    isAdmin:boolean,
-    isCostumer:boolean,
-    isSeller:boolean,
-    shop:string    
+    profile_User: string,
+    birthday:string,
+    gender: string,
+    age: number,
+    maritalstatus: string,
+    address:{
+        city: string,
+        zipcode: string,
+        country: string
+    },
+    lat: Number,
+    lon: Number,
+    active: Boolean,
+    role: string,
+    employerId: string,
+    created_at: Date,
+    lastUpdated: Date,
+    shop: string
 }

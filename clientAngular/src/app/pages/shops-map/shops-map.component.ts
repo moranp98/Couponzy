@@ -3,8 +3,9 @@ import { SharedService } from '../../layouts/shared.service';
 import { ManageBranchesService } from '../../services/manage-branches.service';
 import { ManageShopsService } from '../../services/manage-shops.service';
 import { Branches } from '../../models/branches';
+import { Router } from '@angular/router';
 import { Shops } from '../../models/shops';
-
+import { Users } from '../../models/users';
 
 @Component({
   selector: 'page-shops-map',
@@ -24,21 +25,31 @@ export class PageShopsMapComponent implements OnInit {
   selectedCity: string = '';
   selectedOpen: boolean = true;
 
+  currentUser: Users;
+
   // Constractor
   constructor(private _sharedService: SharedService,
     private _manageshops: ManageShopsService,
-    private ShowBranchesService: ManageBranchesService,) {
+    private ShowBranchesService: ManageBranchesService,
+    private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
   }
 
   ngOnInit(): void {
-    this.showShops();
-    this.showBranches();
+    var currentUser = localStorage.getItem('userDetails');
+    this.currentUser = JSON.parse(currentUser)
+
+    if(localStorage.getItem('user') == null){
+      this.router.navigate(['/roadstart-layout/sign-in-social']);
+    } else {
+      this.showShops();
+      this.showBranches();
+    } 
   }
 
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
-      this.shops = shops;
+      this.shops = shops.filter(shop => shop.isExists !== false);;
     });
   }
 
@@ -50,7 +61,7 @@ export class PageShopsMapComponent implements OnInit {
         else
           branch.stateOpen = "סגור";
       });
-      this.branches = branches;
+      this.branches = branches.filter(branch => branch.isExists !== false);
     })
   }
 

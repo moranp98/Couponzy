@@ -1,0 +1,10 @@
+[0m2021.05.03 23:43:29 INFO  Started: Metals version 0.10.2 in workspace 'C:\Users\DOR\Desktop\Couponzy_final_project' for client vscode 1.55.2.[0m
+[0m2021.05.03 23:43:31 INFO  time: initialize in 1.24s[0m
+[0m2021.05.03 23:43:33 WARN  Build server is not auto-connectable.[0m
+[0m2021.05.03 23:43:33 WARN  no build tool detected in workspace 'C:\Users\DOR\Desktop\Couponzy_final_project'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.05.04 00:07:50 INFO  shutting down Metals[0m
+[0m2021.05.04 11:30:57 INFO  Started: Metals version 0.10.2 in workspace 'C:\Users\DOR\Desktop\Couponzy_final_project' for client vscode 1.55.2.[0m
+[0m2021.05.04 11:30:58 INFO  time: initialize in 1.25s[0m
+[0m2021.05.04 11:31:00 WARN  Build server is not auto-connectable.[0m
+[0m2021.05.04 11:31:00 WARN  no build tool detected in workspace 'C:\Users\DOR\Desktop\Couponzy_final_project'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.05.04 18:59:52 INFO  shutting down Metals[0m

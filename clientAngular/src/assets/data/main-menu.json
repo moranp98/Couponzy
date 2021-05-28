@@ -23,11 +23,22 @@
   },
   {
     "title": "דירוגים על ציר הזמן",
-    "icon": "fa fa-tachometer",
+    "icon": "fa fa-google-wallet",
     "active": false,
     "groupTitle": false,
     "sub": "",
     "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מפת חנויות",
+    "icon": "fa fa-map-marker",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-map",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""
@@ -55,8 +66,8 @@
     "budgeColor": ""
   },
   {
-    "title": "ניהול חנויות",
-    "icon": "fa fa-shopping-basket",
+    "title": "ניהול סניפים",
+    "icon": "fa fa-building",
     "active": false,
     "groupTitle" : false,
     "sub": "",
@@ -67,7 +78,7 @@
   },
   {
     "title": "ניהול קטיגוריות קופונים",
-    "icon": "fa fa-shopping-basket",
+    "icon": "fa fa-book",
     "active": false,
     "groupTitle" : false,
     "sub": "",
@@ -77,34 +88,12 @@
     "budgeColor": ""
   },
   {
-    "title": "מפת חנויות",
-    "icon": "fa fa-map-marker",
+    "title": "ניהול קופונים",
+    "icon": "fa fa-money",
     "active": false,
     "groupTitle" : false,
     "sub": "",
-    "routing": "/default-layout/shops-map",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
-    "title": "כניסה",
-    "icon": "fa fa-sign-in",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/roadstart-layout/sign-in-social",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
-    "title": "רישום",
-    "icon": "fa fa-registered",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/roadstart-layout/sign-up",
+    "routing": "/default-layout/coupons-manage",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""

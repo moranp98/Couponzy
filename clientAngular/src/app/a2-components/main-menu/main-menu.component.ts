@@ -18,6 +18,26 @@ export class MainMenuComponent  {
 			next: x => this.mainMenuItems = x
 		}
     this.mainMenuService.getData().subscribe(OBSERVER);
+    var role = localStorage.getItem('role');
+    console.log("Current Role : " + role)
+    if(role == "customer"){
+      console.log("Entered Seller's MainMenu")
+      this.mainMenuService.getDataSeller().subscribe(OBSERVER);
+    }
+    if(role === "admin"){
+      console.log("Entered Admin's MainMenu")
+      this.mainMenuService.getData().subscribe(OBSERVER);
+    }
+
+    if(role === "shopManager"){
+      console.log("Entered ShopManager's MainMenu")
+      this.mainMenuService.getDataShopManager().subscribe(OBSERVER);
+    }
+
+    if(role === "seller"){
+      console.log("Entered Seller's MainMenu")
+      this.mainMenuService.getDataSeller().subscribe(OBSERVER);
+    }
   }
 
   ngOnInit(): void {

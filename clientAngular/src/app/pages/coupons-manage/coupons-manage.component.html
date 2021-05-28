@@ -1,0 +1,313 @@
+<div *ngIf="isAddPhoto==false">
+<div class="row mb-lg-4">
+  <div class="col-lg-8 ">
+    <card [title]="'רשימת קופונים'">
+      <alert *ngIf="deletePressed && canDeleteFlag" [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>האם אתה בטוח שאתה מעוניין למחוק את הקופון?</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
+      </alert>
+      <alert *ngIf="deletePressed && !canDeleteFlag" [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>אינך מורשה למחוק קופון תקף !</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="onDelete(false, 'Delete stoped')">ביטול</button>
+      </alert>
+      <mat-list class="couponsCard">
+        <mat-list-item *ngFor="let coupon of coupons; let i = index">
+          <img mat-list-avatar src="{{ coupon.profile_Coupon }}" class="avatar" alt="">
+            <h2 mat-line class="h2">{{ coupon.shop ==null ? ' ' :coupon.shop.shopName }}</h2>
+            <div mat-line class="details">
+              <span class="span"><strong>קטיגוריה: </strong>{{ coupon.couponType.couponTypeName }}</span>
+              <span class="span"></span>
+              <span class="span"><strong>קוד קופון: </strong>{{ coupon.id }}</span>
+              <span class="span"></span>
+              <span class="span"><strong>שם קופון: </strong>{{ coupon.couponName }}</span>
+              <span class="span"></span>
+              <span class="span"><strong>תוקף: </strong>{{ coupon.expireDate | date: 'dd/MM/yyyy' }}</span>
+              <span class="span"></span>
+            </div>
+          <button mat-raised-button color="primary" (click)="OnDetails(coupon.id)">פרטים</button>
+          <span class="span"></span>
+          <button mat-raised-button color="accent" (click)="onUpdate(true, coupon.id)">עריכה</button>
+          <span class="span"></span>
+          <button mat-mini-fab color="warn" (click)="onDelete(true, coupon.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <!--mat-divider></mat-divider-->
+        </mat-list-item>
+      </mat-list>
+      <button mat-fab color="primary" (click)="onAdd(true)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </card>
+  </div>
+  <div class="col-lg-4">
+    <card [title]="'הצג קפון'">
+      <div class="row couponsCard">
+        <div class="col-lg-3">
+          <mat-list>
+            <mat-list-item *ngFor="let detail of details; let i = index">
+              <mat-icon mat-list-avatar>{{detail.icon}}<badge *ngIf="detail.badge" [color]="'danger'"
+                  [position]="'top-right'">{{detail.badge}}</badge>
+              </mat-icon>
+              <h4 mat-line></h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+          </mat-list>
+        </div>
+        <div class="col-lg-9" *ngIf="detailPressed">
+          <mat-list>
+            <mat-list-item>
+              <img mat-line src="{{ couponOnDetails.profile_Coupon }}" class="avatar" alt="">
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.id }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.couponName }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.description }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.oldPrice }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.newPrice }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.expireDate | date: 'dd/MM/yyyy' }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.ratingAvg }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+            <mat-list-item>
+              <h4 mat-line>{{ couponOnDetails.numOf_rating }}</h4>
+              <p mat-line><i></i></p>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+
+<div class="row mb-lg-4" *ngIf="addPressed">
+  <div class="col-lg-12">
+    <card title="יצירת קופון חדש">
+      <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select placeholder="בחר רשת חנויות" formControlName="shop" (selectionChange)="handleSelect($event)">
+                <mat-option *ngFor="let shop of shopClass; let i = index" [value]="shop">
+                  {{ shop.shopName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-select placeholder="בחר סוג קופון" formControlName="couponType"
+                (selectionChange)="handleSelect2($event)">
+                <mat-option *ngFor="let couponType of couponTypeClass; let i = index" [value]="couponType">
+                  {{ couponType.couponTypeName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="שם הקופן" [formControl]="form.controls['couponName']" type="text">
+              <mat-error
+                *ngIf="form.controls['couponName'].hasError('required') && form.controls['couponName'].touched">
+                הינך נדרש לתת שם לקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="קוד קופון" [formControl]="form.controls['couponId']" type="text">
+              <mat-error *ngIf="form.controls['couponId'].hasError('required') && form.controls['couponId'].touched">
+                הינך נדרש להכניס את קוד הקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="פירוט" [formControl]="form.controls['description']" type="text">
+              <mat-error
+                *ngIf="form.controls['description'].hasError('required') && form.controls['description'].touched">
+                הינך נדרש להכניס את פירוט הקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="מחיר קודם" [formControl]="form.controls['oldPrice']" type="text">
+              <mat-error *ngIf="form.controls['oldPrice'].hasError('required') && form.controls['oldPrice'].touched">
+                הינך נדרש להכניס את המחיר הקודם.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="מחיר חדש" [formControl]="form.controls['newPrice']" type="text">
+              <mat-error *ngIf="form.controls['newPrice'].hasError('required') && form.controls['newPrice'].touched">
+                הינך נדרש להכניס את המחיר החדש.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4">
+            <mat-form-field appearance="fill">
+              <mat-label>אנא בחר תאריך תפוגה</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="expireDate" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error
+                *ngIf="form.controls['expireDate'].hasError('required') && form.controls['expireDate'].touched">
+                הינך נדרש להכניס את תאריך תפוגת הקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4">
+            <br>
+            <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">תמונת פרופיל הסניף</button>
+          </div>
+
+        </div>
+        <div class="row">
+          <button mat-raised-button color="accent" [disabled]="!AddedPhoto">יצירת קופון'</button>
+          <span class="span"></span>
+          <button type="button" mat-mini-fab color="primary" (click)="onAdd(false)">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
+        </div>
+      </form>
+    </card>
+  </div>
+</div>
+
+<div class="row mb-lg-4" *ngIf="updatePressed">
+  <div class="col-lg-12">
+    <card title="עריכת נתוני קופון'">
+      <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="עדכון שם הקופון" [formControl]="updateForm.controls['couponName']"
+                type="text">
+              <mat-error
+                *ngIf="updateForm.controls['couponName'].hasError('required') && updateForm.controls['couponName'].touched">
+                הינך נדרש לתת שם לקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="עדכון פירוט" [formControl]="updateForm.controls['description']" type="text">
+              <mat-error
+                *ngIf="updateForm.controls['description'].hasError('required') && updateForm.controls['description'].touched">
+                הינך נדרש להכניס את פירוט הקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="עדכון המחיר קודם" [formControl]="updateForm.controls['oldPrice']"
+                type="text">
+              <mat-error
+                *ngIf="updateForm.controls['oldPrice'].hasError('required') && updateForm.controls['oldPrice'].touched">
+                הינך נדרש להכניס את המחיר הקודם.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput placeholder="עדכון המחיר החדש" [formControl]="updateForm.controls['newPrice']"
+                type="text">
+              <mat-error
+                *ngIf="updateForm.controls['newPrice'].hasError('required') && updateForm.controls['newPrice'].touched">
+                הינך נדרש להכניס את המחיר החדש.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="fill">
+              <mat-label> אנא בחר תאריך תפוגה חדש</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="expireDate" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error
+                *ngIf="updateForm.controls['expireDate'].hasError('required') && updateForm.controls['expireDate'].touched">
+                הינך נדרש להכניס את תפוגת הקופון.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <br>
+            <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">תמונת פרופיל הסניף</button>
+          </div>
+        </div>
+        <div class="row">
+          <button mat-raised-button color="accent" [disabled]="!UpdatedPhoto">עדכון פרטי הקופון</button>
+          <span class="span"></span>
+          <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
+            <mat-icon>keyboard_return</mat-icon>
+          </button>
+        </div>
+      </form>
+    </card>
+  </div>
+</div>
+</div>
+<div *ngIf="isAddPhoto" class="center">
+  <h3 >Upload Your Profile Image </h3>
+  <div class="dropzone" 
+           dropzone
+           (hovered)="toggleHover($event)"
+           (dropped)="onDrop($event)"
+           [class.hovering]="isHovering" style=" height: 300px;
+           width: 450px;">
+      
+      
+           <h3>Profile Image</h3>
+           <p>Drag and Drop a File</p>
+      </div>
+      
+      
+      
+      <div *ngFor="let file of files">
+        <upload-task [file]="file"></upload-task>
+      </div>
+      <br><br>
+      <div style="width:450px;">
+          <div style="float: left; width: 130px"> 
+            
+                  <button  class="btn" (click)="onPhotoSubmit()" style="color:#43509b;font-weight:600">Submit</button>
+              
+          </div>
+          <div style="float: right; width: 225px"> 
+              
+                  <button  class="btn" (click)="isAddPhoto=false" style="color:#c02830;font-weight:600">Cancel</button>
+           
+          </div>
+      </div>
+     
+      <br>
+      
+</div>

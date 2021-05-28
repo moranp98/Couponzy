@@ -11,15 +11,15 @@
     <h1 class="page-title">{{ title }}</h1>
 
     <div class="nav-items">
-        <!--<div class="nav-item" [ngClass]="{ 'opened' : false }">
+         <div class="nav-item" [ngClass]="{ 'opened' : false }">
             <button mat-icon-button (click)="open($event)">
                 <mat-icon>
                     notifications_none
                     <badge [color]="'danger'">1</badge>
                 </mat-icon>
-            </button>-->
+            </button>
 
-            <!--<div class="dropdown-menu">
+           <div class="dropdown-menu">
                 <h4 class="menu-title">Notifications</h4>
 
                 <ul>
@@ -75,25 +75,25 @@
                     <a href="#">View all notifications</a>
                 </div>
             </div>
-        </div>-->
+        </div>
 
-        <!--<div class="nav-item" [ngClass]="{ 'opened' : false }">
+        <div class="nav-item" [ngClass]="{ 'opened' : false }">
             <button mat-button (click)="open($event)">
-                <div class="avatar"><img src="assets/content/avatar-2.jpg" width="40" height="40" alt=""></div>
-                <div class="name">Justin Adams</div>
+                <div class="avatar"><img src="{{ this.currentUser.profile_User }}" width="40" height="40" alt=""></div>
+                <div class="name">{{ this.currentUserName.firstName + ' ' + this.currentUserName.lastName}}</div>
             </button>
 
             <div class="dropdown-menu mini-menu">
                 <ul>
                     <li>
-                        <a href="#"><i class="fa fa-home"></i> My Account</a>
+                        <a href="#/default-layout/my-account"><i class="fa fa-home"></i> My Account</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-sign-out"></i> Log Out</a>
+                        <a (click)="logout()"><i class="fa fa-sign-out"></i> Log Out</a>
                     </li>
                 </ul>
             </div>
-        </div>-->
+        </div> 
 
         <div class="items-overlay" (click)="close($event)"></div>
     </div>

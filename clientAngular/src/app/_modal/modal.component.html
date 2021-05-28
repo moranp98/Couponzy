@@ -1,0 +1,41 @@
+﻿
+<div class="jw-modal">
+    <div class="jw-modal-body">
+        <h1 style="text-align:center">HEREEEEEEEEEEEEEEE IS UPLOADERRRRRR</h1>
+        <div class="dropzone" 
+             dropzone
+             (hovered)="toggleHover($event)"
+             (dropped)="onDrop($event)"
+             [class.hovering]="isHovering">
+        
+        
+             <h3>AngularFire Drop Zone</h3>
+             <p>Drag and Drop a File</p>
+        </div>
+        
+        <h3>Uploads</h3>
+        
+        <div *ngFor="let file of files">
+          <upload-task [file]="file"></upload-task>
+        </div>
+        <ng-content>  </ng-content>  
+        <iframe style="margin-top: 20px;" src="http://localhost:4200/#/default-layout/uploader" ></iframe> 
+        
+   
+    </div>
+</div>
+
+<div class="jw-modal-background"></div>
+<div *ngIf="percentage | async as pct">
+    <progress [value]="pct" max="100"></progress>
+    {{ pct | number }}%
+  </div>
+  
+  
+  
+  <div *ngIf="snapshot | async as snap">
+    {{ snap.bytesTransferred }} of {{ snap.totalBytes }} 
+    <button (click)="task.pause()" [disabled]="!isActive(snap)">Pause</button>
+    <button (click)="task.cancel()" [disabled]="!isActive(snap)">Cancel</button>
+    <button (click)="task.resume()" [disabled]="!(snap?.state === 'paused')">Resume</button>
+  </div>

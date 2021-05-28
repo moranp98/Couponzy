@@ -1,0 +1,46 @@
+[
+  {
+    "title": "ראשי",
+    "icon": "",
+    "active": true,
+    "groupTitle" : true,
+    "sub": "",
+    "routing": "",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מכירת קופונים",
+    "icon": "fa fa-money",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/coupons-sale",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "דירוגים על ציר הזמן",
+    "icon": "fa fa-google-wallet",
+    "active": false,
+    "groupTitle": false,
+    "sub": "",
+    "routing": "/default-layout/timeline-couponzy",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מפת חנויות",
+    "icon": "fa fa-map-marker",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-map",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  }
+]

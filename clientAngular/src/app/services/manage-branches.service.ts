@@ -9,7 +9,6 @@ import { Branches } from '../models/branches';
   providedIn: 'root'
 })
 export class ManageBranchesService {
-  private branchesUrl = environment.branchesUrl;
   private serverUrl = environment.serverUrl;
 
   constructor(private http: HttpClient) { }
@@ -19,13 +18,22 @@ export class ManageBranchesService {
     return this.http.get<Branches[]>(url);
   }
 
+  getAllBranchesByShopId(id: string): Observable<Branches[]> {
+    const url = `${this.serverUrl}/${'Branches/ShopId'}/${id}`;
+    return this.http.get<Branches[]>(url);
+  }
+
   createBranch(formBranch): Observable<any> {
     const url = `${this.serverUrl}/${'Branch'}`;
     return this.http.post<any>(url, formBranch);
   }
   
+  getBranchById(id: string): Observable<Branches> {
+    const url = `${this.serverUrl}/${'Branch'}/${id}`;
+    return this.http.get<Branches>(url);
+  }
+  
   updateBranch(formBranch, id: string): Observable<Branches[]> {
-    console.log(id);
     const url = `${this.serverUrl}/${'Branch'}/${id}`;
     return this.http.put<Branches[]>(url, formBranch);
   }
@@ -35,6 +43,11 @@ export class ManageBranchesService {
     return this.http.delete<Branches>(url);
   }
 
+  lockoutBranch(id: string): Observable<Branches> {
+    const url = `${this.serverUrl}/${'Branch/lockout'}/${id}`;
+    return this.http.put<Branches>(url, '');
+  }
+
   getCountBranches(): Observable<number> {
     const url = `${this.serverUrl}/${"getCountBranches"}`;
     return this.http.get<number>(url);
@@ -42,6 +55,11 @@ export class ManageBranchesService {
 
   getCountIsOpenBranches(): Observable<number> {
     const url = `${this.serverUrl}/${"getCountIsOpenBranches"}`;
+    return this.http.get<number>(url);
+  }
+
+  getCountBranchesByShopId(id: string): Observable<number> {
+    const url = `${this.serverUrl}/${"getCountBranchesByShopId"}/${id}`;
     return this.http.get<number>(url);
   }
 }
