@@ -139,9 +139,14 @@
           </div>
           <div class="col-md-4">
             <mat-form-field>
-              <input matInput placeholder="קוד קופון" [formControl]="form.controls['couponId']" type="text">
+              <input matInput placeholder="קוד קופון" [formControl]="form.controls['couponId']" 
+                              type="text" [readonly]="true" [value]="this.uniqueCouponId">
               <mat-error *ngIf="form.controls['couponId'].hasError('required') && form.controls['couponId'].touched">
-                הינך נדרש להכניס את קוד הקופון.
+                נא לבחור מספר בן 6 ספרות, ספרות עשרוניות בלבד
+              </mat-error>
+              <mat-error
+                *ngIf="_uniqueIdValidator(form.controls['couponId'])">
+                בחרת מספר שכבר קיים במערכת
               </mat-error>
             </mat-form-field>
           </div>

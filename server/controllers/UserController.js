@@ -185,6 +185,7 @@ const updateUserDetails = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        console.log(data)
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('Users').doc(id).update(data)
 

@@ -1,25 +1,49 @@
-<card [title]="'היכנס עם חשבונך'" [align]="'center'" *ngIf="!isSignedIn" >
-    <form (ngSubmit)="onSignin(email.value,pass.value)">
-      <mat-form-field>
-        <input matInput #email placeholder="Email" value="" name="email">
-      </mat-form-field>
-  
-      <mat-form-field>
-        <input matInput #pass placeholder="Password" value="" id="pass" type="password">
-      </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit" class="submit">כניסה</button>
-      <a href="#/roadstart-layout/sign-up"><i class="fa fa-bookmark-o"></i> הרשמה</a>
-      <!--<div class="social-divider">כניסה באמצעות</div>
+<card [title]="'היכנס עם חשבונך'" [align]="'center'" *ngIf="!isSignedIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <form (ngSubmit)="onSignin(email.value,pass.value)">
+        <mat-form-field>
+          <input matInput #email placeholder="Email" value="" name="email">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput #pass placeholder="Password" value="" id="pass" type="password">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="submit">כניסה</button>
+        <a href="#/roadstart-layout/sign-up"><i class="fa fa-bookmark-o"></i> הרשמה</a>
+        <!--<div class="social-divider">כניסה באמצעות</div>
   
       <div class="social-login">
         <button mat-raised-button type="button" class="bg-facebook text-white"><i class="fa fa-facebook"></i> Facebook</button>
         <button mat-raised-button type="button" class="bg-twitter text-white"><i class="fa fa-twitter"></i> Twitter</button>
       </div>-->
-  
-    </form>
-  </card>
-  <!-- <div class = "form-group" [class.has-error]="password.touched && password.invalid">
+
+      </form>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12" *ngIf="accessDenied">
+      <alert [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>אינך בעל הרשאות כניסה! אנא פנה למנהל המערכת</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="accessDenied = false">ביטול</button>
+      </alert>
+    </div>
+  </div>
+  <div class="row" >
+    <div class="col-lg-12" *ngIf="isLockout">
+      <alert [color]="'danger'" [outline]="true">
+        <mat-icon>error_outline</mat-icon>
+        <strong>החשבון שלך מושבת! אנא פנה למנהל המערכת</strong>
+        <span class="span"></span>
+        <button mat-mini-fab color="warn" (click)="isLockout = false">ביטול</button>
+      </alert>
+    </div>
+  </div>
+</card>
+<!-- <div class = "form-group" [class.has-error]="password.touched && password.invalid">
     <label for="password" class="control-label">Password</label>
     <input name="password" required type="text" class="form-control"
         [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel">
@@ -27,4 +51,4 @@
           Password is Required
         </span>
   </div> -->
- <app-home *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-home> 
+<app-home *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-home>

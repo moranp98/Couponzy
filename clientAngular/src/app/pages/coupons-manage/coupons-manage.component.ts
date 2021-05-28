@@ -105,32 +105,34 @@ export class PageCouponsManageComponent implements OnInit {
   deletePressed: boolean = false;
   canDeleteFlag: boolean = false;
 
+  uniqueCouponId: number;
+
   public form: FormGroup;
   public updateForm: FormGroup;
-    /*
-  START
-  Upload Profile Picture
-  */
+  /*
+START
+Upload Profile Picture
+*/
   @Input() file: File;
 
   task: AngularFireUploadTask;
 
   percentage: Observable<number>;
   snapshot: Observable<any>;
-  i:number = 0;
-  filename : string;
-  datefile : any;
-  isEdit : boolean = false;
-  downloadURL : string ;
-  ProfileUrl : string;
-  AddedPhoto :boolean = false;
-  UpdatedPhoto : boolean = false;
-  AddedTitle :boolean = false;
-  isAddPhoto : boolean = false;
-/*
-  END
-  Upload Profile Picture
-  */
+  i: number = 0;
+  filename: string;
+  datefile: any;
+  isEdit: boolean = false;
+  downloadURL: string;
+  ProfileUrl: string;
+  AddedPhoto: boolean = false;
+  UpdatedPhoto: boolean = false;
+  AddedTitle: boolean = false;
+  isAddPhoto: boolean = false;
+  /*
+    END
+    Upload Profile Picture
+    */
   // Constractor
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
@@ -152,15 +154,15 @@ export class PageCouponsManageComponent implements OnInit {
       this.showShops(this.currentUser.employerId);
       this.showCouponTypes();
     }
-
+    
     this.form = this.fb.group({
-      couponId: [null, Validators.compose(
+      couponId: [String(this.uniqueCouponId), Validators.compose(
         [
           Validators.required,
           Validators.minLength(6),
           Validators.maxLength(6),
           Validators.pattern("^[0-9]*$"),
-          this._uniqueIdValidator.bind(this)
+          this._uniqueIdValidator.bind(this),
         ])
       ],
       couponName: [null, Validators.compose([Validators.required, Validators.maxLength(16)])],
@@ -180,11 +182,25 @@ export class PageCouponsManageComponent implements OnInit {
 
   private _uniqueIdValidator(control: FormControl) {
     if (this.coupons.find(coupon => coupon.id === control.value)) {
-      console.log("duplicate: true")
+      //console.log("duplicate: true")
       return { duplicate: true };
     } else {
-      console.log("is unique branchName")
+      //console.log("is unique couponId")
       return null;
+    }
+  }
+
+  num: number = 0
+  private _generatorCouponId() {
+    console.log("generatoe = " + this.num++)
+    this.uniqueCouponId = 0;
+    let randomize = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+    if (this.coupons.find(coupon => coupon.id === String(randomize))) {
+      console.log("duplicate: true")
+      this._generatorCouponId()
+    } else {
+      console.log("is unique CouponId")
+      this.uniqueCouponId = randomize;
     }
   }
 
@@ -252,6 +268,11 @@ export class PageCouponsManageComponent implements OnInit {
   }
 
   onAdd(stateAddPressed: boolean) {
+    this._generatorCouponId();
+    this.form.controls.couponId.setValue(String(this.uniqueCouponId));
+    this.form.controls.ratingAvg.setValue(0);
+    this.form.controls.numOf_rating.setValue(0);
+
     if (stateAddPressed) {
       this.addPressed = true;
     }
@@ -262,7 +283,7 @@ export class PageCouponsManageComponent implements OnInit {
   }
 
   onSubmit(value: boolean) {
-    this.form.patchValue({profile_Coupon:this.ProfileUrl});
+    this.form.patchValue({ profile_Coupon: this.ProfileUrl });
     this.ShowCouponsService.createCoupon(this.form.value).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
@@ -317,7 +338,7 @@ export class PageCouponsManageComponent implements OnInit {
   }
 
   onUpdateSubmit() {
-    this.updateForm.patchValue({profile_Coupon:this.ProfileUrl});
+    this.updateForm.patchValue({ profile_Coupon: this.ProfileUrl });
     this.ShowCouponsService.updateCoupon(this.updateForm.value, this.updateCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },
@@ -368,20 +389,20 @@ export class PageCouponsManageComponent implements OnInit {
       }
     );
   }
-           /*
-  START
-  Upload Profile Picture
-  */
-  async onPhotoSubmit(){
-    console.log("dOWNLOAD LINK: "+ localStorage.getItem('downloadURL'))
+  /*
+START
+Upload Profile Picture
+*/
+  async onPhotoSubmit() {
+    console.log("dOWNLOAD LINK: " + localStorage.getItem('downloadURL'))
     this.downloadURL = await localStorage.getItem('downloadURL')
-    if(this.downloadURL!=null){
-    this.AddedPhoto=true;
-    this.UpdatedPhoto = true;
-    this.ProfileUrl = this.downloadURL;
-    console.log(this.ProfileUrl)
-    this.isAddPhoto=false;
-    localStorage.removeItem('downloadURL');
+    if (this.downloadURL != null) {
+      this.AddedPhoto = true;
+      this.UpdatedPhoto = true;
+      this.ProfileUrl = this.downloadURL;
+      console.log(this.ProfileUrl)
+      this.isAddPhoto = false;
+      localStorage.removeItem('downloadURL');
 
     }
   }
@@ -396,15 +417,15 @@ export class PageCouponsManageComponent implements OnInit {
 
   onDrop(files: FileList) {
     console.log("Started on Drop")
-      this.files.push(files.item(0));
-      this.filename=files.item(0).name
-      this.datefile=Date.now;
-      //this.startUpload();
+    this.files.push(files.item(0));
+    this.filename = files.item(0).name
+    this.datefile = Date.now;
+    //this.startUpload();
   }
 
-  
-/*
-  END
-  Upload Profile Picture
-  */
+
+  /*
+    END
+    Upload Profile Picture
+    */
 }
