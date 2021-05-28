@@ -17,6 +17,7 @@ export class PageSignInSocialComponent implements OnInit {
   currentRole: string;
   accessDenied: boolean = false;
   isLockout: boolean = false;
+  isRegistered: boolean = false;
   constructor(private router: Router,
     public firebaseService: FirebaseService,
     public userService: UserService) { }
@@ -44,7 +45,8 @@ export class PageSignInSocialComponent implements OnInit {
   }
 
   onSignin(email: string, password: string) {
-    this.userService.getUser(email).subscribe((user) => {
+    this.userService.getUser(email).subscribe(
+      (user) => {
       this.currentRole = user.role;
       console.log(this.currentRole)
       if (this.currentRole === 'admin' || this.currentRole === 'shopManager' || this.currentRole === 'seller') {
@@ -56,7 +58,8 @@ export class PageSignInSocialComponent implements OnInit {
       } else {
         this.accessDenied = true;
       }
-    });
+    }, 
+    (error) => { console.log('Error', error); this.isRegistered = true; });
   }
 
   async onSigninWithCredential(email: string, password: string) {
