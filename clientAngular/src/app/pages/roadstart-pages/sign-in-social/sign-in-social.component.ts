@@ -14,15 +14,22 @@ export class PageSignInSocialComponent implements OnInit {
   data: Users;
   isSignedIn = false
   currentUser: Users;
-
-  constructor(private router: Router, public firebaseService: FirebaseService) { }
+  currentRole: string;
+  accessDenied: boolean = false;
+  isLockout: boolean = false;
+  isRegistered: boolean = false;
+  constructor(private router: Router,
+    public firebaseService: FirebaseService,
+    public userService: UserService) { }
 
   ngOnInit() {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser);
     console.log(this.currentUser)
+
     if (localStorage.getItem('user') !== null) {
       this.isSignedIn = true
+      console.log('this.isSignedIn = true --------> localStorage(user) === true with active=false')
       switch (this.currentUser.role) {
         case 'seller':
           this.router.navigate(['/default-layout/coupons-sale']);
@@ -34,11 +41,29 @@ export class PageSignInSocialComponent implements OnInit {
     }
     else
       this.isSignedIn = false
+    console.log('this.isSignedIn = false --------> localStorage(user) === true with active=false')
   }
 
-  async onSignin(email: string, password: string) {
-    await this.firebaseService.signin(email, password)
+  onSignin(email: string, password: string) {
+    this.userService.getUser(email).subscribe(
+      (user) => {
+      this.currentRole = user.role;
+      console.log(this.currentRole)
+      if (this.currentRole === 'admin' || this.currentRole === 'shopManager' || this.currentRole === 'seller') {
+        if (user.active === true) {
+          this.onSigninWithCredential(email, password)
+        } else {
+          this.isLockout = true;
+        }
+      } else {
+        this.accessDenied = true;
+      }
+    }, 
+    (error) => { console.log('Error', error); this.isRegistered = true; });
+  }
 
+  async onSigninWithCredential(email: string, password: string) {
+    await this.firebaseService.signin(email, password);
     if (this.firebaseService.isLoggedIn) {
       console.log("LOGGGEED INNN")
       console.log(this.currentUser)
@@ -54,6 +79,3 @@ export class PageSignInSocialComponent implements OnInit {
     }
   }
 }
-
-
-

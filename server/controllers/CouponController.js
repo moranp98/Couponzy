@@ -4,7 +4,6 @@ const Coupon = require('../models/Coupon');
 
 const addCoupon = async (req, res, next) => {
   try {
-    console.log(req.body);
     const data = req.body;
     data.ratingAvg = 0;
     data.numOf_rating = 0;
@@ -14,13 +13,16 @@ const addCoupon = async (req, res, next) => {
     console.log(data);
 
     await firebase.collection('Coupons').doc(data.couponId).set(data);
+
     const docId = data.shop.id;
+    console.log(docId);
     const shopsRef = await firebase.collection('Shops').doc(docId);
     shopsRef.update({
       coupons: admin.firestore.FieldValue.arrayUnion({ id: data.couponId }),
     });
 
     const couponTypeId = data.couponType.id;
+    console.log(couponTypeId);
     const couponTypeRef = await firebase
       .collection('CouponTypes')
       .doc(couponTypeId);

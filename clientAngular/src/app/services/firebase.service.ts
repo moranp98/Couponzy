@@ -12,6 +12,7 @@ export class FirebaseService {
     await this.userService.getUser(email).subscribe(
       async (user) => {
         await localStorage.setItem('role', user.role);
+        await localStorage.setItem('active', String(user.active));
         await localStorage.setItem('userDetails', JSON.stringify(user))
         await localStorage.setItem('userId', JSON.stringify(user.id))
         console.log(localStorage.getItem('userDetails'))
@@ -25,6 +26,11 @@ export class FirebaseService {
     await console.log(this.userService.getUser(email))
     await console.log("the Current Rule is : " + await localStorage.getItem('role'));
 
+    if (localStorage.getItem('role') !== 'customer' && localStorage.getItem('active') === 'true') {
+      this.isLoggedIn = true
+    } else {
+      this.isLoggedIn = false
+    }
   }
   async signup(email: string, password: string) {
     await this.firebaseAuth.createUserWithEmailAndPassword(email, password)
