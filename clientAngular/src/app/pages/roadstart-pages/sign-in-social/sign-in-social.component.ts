@@ -47,19 +47,20 @@ export class PageSignInSocialComponent implements OnInit {
   onSignin(email: string, password: string) {
     this.userService.getUser(email).subscribe(
       (user) => {
-      this.currentRole = user.role;
-      console.log(this.currentRole)
-      if (this.currentRole === 'admin' || this.currentRole === 'shopManager' || this.currentRole === 'seller') {
-        if (user.active === true) {
-          this.onSigninWithCredential(email, password)
+        this.currentRole = user.role;
+        console.log(this.currentRole)
+        if (this.currentRole === 'admin' || this.currentRole === 'shopManager' || this.currentRole === 'seller') {
+          if (user.active === true) {
+            this.onSigninWithCredential(email, password)
+          } else {
+            this.isLockout = true;
+          }
         } else {
-          this.isLockout = true;
+          this.accessDenied = true;
         }
-      } else {
-        this.accessDenied = true;
-      }
-    }, 
-    (error) => { console.log('Error', error); this.isRegistered = true; });
+      },
+      (error) => { console.log('Error', error); this.isRegistered = true; }
+    );
   }
 
   async onSigninWithCredential(email: string, password: string) {

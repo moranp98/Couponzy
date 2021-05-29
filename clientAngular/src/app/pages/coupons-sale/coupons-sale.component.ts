@@ -13,7 +13,8 @@ import { Router } from '@angular/router';
 
 import { ManageShopsService } from 'src/app/services/manage-shops.service';
 import { Shops } from 'src/app/models/shops';
-import { ManageCouponTypesService } from 'src/app/services/manage-couponTypes.service';
+import { RealtimeService } from '../../services/realtime.service';
+import { UserService } from 'src/app/services/user.service';
 
 const details: any[] = [
   {
@@ -72,12 +73,12 @@ export class coupon {
   couponTypeId: string;
   couponTypeName: string;
 
-  constructor(id: string, 
-    couponName: string, 
-    description: string, 
-    newPrice: Number, 
-    profile_Coupon: string, 
-    couponTypeId: string, 
+  constructor(id: string,
+    couponName: string,
+    description: string,
+    newPrice: Number,
+    profile_Coupon: string,
+    couponTypeId: string,
     couponTypeName: string) {
 
     this.id = id;
@@ -133,7 +134,7 @@ export class PageCouponsSaleComponent implements OnInit {
   details = details;
 
   shops: Shops[] = [];
-  
+
   couponClass: coupon;
   branchClass: branch;
   userClass: user;
@@ -152,6 +153,9 @@ export class PageCouponsSaleComponent implements OnInit {
 
   public saleForm: FormGroup;
 
+  userSaleEmail: string;
+  currentUserCustomer: Users;
+
   // Constractor
   constructor(private fb: FormBuilder,
     private _sharedService: SharedService,
@@ -159,15 +163,22 @@ export class PageCouponsSaleComponent implements OnInit {
     private ShowCouponsService: ManageCouponsService,
     private _managebranches: ManageBranchesService,
     private _manageorders: ManageOrdersService,
+    private _realtime: RealtimeService,
+    public userService: UserService,
     private router: Router) {
     this._sharedService.emitChange(this.pageTitle);
+    this._realtime.listen('userSaleEmail').subscribe((res) => {
+      this.userSaleEmail = res['currentEmail'];
+      console.log(this.userSaleEmail);
+      this.realtimeUpateCustomerDetails(this.userSaleEmail);
+    }, (error) => { console.log('Error', error); });
   }
 
   ngOnInit(): void {
     var currentUser = localStorage.getItem('userDetails');
     this.currentUser = JSON.parse(currentUser);
 
-    if(localStorage.getItem('user') == null || this.currentUser.role !== 'seller'){
+    if (localStorage.getItem('user') == null || this.currentUser.role !== 'seller') {
       this.router.navigate(['/default-layout/dashboard']);
     } else {
       this.showShopByBranchId(this.currentUser.employerId)
@@ -207,7 +218,7 @@ export class PageCouponsSaleComponent implements OnInit {
     return false;
   }
 
-  OnDetails(stateDetailsPressed: boolean,id: string) {
+  OnDetails(stateDetailsPressed: boolean, id: string) {
     if (stateDetailsPressed) {
       this.detailPressed = true;
       this.couponOnDetails = this.coupons.find(coupon => coupon.id === id);
@@ -218,6 +229,18 @@ export class PageCouponsSaleComponent implements OnInit {
     }
   }
 
+  realtimeUpateCustomerDetails (email: string) {
+    if (email) {
+      this.userService.getUser(this.userSaleEmail).subscribe(
+        (user) => {
+          this.currentUserCustomer = user;
+          console.log(this.currentUserCustomer);
+        },
+        (error) => { console.log('Error', error); }
+      );
+    }
+  }
+
   onSale(stateSalePressed: boolean, id: string) {
     if (stateSalePressed) {
       console.log(id);
@@ -225,52 +248,59 @@ export class PageCouponsSaleComponent implements OnInit {
       this.saleCoupon = this.coupons.find(coupon => coupon.id === id);
 
       console.log("this.saleCoupon.numOf_rating = " + this.saleCoupon.numOf_rating);
-
-      this.couponClass = new coupon(
-        this.saleCoupon.id, 
-        this.saleCoupon.couponName, 
-        this.saleCoupon.description, 
-        this.saleCoupon.newPrice, 
-        this.saleCoupon.profile_Coupon,
-        this.saleCoupon.couponType.id,
-        this.saleCoupon.couponType.couponTypeName);
-        
-      this.branchClass = new branch(
-        this.currentUser.employerId, 
-        this.currentBranch.shop.id, 
-        this.currentBranch.branchName, 
-        this.currentShop.shopName, 
-        this.currentBranch.profile_Branch);
-
-      this.userClass = new user(
-        this.currentUser.email, 
-        this.currentUser.userName.firstName, 
-        this.currentUser.userName.lastName, 
-        this.currentUser.userID, 
-        this.currentUser.profile_User);
-        
-      this.saleForm = this.fb.group({
-        orderNumber: ['The order number is executed automatically on the server', Validators.compose([Validators.required])],
-        orderDate: ['Date.now() after sale', Validators.compose([Validators.required])],
-        coupon: this.fb.group({ // make a nested group
-          id: [this.couponClass.id, Validators.compose([Validators.required])],
-          couponName: [this.couponClass.couponName, Validators.compose([Validators.required])],
-          description: [this.couponClass.description, Validators.compose([Validators.required])],
-          newPrice: [Number(this.couponClass.newPrice), Validators.compose([Validators.required])],
-          profile_Coupon: [this.couponClass.profile_Coupon, Validators.compose([Validators.required])],
-          couponTypeId: [this.couponClass.couponTypeId, Validators.compose([Validators.required])],
-          couponTypeName: [this.couponClass.couponTypeName, Validators.compose([Validators.required])]
-        }),
-        branch: [this.branchClass, Validators.compose([Validators.required])],
-        user: [this.userClass, Validators.compose([Validators.required])],
-      });
-      console.log(this.saleForm.value);
+      this.onSaleAfterAcceptCustomer();
     }
     if (!stateSalePressed) {
       this.salePressed = false;
       this.saleForm.reset();
+      this.userSaleEmail = null;
+      this.currentUserCustomer = null;
+    }
+  }
+
+  onSaleAfterAcceptCustomer() {
+    this.couponClass = new coupon(
+      this.saleCoupon.id,
+      this.saleCoupon.couponName,
+      this.saleCoupon.description,
+      this.saleCoupon.newPrice,
+      this.saleCoupon.profile_Coupon,
+      this.saleCoupon.couponType.id,
+      this.saleCoupon.couponType.couponTypeName);
+
+    this.branchClass = new branch(
+      this.currentUser.employerId,
+      this.currentBranch.shop.id,
+      this.currentBranch.branchName,
+      this.currentShop.shopName,
+      this.currentBranch.profile_Branch);
+
+    if (this.currentUserCustomer) {
+      this.userClass = new user(
+        this.currentUserCustomer.email,
+        this.currentUserCustomer.userName.firstName,
+        this.currentUserCustomer.userName.lastName,
+        this.currentUserCustomer.userID,
+        this.currentUserCustomer.profile_User);
+        console.log(this.userClass);
     }
 
+    this.saleForm = this.fb.group({
+      orderNumber: ['The order number is executed automatically on the server', Validators.compose([Validators.required])],
+      orderDate: ['Date.now() after sale', Validators.compose([Validators.required])],
+      coupon: this.fb.group({ // make a nested group
+        id: [this.couponClass.id, Validators.compose([Validators.required])],
+        couponName: [this.couponClass.couponName, Validators.compose([Validators.required])],
+        description: [this.couponClass.description, Validators.compose([Validators.required])],
+        newPrice: [Number(this.couponClass.newPrice), Validators.compose([Validators.required])],
+        profile_Coupon: [this.couponClass.profile_Coupon, Validators.compose([Validators.required])],
+        couponTypeId: [this.couponClass.couponTypeId, Validators.compose([Validators.required])],
+        couponTypeName: [this.couponClass.couponTypeName, Validators.compose([Validators.required])]
+      }),
+      branch: [this.branchClass, Validators.compose([Validators.required])],
+      user: [this.userClass, Validators.compose([Validators.required])],
+    });
+    console.log(this.saleForm.value);
   }
 
   onSaleSubmit() {
@@ -284,5 +314,6 @@ export class PageCouponsSaleComponent implements OnInit {
     );
     this.salePressed = false;
     this.saleForm.reset();
+    this.currentUserCustomer = null;
   }
 }
