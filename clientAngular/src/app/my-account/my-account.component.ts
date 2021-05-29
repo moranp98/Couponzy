@@ -1,11 +1,10 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Users } from '../models/users';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from "@angular/material"
 import { UploaderComponent } from '../uploader/uploader.component';
-import { ModalComponent } from '../_modal/modal.component';
 import { ModalService } from '../_modal';
 import { Observable } from 'rxjs';
 import { AngularFireUploadTask } from '@angular/fire/storage';

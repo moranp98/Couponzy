@@ -189,12 +189,12 @@ const updateUserDetails = async (req, res, next) => {
         data.lastUpdated = admin.firestore.Timestamp.now();
         await firebase.collection('Users').doc(id).update(data)
 
-        /*const reviewsRef = await firebase.collection('Reviews').where('user.id', '==', data.email);
+        const reviewsRef = await firebase.collection('Reviews').where('user.id', '==', id);
         reviewsRef.get().then((query) => {
             query.docChanges().forEach(change => {
                 const review = change.doc;
                 const newUserInsidReview = {
-                    "id": data.email,
+                    "id": id,
                     "firstName": data.userName.firstName,
                     "lastName": data.userName.lastName,
                     "profile_User": data.profile_User
@@ -203,12 +203,12 @@ const updateUserDetails = async (req, res, next) => {
             });
         });
 
-        const starsRef = await firebase.collection('Stars').where('user.id', '==', data.email);
+        const starsRef = await firebase.collection('Stars').where('user.id', '==', id);
         starsRef.get().then((query) => {
             query.docChanges().forEach(change => {
                 const star = change.doc;
                 const newUserInsidStar = {
-                    "id": data.email,
+                    "id": id,
                     "firstName": data.userName.firstName,
                     "lastName": data.userName.lastName,
                     "profile_User": data.profile_User
@@ -230,7 +230,7 @@ const updateUserDetails = async (req, res, next) => {
                 };
                 order.ref.update({ 'user': newUserInsidOrder });
             });
-        });*/
+        });
 
         res.json('User update saved successfuly');
     } catch (error) {
