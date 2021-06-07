@@ -92,7 +92,7 @@ const updateShop = async (req, res, next) => {
           "shopName": data.shopName,
           "profile_Shop": data.profile_Shop
         };
-        coupon.ref.update({ 'shop': newShopInsidCoupon });
+        coupon.ref.update({ 'shop': newShopInsidCoupon, lastUpdated: admin.firestore.Timestamp.now() });
       });
     });
 

@@ -232,7 +232,11 @@ const updateUserDetails = async (req, res, next) => {
             });
         });
 
-        res.json('User update saved successfuly');
+        //res.json('User update saved successfuly');
+        res.json({
+            status: "200",
+            message: "Star record saved successfuly"
+        });
     } catch (error) {
         res.status(400).json(error.message);
     } 

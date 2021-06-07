@@ -52,7 +52,7 @@ const getAllBranches = async (req, res, next) => {
                     doc.data().address,
                     doc.data().phoneNumber,
                     doc.data().lat,
-                    doc.data().long,
+                    doc.data().lon,
                     doc.data().isOpen,
                     doc.data().isExists,
                     doc.data().lastUpdated,
@@ -86,7 +86,7 @@ const getAllBranchesByShopId = async (req, res, next) => {
                         doc.data().address,
                         doc.data().phoneNumber,
                         doc.data().lat,
-                        doc.data().long,
+                        doc.data().lon,
                         doc.data().isOpen,
                         doc.data().isExists,
                         doc.data().lastUpdated,
@@ -122,6 +122,7 @@ const updateBranch = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
+        console.log(data)
         data.lastUpdated = admin.firestore.Timestamp.now();
         const branch = await firebase.collection('Branches').doc(id);
         await branch.update(data);

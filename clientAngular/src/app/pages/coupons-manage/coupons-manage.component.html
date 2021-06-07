@@ -196,7 +196,7 @@
 
         </div>
         <div class="row">
-          <button mat-raised-button color="accent" [disabled]="!AddedPhoto">יצירת קופון'</button>
+          <button mat-raised-button color="accent" [disabled]="!AddedPhoto || !form.valid">יצירת קופון'</button>
           <span class="span"></span>
           <button type="button" mat-mini-fab color="primary" (click)="onAdd(false)">
             <mat-icon>keyboard_return</mat-icon>
@@ -269,7 +269,7 @@
           </div>
         </div>
         <div class="row">
-          <button mat-raised-button color="accent" [disabled]="!UpdatedPhoto">עדכון פרטי הקופון</button>
+          <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי הקופון</button>
           <span class="span"></span>
           <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
             <mat-icon>keyboard_return</mat-icon>

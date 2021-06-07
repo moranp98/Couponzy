@@ -9,7 +9,7 @@ export interface Branches {
     },
     phoneNumber: string,
     lat: Number,
-    long: Number,
+    lon: Number,
     isOpen: Boolean,
     stateOpen: string,
     isExists: boolean, 

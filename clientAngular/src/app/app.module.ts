@@ -107,7 +107,8 @@ import {ModalModule} from './_modal'
     ChartsModule,
     MaterialModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBSxKND1KrrmSMyqdOdcPyglfSU11-YDKY'
+      apiKey: 'AIzaSyBSxKND1KrrmSMyqdOdcPyglfSU11-YDKY',
+      libraries: ['places']
     }),
     LeafletModule,
     SocketIoModule.forRoot(config),

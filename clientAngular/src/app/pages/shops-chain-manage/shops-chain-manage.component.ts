@@ -86,7 +86,7 @@ export class PageShopsChainManageComponent implements OnInit {
           this._uniqueIdValidator.bind(this)
         ])
       ],
-      profile_Shop: [null, Validators.compose([Validators.required])],
+      profile_Shop: [null, Validators.compose([])],
       isExists: [true, Validators.compose([Validators.required])],
       lastUpdated: [Date.now(), Validators.compose([Validators.required])],
       branches: [[], Validators.compose([])],
@@ -149,7 +149,7 @@ export class PageShopsChainManageComponent implements OnInit {
             this._uniqueIdValidator.bind(this)
           ])
         ],
-        profile_Shop: [this.shopProfileUrl, Validators.compose([Validators.required])],
+        profile_Shop: [this.shopProfileUrl, Validators.compose([])],
         isExists: [true, Validators.compose([Validators.required])],
         lastUpdated: [this.updateShop.lastUpdated, Validators.compose([])],
         branches: [this.updateShop.branches, Validators.compose([])],

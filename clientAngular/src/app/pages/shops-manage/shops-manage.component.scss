@@ -16,3 +16,29 @@
   .branchesCard {
     min-height: 600px;
   }
+
+
+  :host {
+    display: table-cell;
+    height: 100%;
+    width: 100%;
+  
+    ::ng-deep card {
+      height: 100%;
+  
+      .card-wrap,
+      .card-content {
+        border: 12 !important;
+        height: 100%;
+        padding: 12 !important;
+      }
+    }
+    .sebm-google-map-container {
+      height: 94.3%;
+    }
+
+    .mapHeight{
+      min-height: 700px;
+    }
+  }
+  

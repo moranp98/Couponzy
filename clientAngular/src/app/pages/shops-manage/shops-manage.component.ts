@@ -7,7 +7,6 @@ import { Shops } from '../../models/shops';
 import { Users } from '../../models/users';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
 import { Router } from '@angular/router';
 import { AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
@@ -80,6 +79,14 @@ export class PageShopsManageComponent implements OnInit {
   public updateForm: FormGroup;
 
   currentUser: Users;
+
+  defaultCenter = {lat: 32.176, lon: 34.894};
+  defaultUpdateCenter = {lat: 32.176, lon: 34.894};
+  initialZoom = 8;
+
+  selectedLat : Number;
+  selectedLon : Number;
+
     /*
   START
   Upload Profile Picture
@@ -134,20 +141,27 @@ export class PageShopsManageComponent implements OnInit {
           this._uniqueIdValidator.bind(this)
         ])
       ],
-      profile_Branch: [null, Validators.compose([Validators.required])],
+      profile_Branch: [null, Validators.compose([])],
       address: this.fb.group({ // make a nested group
         city: [null, Validators.compose([Validators.required, Validators.maxLength(16)])],
-        street: [null, Validators.compose([Validators.required, Validators.maxLength(36)])],
+        street: [null, Validators.compose([Validators.required, Validators.maxLength(108)])],
         country: [null, Validators.compose([Validators.required, Validators.maxLength(16)])]
       }),
       phoneNumber: [null, Validators.compose([Validators.required, Validators.maxLength(16)])],
-      lat: [null, Validators.compose([Validators.required])],
-      long: [null, Validators.compose([Validators.required])],
+      lat: [this.selectedLat, Validators.compose([Validators.required])],
+      lon: [this.selectedLon, Validators.compose([Validators.required])],
       isOpen: [true, Validators.compose([])],
       isExists: [true, Validators.compose([Validators.required])],
       lastUpdated: [Date.now(), Validators.compose([])],
       sellers: [[], Validators.compose([])]
     });
+
+  }
+
+  clickedMarker($event){
+    this.selectedLat = $event.coords.lat;
+    this.selectedLon = $event.coords.lng;
+    console.log($event);
   }
   
   private _uniqueIdValidator(control: FormControl) {
@@ -213,6 +227,7 @@ export class PageShopsManageComponent implements OnInit {
     );
     this.addPressed = false; // To hide the Add branch Card
     this.AddedPhoto = false;
+    this.shopClass = [];
     this.form.reset();
   }
 
@@ -228,6 +243,12 @@ export class PageShopsManageComponent implements OnInit {
       );
       console.log(this.shopUpdateNow);
       console.log(this.updateBranch);
+
+      this.defaultUpdateCenter.lat = Number(this.updateBranch.lat);
+      this.defaultUpdateCenter.lon = Number(this.updateBranch.lon);
+      this.selectedLat = Number(this.updateBranch.lat);
+      this.selectedLon = Number(this.updateBranch.lon);
+
       this.updateForm = this.fb.group({
         shop: [this.updateBranch.shop, Validators.compose([Validators.required])],
         branchName: [this.updateBranch.branchName, Validators.compose(
@@ -239,12 +260,12 @@ export class PageShopsManageComponent implements OnInit {
         profile_Branch: [this.updateBranch.profile_Branch, Validators.compose([Validators.required])],
         address: this.fb.group({ // make a nested group
           city: [this.updateBranch.address.city, Validators.compose([Validators.required, Validators.maxLength(16)])],
-          street: [this.updateBranch.address.street, Validators.compose([Validators.required, Validators.maxLength(36)])],
+          street: [this.updateBranch.address.street, Validators.compose([Validators.required, Validators.maxLength(108)])],
           country: [this.updateBranch.address.country, Validators.compose([Validators.required, Validators.maxLength(16)])]
         }),
         phoneNumber: [this.updateBranch.phoneNumber, Validators.compose([Validators.required, Validators.maxLength(16)])],
-        lat: [this.updateBranch.lat, Validators.compose([Validators.required])],
-        long: [this.updateBranch.long, Validators.compose([Validators.required])],
+        lat: [this.selectedLat, Validators.compose([Validators.required])],
+        lon: [this.selectedLon, Validators.compose([Validators.required])],
         isOpen: [this.updateBranch.isOpen, Validators.compose([Validators.required])],
         isExists: [true, Validators.compose([Validators.required])],
         lastUpdated: [this.updateBranch.lastUpdated, Validators.compose([])],
@@ -267,6 +288,7 @@ export class PageShopsManageComponent implements OnInit {
     );
     this.updatePressed = false;
     this.UpdatedPhoto = false;
+    this.shopClass = [];
     this.updateForm.reset();
   }
 
@@ -298,6 +320,7 @@ export class PageShopsManageComponent implements OnInit {
       (error) => { console.log('Error', error); },
       () => { this.showBranches(); this.showShops(); }
     );
+    this.shopClass = [];
   }
           /*
   START
