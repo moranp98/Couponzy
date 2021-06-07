@@ -155,6 +155,7 @@ export class PageCouponsSaleComponent implements OnInit {
 
   userSaleEmail: string;
   currentUserCustomer: Users;
+  couponIdSale: string;
 
   // Constractor
   constructor(private fb: FormBuilder,
@@ -169,6 +170,7 @@ export class PageCouponsSaleComponent implements OnInit {
     this._sharedService.emitChange(this.pageTitle);
     this._realtime.listen('userSaleEmail').subscribe((res) => {
       this.userSaleEmail = res['currentEmail'];
+      this.couponIdSale = res['couponId'];
       console.log(this.userSaleEmail);
       this.realtimeUpateCustomerDetails(this.userSaleEmail);
     }, (error) => { console.log('Error', error); });
@@ -238,6 +240,14 @@ export class PageCouponsSaleComponent implements OnInit {
         },
         (error) => { console.log('Error', error); }
       );
+    }
+  }
+
+  realtimeCouponIdSale (couponId: string) {
+    if (this.couponIdSale === couponId) {
+      return true;
+    } else {
+      return false;
     }
   }
 

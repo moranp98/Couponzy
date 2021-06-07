@@ -68,7 +68,7 @@ const updateCouponType = async (req, res, next) => {
             query.docChanges().forEach(change => {
                 const coupon = change.doc;
                 const newCouponTypeInsidCoupon = data.couponTypeName;
-                coupon.ref.update({ 'couponType.couponTypeName': newCouponTypeInsidCoupon });
+                coupon.ref.update({ 'couponType.couponTypeName': newCouponTypeInsidCoupon, lastUpdated: admin.firestore.Timestamp.now() });
             });
         });
 

@@ -22,7 +22,14 @@ const addStar = async (req, res, next) => {
             numOf_rating: admin.firestore.FieldValue.increment(1)
         });
 
-        res.json('Star record saved successfuly');
+        couponRef.update({
+            lastUpdated: admin.firestore.Timestamp.now()
+        });
+
+        res.json({
+            status: "200",
+            message: "Star record saved successfuly"
+        });
     } catch (error) {
         res.status(400).json(error.message);
     }

@@ -18,6 +18,10 @@
       height: 94.3%;
     }
 
+    .matToolbarRowHeight{
+      height: 40px;
+    }
+
     .mapHeight{
       min-height: 760px;
     }
@@ -25,6 +29,12 @@
     .dimensionSrc {
       width: 117px; 
       height: 38.69px;
+    }
+
+    div img
+    {
+      display: block;
+      margin: 0 auto;
     }
   }
   

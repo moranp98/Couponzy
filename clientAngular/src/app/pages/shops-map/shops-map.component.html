@@ -1,23 +1,96 @@
 <!-- Row 1 --- Branches map -->
 <div class="row mapHeight">
-    <div class="col-lg-6 map-col mb-4">
+    <div class="col-lg-8 map-col mb-4">
         <card [title]="'מפת חנויות'">
-            <agm-map [latitude]="lat" [longitude]="lng" [zoom]="10">
+            <agm-map [latitude]="lat" [longitude]="lon" [zoom]="10">
                 <agm-marker *ngFor="let branch of branches; let i = index" [latitude]="branch.lat"
-                    [longitude]="branch.long" (dragEnd)="markerDragEnd(m, $event)">
+                    [longitude]="branch.lon" [iconUrl]="{ 
+                        url:  branch.shop.profile_Shop,
+                        scaledSize: {
+                            width: 40,
+                            height: 40
+                        }
+                    }">
                     <agm-info-window>
-                        חנות: {{branch.shop.shopName}}<br />
-                        שם: {{branch.branchName}}<br />
-                        עיר: {{branch.address.city}}<br />
-                        כתובת: {{branch.address.street}}<br />
-                        טלפון: {{branch.phoneNumber}}<br />
-                        סטאטוס: {{branch.stateOpen}}
+                        <div>
+                            <img mat-line src="{{ branch.profile_Branch }}" class="avatar" width="240px"
+                                height="240px"><br />
+                            <mat-toolbar>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ branch.branchName }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ branch.address.city }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ branch.address.street }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ branch.phoneNumber }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ branch.stateOpen }}</span>
+                                </mat-toolbar-row>
+                            </mat-toolbar>
+                        </div>
+                    </agm-info-window>
+                </agm-marker>
+                <agm-marker *ngFor="let user of users; let i = index" [latitude]="user.lat" [longitude]="user.lon"
+                    [iconUrl]="{ 
+                        url:  '../../assets/content/person-icon4.png',
+                        scaledSize: {
+                            width: 44,
+                            height: 30
+                        }
+                    }">
+                    <agm-info-window>
+                        <div>
+                            <img mat-list-avatar src="{{ user.profile_User }}" class="avatar" width="120px"
+                                height="80px"><br />
+                            <mat-toolbar>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ user.userName.firstName }} {{ user.userName.lastName }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ user.address.city }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ user.address.country }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ user.gender }}</span>
+                                </mat-toolbar-row>
+                                <mat-toolbar-row class="matToolbarRowHeight">
+                                    <mat-icon mat-list-avatar>mood</mat-icon>
+                                    <span class="span"></span>
+                                    <span>{{ user.phoneNumber }}</span>
+                                </mat-toolbar-row>
+                            </mat-toolbar>
+                        </div>
                     </agm-info-window>
                 </agm-marker>
             </agm-map>
         </card>
     </div>
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-4 mb-4">
         <card [title]="'חיפוש'">
             <mat-form-field>
                 <mat-select placeholder="בחר רשת חנויות" [(ngModel)]="selectedShop">
@@ -35,19 +108,19 @@
                         {{branch.address.city}}
                     </mat-option>
                 </mat-select>
-               
+
             </mat-form-field>
             <div class="mb-4">
                 <p>
                     <mat-slide-toggle color="accent" (checked)="selectedOpen" [(ngModel)]="selectedOpen">
                         החנות פתוחה
                     </mat-slide-toggle>
-                  </p>
+                </p>
             </div>
             <button mat-raised-button color="primary" (click)="onSearch(selectedShop)">חיפוש מתקדם</button>
-             <span class="span"></span> 
+            <span class="span"></span>
             <button mat-raised-button color="accent" (click)="onStopSearch(selectedShop)">סגור חיפוש</button>
-            <br /><br />         
+            <br /><br />
             <div class="table-responsive" *ngIf="pageTitle">
                 <table class="table">
                     <thead>
@@ -66,7 +139,7 @@
                         <tr *ngFor="let currentBranch of currentSearchBranches; let i = index;">
                             <th scope="row">{{i+1}}</th>
                             <td>{{currentBranch.shop.shopName}}</td>
-                            <td><img [src]="currentBranch.profile_Branch" class="dimensionSrc"/></td>
+                            <td><img [src]="currentBranch.profile_Branch" class="dimensionSrc" /></td>
                             <td>{{currentBranch.branchName}}</td>
                             <td>{{currentBranch.address.city}}</td>
                             <td>{{currentBranch.address.street}}</td>
@@ -81,7 +154,7 @@
 </div>
 <span class="apan"></span>
 <!-- Row 2 --- Branches table -->
-<div class="row" >
+<div class="row">
     <div class="col-lg">
         <card title="רשימת החנויות והסניפים">
 
@@ -103,7 +176,7 @@
                         <tr *ngFor="let branch of branches; let i = index;">
                             <th scope="row">{{i+1}}</th>
                             <td>{{branch.shop.shopName}}</td>
-                            <td><img [src]="branch.profile_Branch" class="dimensionSrc"/></td>
+                            <td><img [src]="branch.profile_Branch" class="dimensionSrc" /></td>
                             <td>{{branch.branchName}}</td>
                             <td>{{branch.address.city}}</td>
                             <td>{{branch.address.street}}</td>

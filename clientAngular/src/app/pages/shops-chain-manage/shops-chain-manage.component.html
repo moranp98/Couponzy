@@ -1,191 +1,185 @@
 <div *ngIf="isAddPhoto==false">
-<div class="row">
-    <div class="col-lg-6">
-        <card [title]="'הוספת רשת חנויות'" [align]="'center'" class="mb-xl-0 'heightCard'">
-            <button mat-fab color="primary" (click)="onAdd(true)">
-                <mat-icon>add</mat-icon>
-            </button>
-            <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <mat-form-field>
-                            <input matInput placeholder="שם רשת החנויות" [formControl]="form.controls['shopName']"
-                                type="text">
-                            <mat-error
-                                *ngIf="form.controls['shopName'].hasError('required') && form.controls['shopName'].touched">
-                                הינך נדרש לתת שם לרשת החנויות
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-lg-6">
-                       
-                            
+    <div class="row">
+        <div class="col-lg-6">
+            <card [title]="'הוספת רשת חנויות'" [align]="'center'" class="mb-xl-0 'heightCard'">
+                <button mat-fab color="primary" (click)="onAdd(true)">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <form [formGroup]="form" *ngIf="addPressed" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <input matInput placeholder="שם רשת החנויות" [formControl]="form.controls['shopName']"
+                                    type="text">
+                                <mat-error
+                                    *ngIf="form.controls['shopName'].hasError('required') && form.controls['shopName'].touched">
+                                    הינך נדרש לתת שם לרשת החנויות
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-6">
                             <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">העלאת תמונת לוגו</button>
-                       
-                            <!-- <mat-error
-                                *ngIf="form.controls['profile_Shop'].hasError('required') && form.controls['profile_Shop'].touched">
-                                הינך נדרש לבחור תמונה לרשת החנויות
-                            </mat-error> -->
-                     
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <button mat-raised-button color="accent" [disabled]="!AddedPhoto">יצירת חנות</button>
+                    <div class="row">
+                        <button mat-raised-button color="accent" [disabled]="!AddedPhoto || !form.valid">יצירת
+                            חנות</button>
+                        <span class="span"></span>
+                        <button mat-mini-fab color="primary" (click)="onAdd(false)">
+                            <mat-icon>keyboard_return</mat-icon>
+                        </button>
+                    </div>
+                </form>
+            </card>
+        </div>
+        <div class="col-lg-6">
+            <card [title]="'עדכון רשת חנויות'" [align]="'center'" class="mb-xl-0 heightCard">
+                <mat-icon mat-list-avatar>update</mat-icon>
+                <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <mat-form-field>
+                                <input matInput placeholder="שם רשת החנויות"
+                                    [formControl]="updateForm.controls['shopName']" type="text">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-6">
+                            <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">העלאת
+                                תמונת לוגו</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button mat-raised-button color="accent" [disabled]="!updateForm.valid">עדכון פרטי חנות</button>
+                        <span class="span"></span>
+                        <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
+                            <mat-icon>keyboard_return</mat-icon>
+                        </button>
+                    </div>
+                </form>
+                <alert *ngIf="deletePressed && canDeleteFlag" [color]="'danger'" [outline]="true">
+                    <mat-icon>error_outline</mat-icon>
+                    <strong>האם אתה בטוח שאתה מעוניין למחוק את החנות?</strong>
                     <span class="span"></span>
-                    <button mat-mini-fab color="primary" (click)="onAdd(false)">
-                        <mat-icon>keyboard_return</mat-icon>
-                    </button>
-                </div>
-            </form>
-        </card>
-    </div>
-    <div class="col-lg-6">
-        <card [title]="'עדכון רשת חנויות'" [align]="'center'" class="mb-xl-0 heightCard">
-            <mat-icon mat-list-avatar>update</mat-icon>
-            <form [formGroup]="updateForm" *ngIf="updatePressed" (ngSubmit)="onUpdateSubmit()">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <mat-form-field>
-                            <input matInput placeholder="שם רשת החנויות"
-                                [formControl]="updateForm.controls['shopName']" type="text">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-lg-6">
-                        <button class="btn" (click)="isAddPhoto=true" style="color:#43509b;font-weight:600">העלאת תמונת לוגו</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <button mat-raised-button color="accent" [disabled]="!UpdatedPhoto">עדכון פרטי חנות</button>
+                    <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
                     <span class="span"></span>
-                    <button mat-mini-fab type="button" color="primary" (click)="onUpdate(false, 'Update stoped')">
-                        <mat-icon>keyboard_return</mat-icon>
-                    </button>
-                </div>
-            </form>
-            <alert *ngIf="deletePressed && canDeleteFlag" [color]="'danger'" [outline]="true">
-                <mat-icon>error_outline</mat-icon>
-                <strong>האם אתה בטוח שאתה מעוניין למחוק את החנות?</strong>
-                <span class="span"></span>
-                <button mat-mini-fab color="accent" (click)="onDelete(false, 'Delete stoped')">לא</button>
-                <span class="span"></span>
-                <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
-            </alert>
-            <alert *ngIf="deletePressed && !canDeleteFlag" [color]="'danger'" [outline]="true">
-                <mat-icon>error_outline</mat-icon>
-                <strong>אינך מורשה למחוק רשת חנויות שמכילה סניפים או קופונים או מנהלים אקטיביים !</strong>
-                <span class="span"></span>
-                <button mat-mini-fab color="warn" (click)="onDelete(false, 'Delete stoped')">ביטול</button>
-              </alert>
-        </card>
+                    <button mat-mini-fab color="warn" (click)="onDeleteSubmit()">כן</button>
+                </alert>
+                <alert *ngIf="deletePressed && !canDeleteFlag" [color]="'danger'" [outline]="true">
+                    <mat-icon>error_outline</mat-icon>
+                    <strong>אינך מורשה למחוק רשת חנויות שמכילה סניפים או קופונים או מנהלים אקטיביים !</strong>
+                    <span class="span"></span>
+                    <button mat-mini-fab color="warn" (click)="onDelete(false, 'Delete stoped')">ביטול</button>
+                </alert>
+            </card>
+        </div>
     </div>
-</div>
-<span class="span"></span>
-<div class="row">
-    <div class="col-lg-3" *ngFor="let shop of shops; let i = index">
-        <card [align]="'center'" class="mb-xl-0">
-            <img mat-list-avatar class="mat-profile" src="{{ shop.profile_Shop }}" width="150" alt="">
-            <h5>{{ shop.shopName }}</h5>
-            <mat-accordion>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <md-icon class="mat-icon mat-list-icon material-icons">{{ branches_mat_icon.icon }}</md-icon>
-                            <p>סניפי הרשת</p>
-                            <span class="span"></span>
-                            <badge [color]="'info'" class="badge">{{ shop.branches.length }}</badge>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <mat-list>
-                        <mat-list-item *ngFor="let branch of shop.branches; let i = index">
-                            <span class="span"></span>
-                            <mat-icon mat-list-icon>brightness_1</mat-icon>
-                            <p>{{branch.id}}</p>
-                        </mat-list-item>
-                    </mat-list>
-                </mat-expansion-panel>
+    <span class="span"></span>
+    <div class="row">
+        <div class="col-lg-3" *ngFor="let shop of shops; let i = index">
+            <card [align]="'center'" class="mb-xl-0">
+                <img mat-list-avatar class="mat-profile" src="{{ shop.profile_Shop }}" width="150" alt="">
+                <h5>{{ shop.shopName }}</h5>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <md-icon class="mat-icon mat-list-icon material-icons">{{ branches_mat_icon.icon }}
+                                </md-icon>
+                                <p>סניפי הרשת</p>
+                                <span class="span"></span>
+                                <badge [color]="'info'" class="badge">{{ shop.branches.length }}</badge>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-list>
+                            <mat-list-item *ngFor="let branch of shop.branches; let i = index">
+                                <span class="span"></span>
+                                <mat-icon mat-list-icon>brightness_1</mat-icon>
+                                <p>{{branch.id}}</p>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-expansion-panel>
 
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <md-icon class="mat-icon mat-list-icon material-icons">{{ coupons_mat_icon.icon }}</md-icon>
-                            <p>קופונים תקפים</p>
-                            <span class="span"></span>
-                            <badge [color]="'info'" class="badge">{{ shop.coupons.length }}</badge>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <mat-list>
-                        <mat-list-item *ngFor="let coupon of shop.coupons; let i = index">
-                            <span class="span"></span>
-                            <mat-icon mat-list-icon>brightness_1</mat-icon>
-                            <p>{{coupon.id}}</p>
-                        </mat-list-item>
-                    </mat-list>
-                </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <md-icon class="mat-icon mat-list-icon material-icons">{{ coupons_mat_icon.icon }}
+                                </md-icon>
+                                <p>קופונים תקפים</p>
+                                <span class="span"></span>
+                                <badge [color]="'info'" class="badge">{{ shop.coupons.length }}</badge>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-list>
+                            <mat-list-item *ngFor="let coupon of shop.coupons; let i = index">
+                                <span class="span"></span>
+                                <mat-icon mat-list-icon>brightness_1</mat-icon>
+                                <p>{{coupon.id}}</p>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-expansion-panel>
 
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <md-icon class="mat-icon mat-list-icon material-icons">{{ sellers_mat_icon.icon }}</md-icon>
-                            <p>משתמשי הרשת</p>
-                            <span class="span"></span>
-                            <badge [color]="'info'" class="badge">{{ shop.shopManagers.length }}</badge>
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <mat-list>
-                        <mat-list-item *ngFor="let shopManager of shop.shopManagers; let i = index">
-                            <span class="span"></span>
-                            <mat-icon mat-list-icon>brightness_1</mat-icon>
-                            <p>{{shopManager.id}}</p>
-                        </mat-list-item>
-                    </mat-list>
-                </mat-expansion-panel>
-            </mat-accordion>
-            <h4 mat-line></h4>
-            <p mat-line></p>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <md-icon class="mat-icon mat-list-icon material-icons">{{ sellers_mat_icon.icon }}
+                                </md-icon>
+                                <p>משתמשי הרשת</p>
+                                <span class="span"></span>
+                                <badge [color]="'info'" class="badge">{{ shop.shopManagers.length }}</badge>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-list>
+                            <mat-list-item *ngFor="let shopManager of shop.shopManagers; let i = index">
+                                <span class="span"></span>
+                                <mat-icon mat-list-icon>brightness_1</mat-icon>
+                                <p>{{shopManager.id}}</p>
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <h4 mat-line></h4>
+                <p mat-line></p>
+                <span class="span"></span>
+                <button mat-raised-button color="accent" (click)="onUpdate(true, shop.id)">עריכה</button>
+                <span class="span"></span>
+                <button mat-mini-fab color="warn" (click)="onDelete(true, shop.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </card>
             <span class="span"></span>
-            <button mat-raised-button color="accent" (click)="onUpdate(true, shop.id)">עריכה</button>
-            <span class="span"></span>
-            <button mat-mini-fab color="warn" (click)="onDelete(true, shop.id)">
-                <mat-icon>delete</mat-icon>
-            </button>
-        </card>
-        <span class="span"></span>
+        </div>
     </div>
-</div>
 </div>
 <div *ngIf="isAddPhoto" class="center">
-    <h3 >Upload Your Profile Image </h3>
-    <div class="dropzone" 
-             dropzone
-             (hovered)="toggleHover($event)"
-             (dropped)="onDrop($event)"
-             [class.hovering]="isHovering" style=" height: 300px;
+    <h3>Upload Your Profile Image </h3>
+    <div class="dropzone" dropzone (hovered)="toggleHover($event)" (dropped)="onDrop($event)"
+        [class.hovering]="isHovering" style=" height: 300px;
              width: 450px;">
-        
-        
-             <h3>Profile Image</h3>
-             <p>Drag and Drop a File</p>
+
+
+        <h3>Profile Image</h3>
+        <p>Drag and Drop a File</p>
+    </div>
+
+
+
+    <div *ngFor="let file of files">
+        <upload-task [file]="file"></upload-task>
+    </div>
+    <br><br>
+    <div style="width:450px;">
+        <div style="float: left; width: 130px">
+
+            <button class="btn" (click)="onPhotoSubmit()" style="color:#43509b;font-weight:600">Submit</button>
+
         </div>
-        
-        
-        
-        <div *ngFor="let file of files">
-          <upload-task [file]="file"></upload-task>
+        <div style="float: right; width: 225px">
+
+            <button class="btn" (click)="isAddPhoto=false" style="color:#c02830;font-weight:600">Cancel</button>
+
         </div>
-        <br><br>
-        <div style="width:450px;">
-            <div style="float: left; width: 130px"> 
-              
-                    <button  class="btn" (click)="onPhotoSubmit()" style="color:#43509b;font-weight:600">Submit</button>
-                
-            </div>
-            <div style="float: right; width: 225px"> 
-                
-                    <button  class="btn" (click)="isAddPhoto=false" style="color:#c02830;font-weight:600">Cancel</button>
-             
-            </div>
-        </div>
-       
-        <br>
-        
+    </div>
+
+    <br>
+
 </div>

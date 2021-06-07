@@ -48,14 +48,15 @@ io.on('connection', (socket) => {
   //console.log("socket.id: " + socket.handshake.url);
   //var handshakeData = socket.request;
   //var data = handshakeData._query['auth_token'];
-  
+  console.log(socket.handshake.url);
+  console.log(socket.handshake.query.token);
   if (socket.handshake.url === '/socket.io/?buy_token=when%20buy%20a%20coupon&EIO=3&transport=polling') {
     socket.on('registerBot', function (data) { 
       console.log(data);
       socket.broadcast.emit('userSaleEmail', data); 
     });
   }
-
+ 
   if (socket.handshake.headers.origin === 'http://localhost:4200' || 
       socket.handshake.url === '/socket.io/?auth_token=you%20can%20use%20Couponzy%20App&EIO=3&transport=polling' ) {
     count++;

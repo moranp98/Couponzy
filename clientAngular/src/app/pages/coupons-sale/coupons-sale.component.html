@@ -38,7 +38,7 @@
           <span class="span"></span>
           <button mat-raised-button color="primary" (click)="OnDetails(true, coupon.id)">פרטים</button>
           <span class="span"></span>
-          <button mat-raised-button color="accent" [disabled]="!currentUserCustomer" (click)="onSale(true, coupon.id)">רכישה</button>
+          <button mat-raised-button color="accent" [disabled]="!currentUserCustomer || !realtimeCouponIdSale(coupon.id)" (click)="onSale(true, coupon.id)">רכישה</button>
           <span class="span"></span>
           <mat-divider></mat-divider>
         </mat-list-item>
