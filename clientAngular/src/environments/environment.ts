@@ -7,16 +7,16 @@ const PORT = 8080;
 export const environment = {
   production: false,
 
-  serverUrl : `http://localhost:${PORT}/api`,
+  serverUrl : `http://193.106.55.144:${PORT}/api`,
   
-  branchesUrl : `http://localhost:${PORT}/api/branches`,
-  shopsUrl : `http://localhost:${PORT}/api/shops`,
-  couponTypesUrl : `http://localhost:${PORT}/api/couponTypes`,
-  brandsUrl : `http://localhost:${PORT}/brands`,
-  usersUrl : `http://localhost:${PORT}/api/user`,
-  couponsUrl : `http://localhost:${PORT}/api`,
-  ordersUrl : `http://localhost:${PORT}/api/orders`,
-  shopssUrl : `http://localhost:${PORT}/shops`,
+  branchesUrl : `http://193.106.55.144:${PORT}/api/branches`,
+  shopsUrl : `http://193.106.55.144:${PORT}/api/shops`,
+  couponTypesUrl : `http://193.106.55.144:${PORT}/api/couponTypes`,
+  brandsUrl : `http://193.106.55.144:${PORT}/brands`,
+  usersUrl : `http://193.106.55.144:${PORT}/api/user`,
+  couponsUrl : `http://193.106.55.144:${PORT}/api`,
+  ordersUrl : `http://193.106.55.144:${PORT}/api/orders`,
+  shopssUrl : `http://193.106.55.144:${PORT}/shops`,
 };
 
 /*

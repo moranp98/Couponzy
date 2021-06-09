@@ -108,6 +108,7 @@ export class PageShopsChainManageComponent implements OnInit {
   showShops() {
     this._manageshops.getAllShops().subscribe((shops) => {
       this.shops = shops.filter(shop => shop.isExists !== false);
+      console.log(this.shops);
     });
   }
 

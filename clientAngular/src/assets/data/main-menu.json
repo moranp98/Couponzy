@@ -33,23 +33,23 @@
     "budgeColor": ""
   },
   {
-    "title": "מפת חנויות",
-    "icon": "fa fa-map-marker",
-    "active": false,
-    "groupTitle" : false,
-    "sub": "",
-    "routing": "/default-layout/shops-map",
-    "externalLink": "",
-    "budge": "",
-    "budgeColor": ""
-  },
-  {
     "title": "ניהול משתמשים",
     "icon": "fa fa-users",
     "active": false,
     "groupTitle" : false,
     "sub": "",
     "routing": "/default-layout/users-manage",
+    "externalLink": "",
+    "budge": "",
+    "budgeColor": ""
+  },
+  {
+    "title": "מפת חנויות",
+    "icon": "fa fa-map-marker",
+    "active": false,
+    "groupTitle" : false,
+    "sub": "",
+    "routing": "/default-layout/shops-map",
     "externalLink": "",
     "budge": "",
     "budgeColor": ""
