@@ -31,13 +31,13 @@ app.use('/api', RecommendRoutes.routes);
 
 const server = http.createServer(app);
 
-const whitelist = ['http://localhost:4200'];
+const whitelist = ['http://0.0.0.0:4200'];
 
 
 const io = socketIo(server, {
   cros: {
     origins: [whitelist],
-    methods: ['GET', 'POST'],      
+    methods: ['GET', 'POST'],
     credentials: false,
   },
 });
@@ -55,9 +55,9 @@ io.on('connection', (socket) => {
       console.log(data);
       socket.broadcast.emit('userSaleEmail', data); 
     });
-  }
+  } 
  
-  if (socket.handshake.headers.origin === 'http://localhost:4200' || 
+  if (socket.handshake.headers.origin === 'http://0.0.0.0:4200' || 
       socket.handshake.url === '/socket.io/?auth_token=you%20can%20use%20Couponzy%20App&EIO=3&transport=polling' ) {
     count++;
     socket.broadcast.emit('count', count); 
