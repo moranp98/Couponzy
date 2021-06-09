@@ -11,15 +11,15 @@
     <h1 class="page-title">{{ title }}</h1>
 
     <div class="nav-items">
-         <div class="nav-item" [ngClass]="{ 'opened' : false }">
+         <!-- <div class="nav-item" [ngClass]="{ 'opened' : false }">
             <button mat-icon-button (click)="open($event)">
                 <mat-icon>
                     notifications_none
                     <badge [color]="'danger'">1</badge>
                 </mat-icon>
-            </button>
+            </button> -->
 
-           <div class="dropdown-menu">
+           <!-- <div class="dropdown-menu">
                 <h4 class="menu-title">Notifications</h4>
 
                 <ul>
@@ -74,8 +74,8 @@
                 <div class="menu-footer">
                     <a href="#">View all notifications</a>
                 </div>
-            </div>
-        </div>
+            </div> -->
+        <!-- </div> -->
 
         <div class="nav-item" [ngClass]="{ 'opened' : false }">
             <button mat-button (click)="open($event)">
