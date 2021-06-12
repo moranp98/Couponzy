@@ -150,7 +150,7 @@ export class PageShopsChainManageComponent implements OnInit {
             this._uniqueIdValidator.bind(this)
           ])
         ],
-        profile_Shop: [this.shopProfileUrl, Validators.compose([])],
+        profile_Shop: [this.updateShop.profile_Shop, Validators.compose([])],
         isExists: [true, Validators.compose([Validators.required])],
         lastUpdated: [this.updateShop.lastUpdated, Validators.compose([])],
         branches: [this.updateShop.branches, Validators.compose([])],
@@ -166,7 +166,14 @@ export class PageShopsChainManageComponent implements OnInit {
   }
 
   onUpdateSubmit() {
-    this.updateForm.patchValue({profile_Shop:this.shopProfileUrl});
+
+    /*
+     * <--- update image not worked --->
+     * 
+     * this.updateForm.patchValue({profile_Shop:this.shopProfileUrl}); 
+     * 
+     */
+    
     this._manageshops.updateShop(this.updateForm.value, this.updateShop.id).subscribe(
       (shops) => { console.log('Success', shops); },
       (error) => { console.log('Error', error); },

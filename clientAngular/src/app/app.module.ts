@@ -21,7 +21,7 @@ import { RoadstartLayoutComponent } from './layouts/roadstart/roadstart.componen
 
 // For a realtime.service.ts get the amount of users connected
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-const config: SocketIoConfig = { url: 'http://193.106.55.144:8080', options: {} };
+const config: SocketIoConfig = { url: 'http://193.106.55.144:9097', options: {} };
 
 // A2 Components
 import { SidebarComponent } from './a2-components/sidebar/sidebar.component';

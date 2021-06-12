@@ -280,7 +280,14 @@ export class PageShopsManageComponent implements OnInit {
   }
 
   onUpdateSubmit() {
-    this.updateForm.patchValue({profile_Branch:this.shopProfileUrl});
+    
+    /*
+     * <--- update image not worked --->
+     * 
+     * this.updateForm.patchValue({profile_Branch:this.shopProfileUrl});
+     * 
+     */
+    
     this.ShowBranchesService.updateBranch(this.updateForm.value, this.updateBranch.id).subscribe(
       (branches) => { console.log('Success', branches); },
       (error) => { console.log('Error', error); },
