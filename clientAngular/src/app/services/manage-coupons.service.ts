@@ -27,6 +27,7 @@ export class ManageCouponsService {
   }
 
   updateCoupon(formCoupon, id: string): Observable<Coupons[]> {
+    console.log(formCoupon);
     const url = `${this.serverUrl}/${'Coupon'}/${id}`;
     return this.http.put<Coupons[]>(url, formCoupon);
   }

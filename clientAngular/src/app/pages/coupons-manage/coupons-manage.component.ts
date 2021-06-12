@@ -338,7 +338,14 @@ Upload Profile Picture
   }
 
   onUpdateSubmit() {
-    this.updateForm.patchValue({ profile_Coupon: this.ProfileUrl });
+
+    /*
+     * <--- update image not worked --->
+     * 
+     * this.updateForm.patchValue({ profile_Coupon: this.ProfileUrl }); 
+     * 
+     */
+    
     this.ShowCouponsService.updateCoupon(this.updateForm.value, this.updateCoupon.id).subscribe(
       (coupons) => { console.log('Success', coupons); },
       (error) => { console.log('Error', error); },

@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     });
   } 
  
-  if (socket.handshake.headers.origin === 'http://0.0.0.0:4200' || 
+  if (socket.handshake.headers.origin === 'http://localhost:4200' || 
       socket.handshake.url === '/socket.io/?auth_token=you%20can%20use%20Couponzy%20App&EIO=3&transport=polling' ) {
     count++;
     socket.broadcast.emit('count', count); 
@@ -75,6 +75,6 @@ io.on('connection', (socket) => {
   }
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 9097;
 
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

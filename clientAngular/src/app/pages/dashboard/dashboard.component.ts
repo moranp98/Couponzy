@@ -111,6 +111,9 @@ export class PageDashboardComponent implements OnInit {
 
       this.showUsers(this.currentUser.employerId);
       this.showBarChartLabels(this.currentUser.employerId);
+      this._realtime.listen('count').subscribe((res: any) => {
+        this.counter = res
+      });
     } 
   }
 
